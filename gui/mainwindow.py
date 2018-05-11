@@ -18,4 +18,4 @@ class MainWindow(wx.Frame):
 
         # Add a main menu
         mainmenubar = MainMenuBar()
-        #self.SetMenuBar(mainmenubar)
+        self.SetMenuBar(mainmenubar)
