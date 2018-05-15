@@ -39,7 +39,7 @@ class NewsGroupsDataSet:
                                            max_features=self.n_features,
                                            stop_words='english')
         
-        data, = self.cast_text()
+        data, null = self.cast_text()
         data = tfidf_vectorizer.fit_transform(data[:self.n_samples])
         vocab = tfidf_vectorizer.get_feature_names()
         return (data, vocab)
@@ -54,7 +54,7 @@ class NewsGroupsDataSet:
                                         max_features=self.n_features,
                                         stop_words='english')
         
-        data, self.cast_text()
+        data, null = self.cast_text()
         data = tf_vectorizer.fit_transform(data[:self.n_samples])
         vocab = tf_vectorizer.get_feature_names()
         return (data, vocab)
