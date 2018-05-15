@@ -23,34 +23,39 @@ class NewsGroupsDataSet:
     
     def cast_text(self):
         '''
-        Lets X be the list of texts as strings.
+        Returns data, a list of the data in as strings
         '''
-        self.X = self.X.data
-        self.vocab = None
+        data = self.X.data
+        vocab = None
+        return (data, vocab)
         
     
     def cast_tfidf(self):
         '''
-        Returns X as the TFIDF casting of the data.
+        Returns data, the TFIDF casting of the raw data and
+                vocaab, the list of words
         '''
         tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2,
                                            max_features=self.n_features,
                                            stop_words='english')
         
-        self.cast_text()
-        self.X = tfidf_vectorizer.fit_transform(self.X[:self.n_samples])
-        self.vocab = tfidf_vectorizer.get_feature_names()
-   
+        data, = self.cast_text()
+        data = tfidf_vectorizer.fit_transform(data[:self.n_samples])
+        vocab = tfidf_vectorizer.get_feature_names()
+        return (data, vocab)
+    
 
     def cast_tf(self):
         '''
-        Returns X as the TF casting of the data.
+        Returns data, the TF casting of the raw data and
+                vocab, the list of words
         '''
         tf_vectorizer = CountVectorizer(max_df=0.95, min_df=2,
                                         max_features=self.n_features,
                                         stop_words='english')
         
-        self.cast_text()
-        self.X = tf_vectorizer.fit_transform(self.X[:self.n_samples])
-        self.vocab = tf_vectorizer.get_feature_names()
+        data, self.cast_text()
+        data = tf_vectorizer.fit_transform(data[:self.n_samples])
+        vocab = tf_vectorizer.get_feature_names()
+        return (data, vocab)
 
