@@ -9,7 +9,9 @@
 
 ## Resources
 
+* Noel Rappin and Robin Dunn. "wxPython in Action." (Available in library). [link](https://www.manning.com/books/wxpython-in-action)
 * wxPython documentation.
+  * Widget Gallery. [link](https://wxpython.org/Phoenix/docs/html/gallery.html)
   * HTML Overview. [link](https://wxpython.org/Phoenix/docs/html/html_overview.html#)
 * Zetcode
   * Advanced widgets. [link](http://zetcode.com/wxpython/advanced/)
