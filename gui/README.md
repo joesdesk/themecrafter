@@ -9,5 +9,10 @@
 
 ## Resources
 
+* wxPython documentation.
+  * HTML Overview. [link](https://wxpython.org/Phoenix/docs/html/html_overview.html#)
 * Zetcode
   * Advanced widgets. [link](http://zetcode.com/wxpython/advanced/)
+  * Custom widgets. [link](http://zetcode.com/wxpython/customwidgets/)
+* TutorialsPoint
+  * splitter window class. [link](https://www.tutorialspoint.com/wxpython/wx_splitterwindow_class.htm)
