@@ -1,5 +1,14 @@
 # Model Development
 
+## Qualitative Analysis of Surveys
+
+
+* Medelyan, Alyona. _Your guide to open-end coding of customer surveys._ Thematic. 2017. [link](https://getthematic.com/coding-open-ended-questions/)
+* Zapin, Marni. _The Challenge of Analyzing Open-Ended Survey Question_. SurveyGizmo. 2013. [link](https://www.surveygizmo.com/resources/blog/the-challenge-of-analyzing-open-ended-survey-questions/)
+* Fusco, Carl. _How to Code Open-End Survey Question Responses_. LinkedIn. 2015. [link](https://www.linkedin.com/pulse/how-code-open-end-survey-question-responses-carl-fusco)
+
+* infosurv. _How to Code Open-End Survey Question Responses_. [link](https://www.infosurv.com/how-to-code-open-end-survey-question-responses/)
+
 ## Models
 
 ### Semi-supervised Non-negative Matrix Factorization
