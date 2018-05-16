@@ -19,6 +19,7 @@ __Sources__
 * The 20 newsgroups text dataset on scikit-learn. [link](http://scikit-learn.org/stable/datasets/twenty_newsgroups.html).
 * Survey Data not included in this repository
 * Public university/college reviews dataset scraped from GradReports. [link](www.gradreports.com)
+* Student reviews on StudentsReview. [link](http://www.studentsreview.com/)
 
 __Other Potential Sources__
 
