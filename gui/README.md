@@ -18,3 +18,8 @@
   * Custom widgets. [link](http://zetcode.com/wxpython/customwidgets/)
 * TutorialsPoint
   * splitter window class. [link](https://www.tutorialspoint.com/wxpython/wx_splitterwindow_class.htm)
+* IndicThreads.com
+  * Potentially useful for incorporating a help manual into the program.
+  * _Incorporating HTML into wxPython : Part 1_. 2006. [link](http://www.indicthreads.com/1106/incorporating-html-into-wxpython-part-1/)
+* Others
+  * Some comments about relative vs absolute relation of mouse positions. [link](http://wxpython-users.1045709.n5.nabble.com/No-Highlight-of-text-selection-td2345889.html)
