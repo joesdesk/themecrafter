@@ -22,4 +22,8 @@ __Sources__
 
 __Other Potential Sources__
 
-*
+These sources of text data are potential additions to the project.
+
+* The python Natural Language Tookit (NLTK). [link](http://www.nltk.org/nltk_data/)
+  * Movie Review Data by Bo Pang, Lillian Lee, and Shivakumar Vaithyanathan. [link](http://www.cs.cornell.edu/people/pabo/movie-review-data/)
+* Yelp reviews. [link](https://www.yelp.com/dataset)
