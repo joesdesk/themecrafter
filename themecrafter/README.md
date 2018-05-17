@@ -28,7 +28,12 @@ __Sources__
 * The 20 newsgroups text dataset on scikit-learn. [link](http://scikit-learn.org/stable/datasets/twenty_newsgroups.html).
 * Survey Data not included in this repository
 * Public university/college reviews dataset scraped from GradReports. [link](www.gradreports.com)
+* Student reviews on StudentsReview. [link](http://www.studentsreview.com/)
 
 __Other Potential Sources__
 
-*
+These sources of text data are potential additions to the project.
+
+* The python Natural Language Tookit (NLTK). [link](http://www.nltk.org/nltk_data/)
+  * Movie Review Data by Bo Pang, Lillian Lee, and Shivakumar Vaithyanathan. [link](http://www.cs.cornell.edu/people/pabo/movie-review-data/)
+* Yelp reviews. [link](https://www.yelp.com/dataset)
