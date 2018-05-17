@@ -1,6 +1,3 @@
-from __future__ import print_function
-from time import time
-
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.datasets import fetch_20newsgroups
 
@@ -21,7 +18,7 @@ class NewsGroupsDataSet:
                                        remove=('headers', 'footers', 'quotes'))
     
     
-    def cast_text(self):
+    def to_text(self):
         '''
         Returns data, a list of the data in as strings
         '''
@@ -30,7 +27,7 @@ class NewsGroupsDataSet:
         return (data, vocab)
         
     
-    def cast_tfidf(self):
+    def to_tfidf(self):
         '''
         Returns data, the TFIDF casting of the raw data and
                 vocaab, the list of words
@@ -39,13 +36,13 @@ class NewsGroupsDataSet:
                                            max_features=self.n_features,
                                            stop_words='english')
         
-        data, null = self.cast_text()
+        data, null = self.to_text()
         data = tfidf_vectorizer.fit_transform(data[:self.n_samples])
         vocab = tfidf_vectorizer.get_feature_names()
         return (data, vocab)
     
 
-    def cast_tf(self):
+    def to_tf(self):
         '''
         Returns data, the TF casting of the raw data and
                 vocab, the list of words
@@ -54,7 +51,7 @@ class NewsGroupsDataSet:
                                         max_features=self.n_features,
                                         stop_words='english')
         
-        data, null = self.cast_text()
+        data, null = self.to_text()
         data = tf_vectorizer.fit_transform(data[:self.n_samples])
         vocab = tf_vectorizer.get_feature_names()
         return (data, vocab)
