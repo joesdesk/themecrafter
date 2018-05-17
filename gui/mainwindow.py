@@ -1,6 +1,7 @@
 import wx
 
 from gui.mainwidgets.mainmenu import MainMenuBar
+from gui.mainwidgets.mainsplitter import MainWindowSplitter
 
 class MainWindow(wx.Frame):
     '''
@@ -17,5 +18,15 @@ class MainWindow(wx.Frame):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=title)
 
         # Add a main menu
-        mainmenubar = MainMenuBar()
-        self.SetMenuBar(mainmenubar)
+        main_menubar = MainMenuBar()
+        self.SetMenuBar(main_menubar)
+
+        # Add splitters to obtain 4 panels on which to add widgets.
+        main_splitter = MainWindowSplitter(self)
+        LT_panel = main_splitter.LT_panel
+        LB_panel = main_splitter.LB_panel
+        RT_panel = main_splitter.RT_panel
+        RB_panel = main_splitter.RB_panel
+
+        # Add a secondary top-bottom splitter to
+        # the left and right panes
