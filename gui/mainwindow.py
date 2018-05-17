@@ -21,13 +21,12 @@ class MainWindow(wx.Frame):
         main_menubar = MainMenuBar()
         self.SetMenuBar(main_menubar)
 
-        # Add a splitter to obtain 4 panels on which to add widgets.
+        # Add splitters to obtain 4 panels on which to add widgets.
         main_splitter = MainWindowSplitter(self)
-        LT_panel = main_splitter.panel_LT
-        LB_panel = main_splitter.panel_LB
-        RT_panel = main_splitter.panel_RT
-        RB_panel = main_splitter.panel_RB
-
+        LT_panel = main_splitter.LT_panel
+        LB_panel = main_splitter.LB_panel
+        RT_panel = main_splitter.RT_panel
+        RB_panel = main_splitter.RB_panel
 
         # Add a secondary top-bottom splitter to
         # the left and right panes
