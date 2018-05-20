@@ -1,11 +1,11 @@
+from . import BaseDataSet
 from sklearn.datasets import fetch_20newsgroups
 
 
-class NewsGroupsDataSet:
+class NewsGroupsDataSet(BaseDataSet):
 
     def __init__(self, n_samples=2000, n_features=1000, n_components=10):
-        '''
-        Obtains the data set and sets the parameteres
+        '''Loads the data set according to some parameters
         '''
         # Shape of data
         self.n_samples=2000
@@ -13,6 +13,6 @@ class NewsGroupsDataSet:
         self.n_components=10
 
         # Load the 20 newsgroups dataset as raw data.
-        self.X = fetch_20newsgroups(shuffle=True, random_state=1,
+        newsgroups = fetch_20newsgroups(shuffle=True, random_state=1,
             remove=('headers', 'footers', 'quotes'))
-            
+        self.X = newsgroups['data']
