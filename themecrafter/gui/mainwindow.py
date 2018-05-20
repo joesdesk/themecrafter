@@ -1,7 +1,8 @@
 import wx
 
-from gui.mainwidgets.mainmenu import MainMenuBar
-from gui.mainwidgets.mainsplitter import MainWindowSplitter
+from .mainwidgets.mainmenu import MainMenuBar
+from .mainwidgets.mainsplitter import MainWindowSplitter
+
 
 class MainWindow(wx.Frame):
     '''
