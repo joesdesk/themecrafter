@@ -1,5 +1,5 @@
 from wx import App
-from gui.mainwindow import MainWindow
+from themecrafter.gui.mainwindow import MainWindow
 import themecrafter
 
 
