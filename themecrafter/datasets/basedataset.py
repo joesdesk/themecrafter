@@ -3,20 +3,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 class BaseDataSet():
 
     def __init__(self):
-        '''Initializes the base data set.
-        This method should be overridden in derived classes to
-        set self.X to a python list of strings, which represent documents.
-        '''
-        self.X = None
+        '''Loads the data set.
 
-
-    def to_text(self):
+        Derived classes load the data by overwrite this method and
+        setting self.X to be a list of strings, which are the documents.
         '''
-        Returns data, a list of the data in as strings
-        '''
-        data = self.X.data
-        vocab = None
-        return (data, vocab)
+        self.X = []
 
 
     def to_tfidf(self):
