@@ -4,6 +4,8 @@ from .mainwidgets.mainmenu import MainMenuBar
 from .mainwidgets.mainsplitter import MainWindowSplitter
 from .mainwidgets.commentreader import MyHtmlFrame
 
+from ..interface.session import ThemeCrafterSession
+
 class MainWindow(wx.Frame):
     '''
     This window is the one containing the main controls and panels
@@ -18,8 +20,11 @@ class MainWindow(wx.Frame):
         # Since we will use a toolbar, we use the wx.Frame
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=title)
 
+        # Create a new session with the winddow to interact with package routines
+        session = ThemeCrafterSession()
+
         # Add a main menu
-        main_menubar = MainMenuBar()
+        main_menubar = MainMenuBar(session)
         self.SetMenuBar(main_menubar)
 
         # Add splitters to obtain 4 panels on which to add widgets.
