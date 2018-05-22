@@ -85,18 +85,29 @@ wx.html.HtmlWinParser_AddTagHandler(BlueTagHandler)
 
 
 
-class MyHtmlFrame(wx.Frame):
+class MyHtmlFrame(wx.html.HtmlWindow):
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, -1, title)
-        html = wx.html.HtmlWindow(self)
+        wx.html.HtmlWindow.__init__(self, parent)
+
+        #self.sizer = wx.BoxSizer()
+
+        #html = wx.html.HtmlWindow(parent)
+
+        #self.sizer.Add(html, flag=wx.EXPAND|wx.ALL)
+        #self.SetSizer(self.sizer)
 
         if "gtk2" in wx.PlatformInfo or "gtk3" in wx.PlatformInfo:
-            html.SetStandardFonts()
+            #html.SetStandardFonts()
+            self.SetStandardFonts()
 
-        html.SetPage(page)
+        self.update_counts = 0
 
-        self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
+        #html.SetPage(page)
+        #html.SetPage("<html>awefawef</html>")
+        self.SetPage(page)
 
+        #self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
+        self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.hightlight_hover)
 
     def hightlight_hover(self, event):
         cell = event.GetCell()#.GetNext()
@@ -104,6 +115,18 @@ class MyHtmlFrame(wx.Frame):
             cid = cell.GetId()
             if cid != '':
                 print(cid)
+
+        self.update_counts += 1
+        print(self.update_counts)
+
+        self.SetPage("""<html> A concordance is more than an index;
+        additional material make producing them a labor-intensive process,
+        even when assisted by computers, such as commentary, definitions,
+        and topical cross-indexing.
+        """ +
+        str(self.update_counts) +
+        "</html>")
+
         #c = event.GetCell()#.GetParent()
         #print(type(event.GetCell()))
         #self.GetParser().
@@ -116,7 +139,7 @@ class MyHtmlFrame(wx.Frame):
         #c.Draw()
 
 
-app = wx.App()
-frm = MyHtmlFrame(None, "Custom HTML Tag Handler")
-frm.Show()
-app.MainLoop()
+#app = wx.App()
+#frm = MyHtmlFrame(None, "Custom HTML Tag Handler")
+#frm.Show()
+#app.MainLoop()

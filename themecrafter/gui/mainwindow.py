@@ -2,7 +2,7 @@ import wx
 
 from .mainwidgets.mainmenu import MainMenuBar
 from .mainwidgets.mainsplitter import MainWindowSplitter
-
+from .mainwidgets.commentreader import MyHtmlFrame
 
 class MainWindow(wx.Frame):
     '''
@@ -29,5 +29,14 @@ class MainWindow(wx.Frame):
         RT_panel = main_splitter.RT_panel
         RB_panel = main_splitter.RB_panel
 
-        # Add a secondary top-bottom splitter to
-        # the left and right panes
+        # Add widget to read comments
+        RT_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        comment_reader = MyHtmlFrame(RT_panel, "aweg")
+        #comment_reader = wx.TextCtrl(RT_panel)
+
+        #comment_reader = wx.html.HtmlWindow(RT_panel)
+        #comment_reader.SetPage("<html>awefawef</html>")
+
+        RT_sizer.Add(comment_reader, proportion=1, flag=wx.EXPAND|wx.ALL)
+        RT_panel.SetSizer(RT_sizer)
