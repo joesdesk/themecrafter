@@ -100,13 +100,14 @@ class MyHtmlFrame(wx.html.HtmlWindow):
             #html.SetStandardFonts()
             self.SetStandardFonts()
 
+        self.update_counts = 0
 
         #html.SetPage(page)
         #html.SetPage("<html>awefawef</html>")
         self.SetPage(page)
 
-        self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
-
+        #self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
+        self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.hightlight_hover)
 
     def hightlight_hover(self, event):
         cell = event.GetCell()#.GetNext()
@@ -114,6 +115,18 @@ class MyHtmlFrame(wx.html.HtmlWindow):
             cid = cell.GetId()
             if cid != '':
                 print(cid)
+
+        self.update_counts += 1
+        print(self.update_counts)
+
+        self.SetPage("""<html> A concordance is more than an index;
+        additional material make producing them a labor-intensive process,
+        even when assisted by computers, such as commentary, definitions,
+        and topical cross-indexing.
+        """ +
+        str(self.update_counts) +
+        "</html>")
+
         #c = event.GetCell()#.GetParent()
         #print(type(event.GetCell()))
         #self.GetParser().
