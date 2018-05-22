@@ -85,15 +85,25 @@ wx.html.HtmlWinParser_AddTagHandler(BlueTagHandler)
 
 
 
-class MyHtmlFrame(wx.Frame):
+class MyHtmlFrame(wx.html.HtmlWindow):
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, -1, title)
-        html = wx.html.HtmlWindow(self)
+        wx.html.HtmlWindow.__init__(self, parent)
+
+        #self.sizer = wx.BoxSizer()
+
+        #html = wx.html.HtmlWindow(parent)
+
+        #self.sizer.Add(html, flag=wx.EXPAND|wx.ALL)
+        #self.SetSizer(self.sizer)
 
         if "gtk2" in wx.PlatformInfo or "gtk3" in wx.PlatformInfo:
-            html.SetStandardFonts()
+            #html.SetStandardFonts()
+            self.SetStandardFonts()
 
-        html.SetPage(page)
+
+        #html.SetPage(page)
+        #html.SetPage("<html>awefawef</html>")
+        self.SetPage(page)
 
         self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
 
@@ -116,7 +126,7 @@ class MyHtmlFrame(wx.Frame):
         #c.Draw()
 
 
-app = wx.App()
-frm = MyHtmlFrame(None, "Custom HTML Tag Handler")
-frm.Show()
-app.MainLoop()
+#app = wx.App()
+#frm = MyHtmlFrame(None, "Custom HTML Tag Handler")
+#frm.Show()
+#app.MainLoop()
