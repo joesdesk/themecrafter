@@ -1,12 +1,16 @@
-#from ..datasets import bgsurvey
+from ..datasets import BGSurveyDataSet
+
 
 class ThemeCrafterSession:
 
     def __init__(self):
         pass
 
-    def load_data(self, dataset):
-        self.data = dataset
+    def load_data(self, dataset=None):
+        dataset = BGSurveyDataSet()
+        self.docs = dataset.X
 
-    def show_data(self, dataset):
-        print("data shown.")
+    def to_html(self):
+        html = ''
+        for doc in self.docs:
+            html += '<div>' + doc + '</div>'
