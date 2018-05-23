@@ -1,8 +1,10 @@
 import wx
 
 from .mainwidgets.mainmenu import MainMenuBar
+
 from .mainwidgets.mainsplitter import MainWindowSplitter
 from .mainwidgets.commentreader import MyHtmlFrame
+from .mainwidgets.tokenlist import TokenListCtrl
 
 from ..interface.session import ThemeCrafterSession
 
@@ -45,3 +47,13 @@ class MainWindow(wx.Frame):
 
         RT_sizer.Add(comment_reader, proportion=1, flag=wx.EXPAND|wx.ALL)
         RT_panel.SetSizer(RT_sizer)
+
+
+        # Add widget to tabulate cells
+        LB_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        #word_reader = MySheet(LB_panel)
+        token_list = TokenListCtrl(LB_panel)
+
+        LB_sizer.Add(token_list, proportion=1, flag=wx.EXPAND|wx.ALL)
+        LB_panel.SetSizer(LB_sizer)
