@@ -6,7 +6,7 @@ from .mainwidgets.mainsplitter import MainWindowSplitter
 from .mainwidgets.commentreader import MyHtmlFrame
 from .mainwidgets.tokenlist import TokenListCtrl
 
-from .interface.session import ThemeCrafterSession
+from ..interface.session import ThemeCrafterSession
 
 class MainWindow(wx.Frame):
     '''
