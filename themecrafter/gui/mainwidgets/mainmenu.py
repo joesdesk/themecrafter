@@ -8,14 +8,11 @@ import wx
 class MainMenuBar(wx.MenuBar):
     """Class to hold the top menus (file, edit, etc.)"""
 
-    def __init__(self, session):
+    def __init__(self):
         """"""
 
         # Create a menu bar
         wx.MenuBar.__init__(self)
-
-        # Get session
-        self.session = session
 
         # Test to see if initialized
         print("main menu initialized")
@@ -36,11 +33,27 @@ class MainMenuBar(wx.MenuBar):
         # Menu for the data loading process
         datamenu = wx.Menu()
         load_csv = datamenu.Append(wx.ID_ANY, "Load CSV")
+        datamenu.AppendSeparator()
+        load_newsgroups_data = datamenu.Append(wx.ID_ANY, "Load News Groups")
+        load_bg_survey_data = datamenu.Append(wx.ID_ANY, "Load BG Survey")
+        load_grad_reports = datamenu.Append(wx.ID_ANY, "Load Grad Reports")
+        load_students_rev_data = datamenu.Append(wx.ID_ANY, "Load Students Review")
         self.Append(datamenu, "Data")
 
         # Test button functionality
-        self.Bind(wx.EVT_MENU, self.load_data, load_csv)
+        self.Bind(wx.EVT_MENU, self.load_preset_data, load_csv)
+		
+        self.Bind(wx.EVT_MENU, self.load_preset_data, load_newsgroups_data)
+        self.Bind(wx.EVT_MENU, self.load_preset_data, load_bg_survey_data)
+        self.Bind(wx.EVT_MENU, self.load_preset_data, load_grad_reports)
+        self.Bind(wx.EVT_MENU, self.load_preset_data, load_students_rev_data)
 
 
-    def load_data(self, menu_evt):
-        print("LOAD_CSV")
+    def load_preset_data(self, menu_evt):
+        #self.session.load_preset_data('NewsGroups')
+        #print(k)
+        menu_evt.Skip()
+        #evt = OnDataLoad(attr1="hello")
+        #wx.PostEvent(wx.Window, evt)
+		
+		
