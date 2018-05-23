@@ -9,7 +9,7 @@ from .mainwidgets.tokenlist import TokenListCtrl
 from ..interface.session import ThemeCrafterSession
 
 # https://wxpython.org/Phoenix/docs/html/events_overview.html#custom-event-summary
-
+# event propagation http://zetcode.com/wxpython/events/
 
 class MainWindow(wx.Frame):
     '''
