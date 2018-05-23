@@ -1,4 +1,4 @@
-from ..datasets import BGSurveyDataSet
+from themecrafter.datasets import BGSurveyDataSet
 
 
 class ThemeCrafterSession:
