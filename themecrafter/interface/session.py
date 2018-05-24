@@ -1,3 +1,5 @@
+import random
+
 from ..datasets import BaseDataSet, NewsGroupsDataSet, BGSurveyDataSet, GradReportsDataSet, StudentsReviewDataSet
 
 
@@ -6,6 +8,7 @@ class ThemeCrafterSession:
     def __init__(self):
         pass
 
+        
     def load_preset_data(self, data=None):
         '''Loads preset data according to name.'''
         if data=='NewsGroups':
@@ -23,7 +26,24 @@ class ThemeCrafterSession:
     
     def load_csv_data(self, csv_filename):
         pass
-                      
+
+        
+    def read_doc(self, id=None):
+        '''Reads a document for a given id.
+        If no id is given, reads a document at random.'''
+        
+        n_docs = len(self.docs)
+        
+        if id is None:
+            id = random.randrange(n_docs)
+        
+        doc = self.docs[id]
+        
+        print("doc id:", id)
+        print("")
+        print(doc)
+        print("")
+        
         
     def to_html(self):
         html = ''

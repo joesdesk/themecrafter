@@ -9,7 +9,7 @@ class BaseDataSet():
         setting self.X to be a list of strings, which are the documents.
         '''
         self.X = []
-
+        
 
     def to_tfidf(self):
         '''
@@ -39,3 +39,5 @@ class BaseDataSet():
         data = tf_vectorizer.fit_transform(data[:self.n_samples])
         vocab = tf_vectorizer.get_feature_names()
         return (data, vocab)
+
+        
