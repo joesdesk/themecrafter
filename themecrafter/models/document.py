@@ -94,4 +94,12 @@ class Corpus:
             doc.parse()
             self.docs.append(doc)
             
-            
+    def get_all_tokens():
+        '''Extracts all tokens from all sentences from all documents.'''
+        
+        all_tokens = []
+        for d in self.docs:
+            for s in d.sentences:
+                for t in s.tokens:
+                    all_tokens.append(t)
+        return all_tokens
