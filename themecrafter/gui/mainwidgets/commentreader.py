@@ -1,6 +1,7 @@
 import wx
 import wx.html
 
+
 page = """<html><body>
 
 This silly example shows how custom tags can be defined and used in a
@@ -87,7 +88,7 @@ wx.html.HtmlWinParser_AddTagHandler(BlueTagHandler)
 
 class MyHtmlFrame(wx.html.HtmlWindow):
     def __init__(self, parent, title):
-        wx.html.HtmlWindow.__init__(self, parent)
+        wx.html.HtmlWindow.__init__(self, parent, style=wx.VSCROLL)
 
         #self.sizer = wx.BoxSizer()
 
@@ -108,6 +109,7 @@ class MyHtmlFrame(wx.html.HtmlWindow):
 
         #self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
         self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.hightlight_hover)
+        #self.Bind(DATA_LOAD, self.show_data)
 
     def hightlight_hover(self, event):
         cell = event.GetCell()#.GetNext()
@@ -119,13 +121,13 @@ class MyHtmlFrame(wx.html.HtmlWindow):
         self.update_counts += 1
         print(self.update_counts)
 
-        self.SetPage("""<html> A concordance is more than an index;
+        self.SetPage("""<html><body width="200px"> A concordance is more than an index;
         additional material make producing them a labor-intensive process,
         even when assisted by computers, such as commentary, definitions,
         and topical cross-indexing.
         """ +
         str(self.update_counts) +
-        "</html>")
+        "</body></html>")
 
         #c = event.GetCell()#.GetParent()
         #print(type(event.GetCell()))
@@ -137,6 +139,13 @@ class MyHtmlFrame(wx.html.HtmlWindow):
         #print(c)
 
         #c.Draw()
+    
+    def show_data(self, event):
+        print("event detected")
+        self.SetPage("""<html> A concordance is more than an index;
+        additional material make producing them a labor-intensive process,
+        even when assisted by computers, such as commentary, definitions,
+        and topical cross-indexing.</html>""")
 
 
 #app = wx.App()
