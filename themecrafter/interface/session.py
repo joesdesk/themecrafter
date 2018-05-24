@@ -1,4 +1,8 @@
+import pandas as pd
+
 from ..datasets import BaseDataSet, NewsGroupsDataSet, BGSurveyDataSet, GradReportsDataSet, StudentsReviewDataSet
+
+
 
 
 class ThemeCrafterSession:
@@ -6,7 +10,7 @@ class ThemeCrafterSession:
     def __init__(self):
         pass
 
-    def load_preset_data(self, data=None):
+    def load_data(self, data=None ):
         '''Loads preset data according to name.'''
         if data=='NewsGroups':
             dataset = NewsGroupsDataSet()
@@ -21,8 +25,10 @@ class ThemeCrafterSession:
         self.docs = dataset.X
     
     
-    def load_csv_data(self, csv_filename):
-        pass
+    def load_csv_data(self, csv_filename, col_id):
+        '''Loads the dataset '''
+        df = pd.read_csv(csv_filename)
+        df[col_id]
                       
         
     def to_html(self):
@@ -30,3 +36,8 @@ class ThemeCrafterSession:
         for doc in self.docs:
             html += '<div>' + doc + '</div>'
         return '<html>' + html + '</html>'
+
+
+    def tokenize(self):
+        ''''''
+        pass
