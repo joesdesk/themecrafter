@@ -28,5 +28,5 @@ class ThemeCrafterSession:
     def to_html(self):
         html = ''
         for doc in self.docs:
-            html += '<div>' + doc + '</div>'
-        return '<html>' + html + '</html>'
+            html += '<div>' + doc + '</div><br>'
+        return '<html><body width="100px">' + html + '</body></html>'

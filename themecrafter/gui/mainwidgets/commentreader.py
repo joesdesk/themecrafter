@@ -88,7 +88,7 @@ wx.html.HtmlWinParser_AddTagHandler(BlueTagHandler)
 
 class MyHtmlFrame(wx.html.HtmlWindow):
     def __init__(self, parent, title):
-        wx.html.HtmlWindow.__init__(self, parent)
+        wx.html.HtmlWindow.__init__(self, parent, style=wx.VSCROLL)
 
         #self.sizer = wx.BoxSizer()
 
@@ -121,13 +121,13 @@ class MyHtmlFrame(wx.html.HtmlWindow):
         self.update_counts += 1
         print(self.update_counts)
 
-        self.SetPage("""<html> A concordance is more than an index;
+        self.SetPage("""<html><body width="200px"> A concordance is more than an index;
         additional material make producing them a labor-intensive process,
         even when assisted by computers, such as commentary, definitions,
         and topical cross-indexing.
         """ +
         str(self.update_counts) +
-        "</html>")
+        "</body></html>")
 
         #c = event.GetCell()#.GetParent()
         #print(type(event.GetCell()))
