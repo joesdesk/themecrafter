@@ -8,6 +8,8 @@ from .mainwidgets.tokenlist import TokenListCtrl
 
 from ..interface.session import ThemeCrafterSession
 
+#from .sessionevents import EVT_DATA_LOAD
+
 # https://wxpython.org/Phoenix/docs/html/events_overview.html#custom-event-summary
 # event propagation http://zetcode.com/wxpython/events/
 
@@ -33,8 +35,9 @@ class MainWindow(wx.Frame):
         self.SetMenuBar(main_menubar)
 
             # See https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
-        self.Bind(wx.EVT_MENU, self.handle_menu, main_menubar)
-		
+        #self.Bind(wx.EVT_MENU, self.handle_menu, main_menubar)
+        #self.Bind(EVT_DATA_LOAD, self.handle_menu, main_menubar)
+        
         # Add splitters to obtain 4 panels on which to add widgets.
         main_splitter = MainWindowSplitter(self)
         LT_panel = main_splitter.LT_panel

@@ -1,9 +1,16 @@
 import wx
 
+from ..docreader.csvdialog import CsvDialog, CsvFieldDialog
+
+#from ..sessionevents import OnDataLoad
+
 # Custom event ids: http://zetcode.com/wxpython/events/
 #ID_MENU_NEW = wx.NewId()
 #ID_MENU_OPEN = wx.NewId()
 #ID_MENU_SAVE = wx.NewId()
+
+ID_LOAD_DATA_CSV = 50
+
 
 class MainMenuBar(wx.MenuBar):
     """Class to hold the top menus (file, edit, etc.)"""
@@ -32,28 +39,70 @@ class MainMenuBar(wx.MenuBar):
 
         # Menu for the data loading process
         datamenu = wx.Menu()
-        load_csv = datamenu.Append(wx.ID_ANY, "Load CSV")
-        datamenu.AppendSeparator()
-        load_newsgroups_data = datamenu.Append(wx.ID_ANY, "Load News Groups")
-        load_bg_survey_data = datamenu.Append(wx.ID_ANY, "Load BG Survey")
-        load_grad_reports = datamenu.Append(wx.ID_ANY, "Load Grad Reports")
-        load_students_rev_data = datamenu.Append(wx.ID_ANY, "Load Students Review")
+        datamenu.Append(ID_LOAD_DATA_CSV, "Import CSV")
+        #datamenu.AppendSeparator()
+        #datamenu.Append(ID_LOAD_DATA_PRESET1, "Load Twenty News Groups")
+        #datamenu.Append(ID_LOAD_DATA_PRESET2, "Load BG Survey")
+        #datamenu.Append(ID_LOAD_DATA_PRESET3, "Load Grad Reports")
+        #datamenu.Append(ID_LOAD_DATA_PRESET4, "Load Students Review")
         self.Append(datamenu, "Data")
 
         # Test button functionality
-        self.Bind(wx.EVT_MENU, self.load_preset_data, load_csv)
+        self.Bind(wx.EVT_MENU, self.load_csv_data, id=ID_LOAD_DATA_CSV)
 		
-        self.Bind(wx.EVT_MENU, self.load_preset_data, load_newsgroups_data)
-        self.Bind(wx.EVT_MENU, self.load_preset_data, load_bg_survey_data)
-        self.Bind(wx.EVT_MENU, self.load_preset_data, load_grad_reports)
-        self.Bind(wx.EVT_MENU, self.load_preset_data, load_students_rev_data)
+        #self.Bind(wx.EVT_MENU, self.load_preset_data, id=ID_LOAD_DATA_PRESET1)
+        #self.Bind(wx.EVT_MENU, self.load_preset_data, id=ID_LOAD_DATA_PRESET2)
+        #self.Bind(wx.EVT_MENU, self.load_preset_data, id=ID_LOAD_DATA_PRESET3)
+        #self.Bind(wx.EVT_MENU, self.load_preset_data, id=ID_LOAD_DATA_PRESET4)
 
+    
+    def load_csv_data(self, e):
+        """"""
+        id = e.GetId()
+        print(id)
+        
+        # Ask the user to open file
+        # https://wxpython.org/Phoenix/docs/html/wx.FileDialog.html
+        with CsvDialog(self) as csv_dialog:
 
-    def load_preset_data(self, menu_evt):
-        #self.session.load_preset_data('NewsGroups')
+            dialog_exit_status = csv_dialog.ShowModal()
+            
+            if dialog_exit_status==wx.ID_CANCEL:
+                # The user changed their mind
+                # See https://wxpython.org/Phoenix/docs/html/wx.Dialog.html
+                return None
+
+            # Proceed loading the file chosen by the user
+            pathname = csv_dialog.GetPath()
+        
+        # Preview file in another dialog box to allow selection of text data
+        with CsvFieldDialog(self) as csv_field_dialog:
+            
+            csv_field_dialog.open_file(pathname)
+            dialog_exit_status = csv_field_dialog.ShowModal()
+            
+            try:
+                with open(pathname, 'r') as file:
+                    #self.doLoadDataOrWhatever(file)
+                    #print(pathname)
+                    pass
+            except IOError:
+                wx.LogError("Cannot open file '%s'." % newfile)
+        
+        #print(pathname)
+        
+        
+    #def load_preset_data(self, e):
+        #""""""
+        #id = e.GetId()
+        #if id==ID_LOAD_DATA_PRESET1:
+        #    #self.session.load_preset_data('NewsGroups')
         #print(k)
-        menu_evt.Skip()
+        #e.Skip()
         #evt = OnDataLoad(attr1="hello")
-        #wx.PostEvent(wx.Window, evt)
-		
+        #wx.PostEvent(self.GetParent(), evt)
+        #pass
+        
+        
+        
 		
