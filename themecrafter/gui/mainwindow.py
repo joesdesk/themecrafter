@@ -3,7 +3,7 @@ import wx
 from .mainwidgets.mainmenu import MainMenuBar
 
 from .mainwidgets.mainsplitter import MainWindowSplitter
-from .mainwidgets.commentreader import MyHtmlFrame
+from .commentwindow import CommentWindow
 from .mainwidgets.tokenlist import TokenListCtrl
 
 from ..interface.session import ThemeCrafterSession
@@ -48,7 +48,7 @@ class MainWindow(wx.Frame):
         # Add widget to read comments
         RT_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.comment_reader = MyHtmlFrame(RT_panel, "aweg")
+        self.comment_reader = CommentWindow(RT_panel, "aweg")
         #comment_reader = wx.TextCtrl(RT_panel)
 
         #comment_reader = wx.html.HtmlWindow(RT_panel)

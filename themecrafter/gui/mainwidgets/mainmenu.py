@@ -1,6 +1,6 @@
 import wx
 
-from ..docreader.csvdialog import CsvDialog, CsvFieldDialog
+from ..dataloading import CsvDialog, CsvFieldDialog
 
 #from ..sessionevents import OnDataLoad
 

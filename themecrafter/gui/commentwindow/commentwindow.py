@@ -1,7 +1,6 @@
 import wx
 import wx.html
 
-
 page = """<html><body>
 
 This silly example shows how custom tags can be defined and used in a
@@ -19,6 +18,14 @@ parameters specifed in the tag, for example:
 
 </body></html>
 """
+
+#with open('themecrafter/gui/mainwidgets/highlights.html') as f:
+#    page = ''.join(f.readlines())
+page = ''
+page2 = ''
+
+#with open('themecrafter/gui/mainwidgets/highlights2.html') as f:
+#    page2 = ''.join(f.readlines())
 
 class BlueTagHandler(wx.html.HtmlWinTagHandler):
     def __init__(self):
@@ -86,7 +93,7 @@ wx.html.HtmlWinParser_AddTagHandler(BlueTagHandler)
 
 
 
-class MyHtmlFrame(wx.html.HtmlWindow):
+class CommentWindow(wx.html.HtmlWindow):
     def __init__(self, parent, title):
         wx.html.HtmlWindow.__init__(self, parent, style=wx.VSCROLL)
 
@@ -106,6 +113,7 @@ class MyHtmlFrame(wx.html.HtmlWindow):
         #html.SetPage(page)
         #html.SetPage("<html>awefawef</html>")
         self.SetPage(page)
+        self.page1 = True
 
         #self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
         self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.hightlight_hover)
@@ -118,24 +126,33 @@ class MyHtmlFrame(wx.html.HtmlWindow):
             if cid != '':
                 print(cid)
 
-        self.update_counts += 1
-        print(self.update_counts)
+        #self.update_counts += 1
+        #print(self.update_counts)
 
-        self.SetPage("""<html><body width="200px"> A concordance is more than an index;
-        additional material make producing them a labor-intensive process,
-        even when assisted by computers, such as commentary, definitions,
-        and topical cross-indexing.
-        """ +
-        str(self.update_counts) +
-        "</body></html>")
-
-        #c = event.GetCell()#.GetParent()
-        #print(type(event.GetCell()))
+        #self.SetPage("""<html><body width="200px"> A concordance is more than an index;
+        #additional material make producing them a labor-intensive process,
+        #even when assisted by computers, such as commentary, definitions,
+        #and topical cross-indexing.
+        #""" +
+        #str(self.update_counts) +
+        #"</body></html>")
+        
+        if self.page1:
+            self.SetPage(page2)
+            self.page1 = False
+            self.Refresh()
+        else:
+            self.SetPage(page)
+            self.page1  = True
+            self.Refresh()
+        print(self.page1)
+        #c = event.GetCell().GetParent()
+        #print(event.GetCell().GetParent())
         #self.GetParser().
         #c.SetBackgroundColour("#e7e7e7")
-        #print(c.GetBackgroundColour())
+        #sprint(c.GetBackgroundColour())
         #c.SetLabel("aewf")
-        self.Refresh()
+        #self.Refresh()
         #print(c)
 
         #c.Draw()
