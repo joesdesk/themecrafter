@@ -94,6 +94,9 @@ class Corpus:
             doc.parse()
             self.docs.append(doc)
             
+        self.tokens = self.get_all_tokens()
+        self.lexicon = self.get_lexicon()
+            
     def get_all_tokens(self):
         '''Extracts all tokens from all sentences from all documents.'''
         
@@ -103,3 +106,19 @@ class Corpus:
                 for t in s.tokens:
                     all_tokens.append(t)
         return all_tokens
+    
+    def get_lexicon(self):
+        '''Extracts unique tokens to be part of the lexicon.'''
+        lexicon = []
+        for t in self.tokens:
+            if t.text not in lexicon:
+                lexicon.append(t.text)
+        return lexicon
+        
+    def token2lid(self, token):
+        '''Converts token to id in lexicon.'''
+        for i, l in enumerate(self.lexicon):
+            if l==token:
+                return i
+                
+                
