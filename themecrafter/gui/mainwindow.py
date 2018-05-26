@@ -8,7 +8,7 @@ from .mainwidgets.tokenlist import TokenListCtrl
 
 from ..interface.session import ThemeCrafterSession
 
-from .sessionevents import EVT_DATA_LOAD
+from .dataloading.events import EVT_DATA_LOAD
 
 # https://wxpython.org/Phoenix/docs/html/events_overview.html#custom-event-summary
 # event propagation http://zetcode.com/wxpython/events/

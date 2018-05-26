@@ -1,8 +1,7 @@
 import wx
 
 from ..dataloading import CsvDialog
-
-from ..sessionevents import OnDataLoad, EVT_DATA_LOAD
+from ..dataloading.events import OnDataLoad, EVT_DATA_LOAD
 
 # Custom event ids: http://zetcode.com/wxpython/events/
 #ID_MENU_NEW = wx.NewId()

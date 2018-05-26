@@ -6,7 +6,7 @@ import wx.grid
 
 import pandas as pd
 
-from ..sessionevents import OnDataLoad, EVT_DATA_LOAD, ID_DATA_LOADED
+from .events import OnDataLoad, EVT_DATA_LOAD, ID_DATA_LOADED
 
 
 class CsvDialog(wx.Dialog):
