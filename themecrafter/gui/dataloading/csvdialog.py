@@ -6,14 +6,12 @@ import wx.grid
 
 import pandas as pd
 
-from .events import OnDataLoad, EVT_DATA_LOAD, ID_DATA_LOADED
-
 
 class CsvDialog(wx.Dialog):
     
-    def __init__(self, parent):
+    def __init__(self):
         '''Opens a window which allows a user to select data.'''
-        wx.Dialog.__init__(self, parent, title='Preview CSV')
+        wx.Dialog.__init__(self, parent=None, title='Preview CSV')
             #, size=wx.Size(400, 485))
         
         # Set variables
@@ -144,13 +142,14 @@ class CsvDialog(wx.Dialog):
         # Extract the text data
         data = df[header].values.tolist()
         #print("EXTRACT_DATA")
-        #self.data = data
+        self.data = data
+        #e.Skip()
         self.EndModal(1)
         
         #e.Skip()
         #return data
-        evt = OnDataLoad(attr=data, id=ID_DATA_LOADED)
-        wx.PostEvent(self.GetParent(), evt)
+        #evt = OnDataLoad(attr=data, id=ID_DATA_LOADED)
+        #wx.PostEvent(self.GetParent(), evt)
         
         
             
