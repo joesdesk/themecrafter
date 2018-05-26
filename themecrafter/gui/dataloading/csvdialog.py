@@ -143,12 +143,13 @@ class CsvDialog(wx.Dialog):
         
         # Extract the text data
         data = df[header].values.tolist()
-        print("EXTRACT_DATA")
+        #print("EXTRACT_DATA")
+        #self.data = data
         self.EndModal(1)
         
         #e.Skip()
         #return data
-        evt = OnDataLoad(attr='awef', id=ID_DATA_LOADED)
+        evt = OnDataLoad(attr=data, id=ID_DATA_LOADED)
         wx.PostEvent(self.GetParent(), evt)
         
         

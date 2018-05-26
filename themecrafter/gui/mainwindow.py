@@ -69,7 +69,8 @@ class MainWindow(wx.Frame):
 
 		
     def data_loaded(self, evt):
-        print('aweg')
+        print(evt.attr)
+        print('aweg. Event reached main window.')
         #print(type(self.main_menubar.data))
         self.session.load_preset_data('BGSurvey')
         text = self.session.to_html()
