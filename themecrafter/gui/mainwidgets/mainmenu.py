@@ -1,8 +1,8 @@
 import wx
 
-from ..dataloading import CsvDialog, CsvFieldDialog
+from ..dataloading import CsvDialog
 
-#from ..sessionevents import OnDataLoad
+from ..sessionevents import OnDataLoad, EVT_DATA_LOAD
 
 # Custom event ids: http://zetcode.com/wxpython/events/
 #ID_MENU_NEW = wx.NewId()
@@ -49,7 +49,7 @@ class MainMenuBar(wx.MenuBar):
 
         # Test button functionality
         self.Bind(wx.EVT_MENU, self.load_csv_data, id=ID_LOAD_DATA_CSV)
-		
+        self.Bind(EVT_DATA_LOAD, self.print_confirm)
         #self.Bind(wx.EVT_MENU, self.load_preset_data, id=ID_LOAD_DATA_PRESET1)
         #self.Bind(wx.EVT_MENU, self.load_preset_data, id=ID_LOAD_DATA_PRESET2)
         #self.Bind(wx.EVT_MENU, self.load_preset_data, id=ID_LOAD_DATA_PRESET3)
@@ -58,39 +58,27 @@ class MainMenuBar(wx.MenuBar):
     
     def load_csv_data(self, e):
         """"""
-        id = e.GetId()
-        print(id)
+        #id = e.GetId()
+        #print(id)
         
         # Ask the user to open file
         # https://wxpython.org/Phoenix/docs/html/wx.FileDialog.html
         with CsvDialog(self) as csv_dialog:
 
-            dialog_exit_status = csv_dialog.ShowModal()
+            exit_status = csv_dialog.ShowModal()
             
-            if dialog_exit_status==wx.ID_CANCEL:
+            #if exit_status==wx.ID_CANCEL:
                 # The user changed their mind
                 # See https://wxpython.org/Phoenix/docs/html/wx.Dialog.html
-                return None
+            #    return None
 
             # Proceed loading the file chosen by the user
-            pathname = csv_dialog.GetPath()
-        
-        # Preview file in another dialog box to allow selection of text data
-        with CsvFieldDialog(self) as csv_field_dialog:
-            
-            csv_field_dialog.open_file(pathname)
-            dialog_exit_status = csv_field_dialog.ShowModal()
-            
-            try:
-                with open(pathname, 'r') as file:
-                    #self.doLoadDataOrWhatever(file)
-                    #print(pathname)
-                    pass
-            except IOError:
-                wx.LogError("Cannot open file '%s'." % newfile)
-        
-        #print(pathname)
-        
+            #data = csv_dialog.extract_data()
+            #self.data = data
+    
+    def print_confirm(self, e):
+        print("aefawe")
+        e.Skip()
         
     #def load_preset_data(self, e):
         #""""""

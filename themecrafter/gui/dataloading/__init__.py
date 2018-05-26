@@ -1,1 +1,1 @@
-from .csvdialog import CsvDialog, CsvFieldDialog
+from .csvdialog import CsvDialog
