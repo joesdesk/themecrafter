@@ -11,6 +11,7 @@
 
 * Noel Rappin and Robin Dunn. "wxPython in Action." (Available in library). [link](https://www.manning.com/books/wxpython-in-action)
 * wxPython documentation.
+  * https://wiki.wxpython.org/FrontPage
   * Widget Gallery. [link](https://wxpython.org/Phoenix/docs/html/gallery.html)
   * HTML Overview. [link](https://wxpython.org/Phoenix/docs/html/html_overview.html#)
 * Zetcode
