@@ -14,7 +14,6 @@ class DataMenu(wx.Menu):
     def __init__(self, parent):
         wx.Menu.__init__(self)
         self.parent = parent
-        #self.SetParent(parent)
         
         # Add load csv data entry
         self.Append(id=ID_DATA_LOADED, item="Import CSV")
@@ -35,38 +34,24 @@ class DataMenu(wx.Menu):
         
     def load_csv_data(self, event):
         """"""
-        #id = e.GetId()
-        #print(id)
-        #parent = self.GetParent()
         # Ask the user to open file
         # https://wxpython.org/Phoenix/docs/html/wx.FileDialog.html
         with CsvDialog() as csv_dialog:
-
             exit_status = csv_dialog.ShowModal()
-            
-            #if exit_status==wx.ID_CANCEL:
+            if exit_status==wx.ID_CANCEL:
                 # The user changed their mind
                 # See https://wxpython.org/Phoenix/docs/html/wx.Dialog.html
-            #    return None
+                return None
 
-            # Proceed loading the file chosen by the user
-            #data = csv_dialog.extract_data()
-            #self.data = data
-            #print(csv_dialog.data)
-            #print(csv_dialog.data)
-            evt = OnDataLoad(attr=csv_dialog.data, id=ID_DATA_LOADED)
-            wx.PostEvent(self.parent, evt)
+        data = csv_dialog.data
+        evt = OnDataLoad(attr=csv_dialog.data, id=ID_DATA_LOADED)
+        wx.PostEvent(self.parent, evt)
         
         
     def load_preset_data(self, event):
         '''Event handler for "load preset data" events from submenus.'''
-        #event.Skip()
         id = event.GetId()
-        #print(id)
-        #if id==ID_LOAD_DATA_PRESET1:
-        #    #self.session.load_preset_data('NewsGroups')
-        #print(k)
-        #e.Skip()
-        evt = OnDataLoad(attr="hello", id=id)
+        evt = OnDataLoad(attr=None, id=id)
         wx.PostEvent(self.parent, evt)
-        #pass
+
+        
