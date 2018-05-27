@@ -38,7 +38,7 @@ class MainWindow(wx.Frame):
 
             # See https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
         #self.Bind(wx.EVT_MENU, self.data_loaded, main_menubar)
-        self.Bind(EVT_DATA_LOAD, self.data_loaded, main_menubar)
+        self.Bind(EVT_DATA_LOAD, self.data_loaded)
         
         # Add splitters to obtain 4 panels on which to add widgets.
         main_splitter = MainWindowSplitter(self)
