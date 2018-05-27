@@ -51,8 +51,8 @@ class ThemeCrafterSession:
     def to_html(self):
         html = ''
         for doc in self.docs:
-            html += '<div>' + doc + '</div><br>'
-        return '<html><body width="100px">' + html + '</body></html>'
+            html += '<div style="width: 100px; color: red">' + doc + '</div><br>'
+        return '<html><body>' + html + '</body></html>'
 
 
     def tokenize(self):
