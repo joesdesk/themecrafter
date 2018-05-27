@@ -23,13 +23,12 @@ class ThemeCrafterSession:
             dataset = StudentsReviewDataSet()
         else:
             dataset = BaseDataSet()
-        self.docs = dataset.X
+        self.load_data(dataset.X)
+        
     
-    
-    def load_csv_data(self, csv_filename, col_id):
-        '''Loads the dataset '''
-        df = pd.read_csv(csv_filename)
-        df[col_id]
+    def load_data(self, data=None):
+        '''Loads a list of strings as documents.'''
+        self.docs = data
 
 
     def read_doc(self, id=None):
