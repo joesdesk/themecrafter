@@ -110,7 +110,7 @@ class HtmlCorpus(HtmlElement):
         corpus = Corpus(docs)
         for doc in corpus.docs:
             body.insert_element(DocumentElement(doc))
-            body.insert_element(lb)
+            #body.insert_element(lb)
     
         self.insert_element(body)
         
