@@ -18,7 +18,7 @@ class HtmlElement:
     def dump_attr(self):
         s = ''
         for k, v in self.attr.items():
-            s += ' ' + k + '=' + '\"' + v + '\"'
+            s += ' ' + k + '=' + '\"' + str(v) + '\"'
         return s
     
     

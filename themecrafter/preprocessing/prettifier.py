@@ -5,90 +5,106 @@
 
 from bs4 import BeautifulSoup
 
-from themecrafter.preprocessing.document import Document
+from .document import Corpus
+from .htmlelement import HtmlElement
 
 
-class TaggedCorpus:
-
-    def __init__(self):
+class TokenElement(HtmlElement):
     
-        self.root = BeautifulSoup('', "lxml")
+    def __init__(self, t):
+        HtmlElement.__init__(self)
         
-        # Created main html
-        htmltag = self.root.new_tag('html')
-        self.root.append(htmltag)
+        self.tag = 'token'
         
-        # Add head tag
-        headtag = self.root.new_tag('head')
-        self.root.html.append(headtag)
+        attr = dict()
+        attr['pos'] = t.pos
+        attr['i'] = t.i
+        attr['len'] = len(t.text)
+        attr['sloc'] = t.sloc
+        attr['dloc'] = t.dloc
+        self.attr = attr
         
-        # Add body tag
-        bodytag = self.root.new_tag('body')
-        self.root.html.append(bodytag)
-    
-    
-    def parse_doc(self, doc):
-        '''Parses the document into its constituents.
-        Returns a tag to be appended.'''
-        pdoc = Document(doc)
+        self.children = [t.text]
 
-        doctag = self.root.new_tag('document')
-        for s in pdoc.sentences:
         
-            senttag = self.root.new_tag('sentence')
-            for t in s.tokens:
+        
+class SentenceElement(HtmlElement):
+    
+    def __init__(self, s):
+        HtmlElement.__init__(self)
+        
+        self.tag = 'sentence'
+        
+        attr = dict()
+        attr['i'] = s.i
+        attr['did'] = s.did
+        attr['dloc'] = s.dloc
+        
+        last_stop = 0
+        for t in s.tokens:
+            space = ' '*(t.i - last_stop)
+            self.insert_element(space)
+            last_stop += len(t.text)
             
-                toktag = self.root.new_tag('token')
-                toktag.string = t.text
-                toktag['pos'] = t.pos
-                toktag['tid'] = t.text
-                toktag['len'] = len(t.text)
-                toktag['sloc'] = t.sloc
-                toktag['dloc'] = t.dloc
-                senttag.append(toktag)
-    
-            doctag.append(senttag)
-        
-        return doctag
-        
-    
-    def add_doc(self, doc):
-        
-        # Create new tag for doc
-        
-        
-        
-        
-    
-    
-        
-        
-    
+            t_elem = TokenElement(t)
+            self.insert_element(t_elem)
 
-    # HTML needs to be built from the inside out
-    page = BeautifulSoup('', "lxml")
+            
+            
+class DocumentElement(HtmlElement):
     
-    for i, s in enumerate(docs):
-        comment_tag = page.new_tag('comment')
-        comment_tag['class'] = 'comment'
-        comment_tag['id'] = i
-        comment_tag.string = s
-        page.append(comment_tag)
+    def __init__(self, d):
+        HtmlElement.__init__(self)
         
-        lineskip_tag = page.new_tag('br')
-        page.append(lineskip_tag)
-    
-    # Container for everything
-    container = BeautifulSoup('', "lxml")
-    bodytag = container.new_tag('body')
-    container.append(bodytag)
-    container.body.append(page)
-    page = container
-    
-    container = BeautifulSoup('', "lxml")
-    htmltag = container.new_tag('html')
-    container.append(htmltag)
-    container.html.append(page)
-    page = container
+        self.tag = 'document'
         
-    return page.prettify()
+        attr = dict()
+        attr['i'] = d.i
+        
+        last_stop = 0
+        for s in d.sentences:
+            space = ' '*(s.i - last_stop)
+            self.insert_element(space)
+            last_stop += len(s.text)
+            
+            s_elem = SentenceElement(s)
+            self.insert_element(s_elem)
+            
+
+
+            
+class HtmlCorpus(BeautifulSoup):
+
+    def __init__(self, docs):
+        ''''''
+        
+        # Container
+        html = HtmlElement()
+        html.tag = 'html'
+        
+        # Header tag
+        header = HtmlElement()
+        header.tag = 'head'
+        html.insert_element(header)
+        
+        # Body tag
+        body = HtmlElement()
+        body.tag = 'body'
+    
+        # Create line break element
+        lb = HtmlElement()
+        lb.tag = 'br'
+        
+        # 
+        corpus = Corpus(docs)
+        for doc in corpus.docs:
+            body.insert_element(DocumentElement(doc))
+            body.insert_element(lb)
+    
+        html.insert_element(body)
+        
+        # Create string
+        htmltext = html.dump()
+        BeautifulSoup.__init__(self, htmltext, "lxml")
+        
+        
