@@ -8,6 +8,8 @@ wx.html.HtmlWinParser_AddTagHandler(TokenTagHandler)
 
 
 class CommentWindow(wx.html.HtmlWindow):
+    '''A small widget to view html formatted comments.'''
+    
     def __init__(self, parent, title):
         wx.html.HtmlWindow.__init__(self, parent)
 
@@ -19,13 +21,12 @@ class CommentWindow(wx.html.HtmlWindow):
         #self.StopAutoScrolling()
         
         self.parser = self.GetParser()
-        print(self.parser)
-        self.update_counts = 0
-
-        #html.SetPage(page)
-        #html.SetPage("<html>awefawef</html>")
-        #self.SetPage('')
-        #self.page1 = True
+        #print(self.parser)
+        
+        # This gives segmentation fault
+        #parser_prod = self.parser.GetProduct()
+        
+        
 
         #self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
         self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.check_format)
@@ -33,6 +34,7 @@ class CommentWindow(wx.html.HtmlWindow):
 
         self.Bind(wx.EVT_KEY_DOWN, self.CatchHKeyScroll)
         #self.Bind(wx.EVT_KEY_UP, self.CatchHKeyScroll)
+        
         
     def hightlight_hover(self, event):
         cell = event.GetCell()#.GetNext()
@@ -86,7 +88,7 @@ class CommentWindow(wx.html.HtmlWindow):
         container = self.GetInternalRepresentation()
         self.list_children(container, lvl=0)
         
-        #container.SetWidthFloat(-20, wx.html.HTML_UNITS_PIXELS)
+        
         
         
         #
@@ -107,8 +109,9 @@ class CommentWindow(wx.html.HtmlWindow):
             
             if type(next_container)==wx.html.HtmlContainerCell:
                 next_container.SetBackgroundColour("#BBBBBB")
+                next_container.SetWidthFloat(20, wx.html.HTML_UNITS_PIXELS)
                 id = next_container.GetId()
-                print(id)
+                #print(id)
                 
                 #next_container.SetBorder("#BBBBBB", "#BBBBBB", 2)
             
