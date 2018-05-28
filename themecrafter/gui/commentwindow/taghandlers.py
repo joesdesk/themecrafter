@@ -29,12 +29,12 @@ class BrTagHandler(wx.html.HtmlWinTagHandler):
         return True  
 
 
-class CommentTagHandler(wx.html.HtmlWinTagHandler):
+class DocumentTagHandler(wx.html.HtmlWinTagHandler):
     def __init__(self):
         wx.html.HtmlWinTagHandler.__init__(self)
         
     def GetSupportedTags(self):
-        return "COMMENT"
+        return "DOCUMENT"
     
     def HandleTag(self, tag):
         parser = self.GetParser()
