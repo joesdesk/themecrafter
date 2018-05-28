@@ -1,124 +1,41 @@
 import wx
 import wx.html
 
-page = """<html><body>
+from .taghandlers import CommentTagHandler, TokenTagHandler
 
-This silly example shows how custom tags can be defined and used in a
-wx.HtmlWindow.  We've defined a new tag, &lt;blue&gt; that will change
-the <blue id='awef'>foreground color</blue> of the portions of the document that
-it encloses to some shade of blue.  The tag handler can also use
-parameters specifed in the tag, for example:
-
-<ul>
-<li> <blue shade='sky'>Sky Blue</blue>
-<li> <blue shade='midnight'>Midnight Blue</blue>
-<li> <blue shade='dark'>Dark Blue</blue>
-<li> <blue shade='navy'>Navy Blue</blue>
-</ul>
-
-</body></html>
-"""
-
-#with open('themecrafter/gui/mainwidgets/highlights.html') as f:
-#    page = ''.join(f.readlines())
-page = ''
-page2 = ''
-
-#with open('themecrafter/gui/mainwidgets/highlights2.html') as f:
-#    page2 = ''.join(f.readlines())
-
-class BlueTagHandler(wx.html.HtmlWinTagHandler):
-    def __init__(self):
-        wx.html.HtmlWinTagHandler.__init__(self)
-
-    def GetSupportedTags(self):
-        return "BLUE"
-
-    def HandleTag(self, tag):
-        old = self.GetParser().GetActualColor()
-        clr = "#0000FF"
-        if tag.HasParam("SHADE"):
-            shade = tag.GetParam("SHADE")
-            if shade.upper() == "SKY":
-                clr = "#3299CC"
-            if shade.upper() == "MIDNIGHT":
-                clr = "#2F2F4F"
-            elif shade.upper() == "DARK":
-                clr = "#00008B"
-            elif shade.upper == "NAVY":
-                clr = "#23238E"
-
-        parser = self.GetParser()
-        container = parser.GetContainer()
-
-        # Create special tagging cell
-        pp = tag.GetAllParams()
-        print(pp)
-
-        # Set Format
-        container.InsertCell(wx.html.HtmlColourCell('#23238E', wx.html.HTML_CLR_BACKGROUND))
-        container.InsertCell(wx.html.HtmlColourCell('#FFFFFF', wx.html.HTML_CLR_FOREGROUND))
-
-        #parser.SetContainer(newcell)
-        #container = parser.GetContainer()
-        #container.SetWidthFloat(50, wx.html.HTML_UNITS_PIXELS)
-
-        # Parsing the inner tag breaks up words which prevents knowing
-        # What id of earlier words were in the inner string.
-        #self.ParseInner(tag)
-
-        source = parser.GetSource()
-        source_start = tag.GetBeginPos()
-        source_stop = tag.GetEndPos1()
-        inner_source = source[source_start:source_stop]
-        #print(inner_source)
-
-        new_cell = wx.html.HtmlWordCell(inner_source, parser.GetDC())
-        new_cell.SetId(pp)
-        container.InsertCell(new_cell)
-
-        container.InsertCell(wx.html.HtmlColourCell('#FFFFFF', wx.html.HTML_CLR_BACKGROUND))
-        container.InsertCell(wx.html.HtmlColourCell('#000000', wx.html.HTML_CLR_FOREGROUND))
-
-        #parser.CloseContainer()
-        #parser.CloseContainer()
-        #parser.OpenContainer()
-        #self.GetParser().SetActualColor(old)
-        #self.GetParser().GetContainer().InsertCell(wx.html.HtmlColourCell(old))
-
-        return True
-
-
-wx.html.HtmlWinParser_AddTagHandler(BlueTagHandler)
-
+wx.html.HtmlWinParser_AddTagHandler(CommentTagHandler)
+wx.html.HtmlWinParser_AddTagHandler(TokenTagHandler)
 
 
 class CommentWindow(wx.html.HtmlWindow):
+    '''A small widget to view html formatted comments.'''
+    
     def __init__(self, parent, title):
-        wx.html.HtmlWindow.__init__(self, parent, style=wx.VSCROLL)
-
-        #self.sizer = wx.BoxSizer()
-
-        #html = wx.html.HtmlWindow(parent)
-
-        #self.sizer.Add(html, flag=wx.EXPAND|wx.ALL)
-        #self.SetSizer(self.sizer)
+        wx.html.HtmlWindow.__init__(self, parent)
 
         if "gtk2" in wx.PlatformInfo or "gtk3" in wx.PlatformInfo:
-            #html.SetStandardFonts()
             self.SetStandardFonts()
 
-        self.update_counts = 0
-
-        #html.SetPage(page)
-        #html.SetPage("<html>awefawef</html>")
-        self.SetPage(page)
-        self.page1 = True
+        self.ShowScrollbars(wx.SHOW_SB_NEVER, wx.SHOW_SB_DEFAULT)
+        #self.EnableScrolling(False, wx.VSCROLL)
+        #self.StopAutoScrolling()
+        
+        self.parser = self.GetParser()
+        #print(self.parser)
+        
+        # This gives segmentation fault
+        #parser_prod = self.parser.GetProduct()
+        
+        
 
         #self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
-        self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.hightlight_hover)
+        self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.check_format)
         #self.Bind(DATA_LOAD, self.show_data)
 
+        self.Bind(wx.EVT_KEY_DOWN, self.CatchHKeyScroll)
+        #self.Bind(wx.EVT_KEY_UP, self.CatchHKeyScroll)
+        
+        
     def hightlight_hover(self, event):
         cell = event.GetCell()#.GetNext()
         if (cell is not None) and (cell != ''):
@@ -137,15 +54,15 @@ class CommentWindow(wx.html.HtmlWindow):
         #str(self.update_counts) +
         #"</body></html>")
         
-        if self.page1:
-            self.SetPage(page2)
-            self.page1 = False
-            self.Refresh()
-        else:
-            self.SetPage(page)
-            self.page1  = True
-            self.Refresh()
-        print(self.page1)
+        # if self.page1:
+            # self.SetPage(page2)
+            # self.page1 = False
+            # self.Refresh()
+        # else:
+            # self.SetPage(page)
+            # self.page1  = True
+            # self.Refresh()
+        # print(self.page1)
         #c = event.GetCell().GetParent()
         #print(event.GetCell().GetParent())
         #self.GetParser().
@@ -163,9 +80,59 @@ class CommentWindow(wx.html.HtmlWindow):
         additional material make producing them a labor-intensive process,
         even when assisted by computers, such as commentary, definitions,
         and topical cross-indexing.</html>""")
+        
+    
+    def check_format(self, event):
+        print("format detected")
+        
+        container = self.GetInternalRepresentation()
+        self.list_children(container, lvl=0)
+        
+        
+        
+        
+        #
+        
+        self.Refresh()
+        
+
+        #print("Done")
 
 
-#app = wx.App()
-#frm = MyHtmlFrame(None, "Custom HTML Tag Handler")
-#frm.Show()
-#app.MainLoop()
+    def list_children(self, container, lvl):
+        '''Returns the next child.'''
+        
+        #print(lvl)
+        
+        next_container = container.GetFirstChild()
+        while next_container is not None:
+            
+            if type(next_container)==wx.html.HtmlContainerCell:
+                next_container.SetBackgroundColour("#BBBBBB")
+                next_container.SetWidthFloat(20, wx.html.HTML_UNITS_PIXELS)
+                id = next_container.GetId()
+                #print(id)
+                
+                #next_container.SetBorder("#BBBBBB", "#BBBBBB", 2)
+            
+            self.list_children(next_container, lvl+1)
+            next_container = next_container.GetNext()
+    
+    
+    def CatchHKeyScroll(self, event):
+        '''Disables horizontal key presses from scrolling horizontally.'''
+        
+        # See: https://wxpython.org/Phoenix/docs/html/wx.KeyCategoryFlags.enumeration.html#wx-keycategoryflags
+        if event.IsKeyInCategory(wx.WXK_CATEGORY_ARROW):
+            # See: https://wxpython.org/Phoenix/docs/html/wx.KeyEvent.html#wx.KeyEvent.GetKeyCode
+            keycode = event.GetKeyCode()
+            
+            # See: https://wxpython.org/Phoenix/docs/html/wx.KeyCode.enumeration.html#wx-keycode
+            if keycode==wx.WXK_LEFT:
+                return None
+            
+            if keycode==wx.WXK_RIGHT:
+                return None
+            
+        event.Skip()
+    
