@@ -12,9 +12,10 @@ def ToHTML(docs):
     # HTML needs to be built from the inside out
     page = BeautifulSoup('', "lxml")
     
-    for s in docs:
-        comment_tag = page.new_tag('div')
+    for i, s in enumerate(docs):
+        comment_tag = page.new_tag('comment')
         comment_tag['class'] = 'comment'
+        comment_tag['id'] = i
         comment_tag.string = s
         page.append(comment_tag)
         
