@@ -42,9 +42,12 @@ class SentenceElement(HtmlElement):
         
         last_stop = 0
         for t in s.tokens:
-            space = ' '*(t.i - last_stop)
+            #space = HtmlElement()
+            #space.tag = 'span'
+            #space.insert_element(' '*(t.sloc - last_stop))
+            space = ' '*(t.sloc - last_stop)
             self.insert_element(space)
-            last_stop += len(t.text)
+            last_stop = t.sloc + len(t.text)
             
             t_elem = TokenElement(t)
             self.insert_element(t_elem)
@@ -61,31 +64,39 @@ class DocumentElement(HtmlElement):
         attr = dict()
         attr['i'] = d.i
         
+        p = HtmlElement()
+        p.tag = 'p'
+        
         last_stop = 0
         for s in d.sentences:
-            space = ' '*(s.i - last_stop)
-            self.insert_element(space)
-            last_stop += len(s.text)
+            #space = HtmlElement()
+            #space.tag = 'span'
+            #space.insert_element(' '*(s.dloc - last_stop))
+            space = ' '*(s.dloc - last_stop)
+            p.insert_element(space)
+            last_stop = s.dloc + len(s.text)
             
             s_elem = SentenceElement(s)
-            self.insert_element(s_elem)
+            p.insert_element(s_elem)
+            
+        self.insert_element(p)
             
 
 
             
-class HtmlCorpus(BeautifulSoup):
+class HtmlCorpus(HtmlElement):
 
     def __init__(self, docs):
         ''''''
         
         # Container
-        html = HtmlElement()
-        html.tag = 'html'
+        HtmlElement.__init__(self)
+        self.tag = 'html'
         
         # Header tag
         header = HtmlElement()
         header.tag = 'head'
-        html.insert_element(header)
+        self.insert_element(header)
         
         # Body tag
         body = HtmlElement()
@@ -101,10 +112,10 @@ class HtmlCorpus(BeautifulSoup):
             body.insert_element(DocumentElement(doc))
             body.insert_element(lb)
     
-        html.insert_element(body)
+        self.insert_element(body)
         
-        # Create string
-        htmltext = html.dump()
-        BeautifulSoup.__init__(self, htmltext, "lxml")
-        
+    
+    def prettify(self):
+        return self.dump()
+    
         
