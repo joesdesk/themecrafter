@@ -24,3 +24,6 @@
   * _Incorporating HTML into wxPython : Part 1_. 2006. [link](http://www.indicthreads.com/1106/incorporating-html-into-wxpython-part-1/)
 * Others
   * Some comments about relative vs absolute relation of mouse positions. [link](http://wxpython-users.1045709.n5.nabble.com/No-Highlight-of-text-selection-td2345889.html)
+  
+  
+* https://github.com/suurjaak/Skyperious/blob/master/skyperious/controls.py

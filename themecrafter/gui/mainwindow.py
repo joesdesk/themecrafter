@@ -8,7 +8,9 @@ from .mainwidgets.tokenlist import TokenListCtrl
 
 from ..interface.session import ThemeCrafterSession
 
-from .dataloading.events import EVT_DATA_LOAD
+from .dataloading.events import EVT_DATA_LOAD, \
+    ID_DATA_LOAD_NEWSGROUPS, ID_DATA_LOAD_BGSURVEY, \
+    ID_DATA_LOAD_GRADREPORTS, ID_DATA_LOAD_STUDENTSREVIEWS
 
 # https://wxpython.org/Phoenix/docs/html/events_overview.html#custom-event-summary
 # event propagation http://zetcode.com/wxpython/events/
@@ -36,7 +38,7 @@ class MainWindow(wx.Frame):
 
             # See https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
         #self.Bind(wx.EVT_MENU, self.data_loaded, main_menubar)
-        self.Bind(EVT_DATA_LOAD, self.data_loaded, main_menubar)
+        self.Bind(EVT_DATA_LOAD, self.data_loaded)
         
         # Add splitters to obtain 4 panels on which to add widgets.
         main_splitter = MainWindowSplitter(self)
@@ -69,11 +71,25 @@ class MainWindow(wx.Frame):
 
 		
     def data_loaded(self, evt):
-        print(evt.attr)
-        print('aweg. Event reached main window.')
-        #print(type(self.main_menubar.data))
-        self.session.load_preset_data('BGSurvey')
-        text = self.session.to_html()
+        print('Event reached main window.')
+        
+        data = evt.attr
+        id = evt.GetId()
+        
+        if data is not None:
+            self.session.load_data(data=data)
+            id = -1
+            
+        if id==ID_DATA_LOAD_NEWSGROUPS:
+            self.session.load_preset_data(data='NewsGroups')
+        elif id==ID_DATA_LOAD_BGSURVEY:
+            self.session.load_preset_data(data='BGSurvey')
+        elif id==ID_DATA_LOAD_GRADREPORTS:
+            self.session.load_preset_data(data='GradReports')
+        elif id==ID_DATA_LOAD_STUDENTSREVIEWS:
+            self.session.load_preset_data(data='StudentsReview')
+
+        text = self.session.to_html_text()
         self.comment_reader.SetPage(text)
 		
 		
