@@ -4,7 +4,7 @@ import pandas as pd
 
 from ..datasets import BaseDataSet, NewsGroupsDataSet, BGSurveyDataSet, GradReportsDataSet, StudentsReviewDataSet
 
-from ..preprocessing.prettifier import HtmlCorpus
+from ..preprocessing import HtmlCorpus
 
 
 class ThemeCrafterSession:
