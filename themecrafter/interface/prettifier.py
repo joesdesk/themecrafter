@@ -15,6 +15,13 @@ def ToHTML(docs):
     for s in docs:
         comment_tag = page.new_tag('div')
         comment_tag['class'] = 'comment'
+        
+        # This tag gives rendering errors in wx.html.HtmlWindow
+        # comment_tag['style'] = 'width:200px; background-color:CCCCCC;'
+        
+        # This tag doesn't work for wx.html.HtmlWindow
+        # comment_tag['width'] = '200px'
+        
         comment_tag.string = s
         page.append(comment_tag)
         
