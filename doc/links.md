@@ -2,6 +2,9 @@
 
 ## Frequently Visited Pages
 
+wxPython
+* __wxPython API__. [https://wxpython.org/Phoenix/docs/html/index.html](https://wxpython.org/Phoenix/docs/html/index.html)
+* __Zetcode Tutorial/Examples.__ [http://zetcode.com/wxpython/](http://zetcode.com/wxpython/)
 
 
 ## Others Noted
