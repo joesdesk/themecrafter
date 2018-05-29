@@ -1,9 +1,9 @@
 import wx
 import wx.html
 
-from .taghandlers import CommentTagHandler, TokenTagHandler
+from .taghandlers import DocumentTagHandler, TokenTagHandler
 
-wx.html.HtmlWinParser_AddTagHandler(CommentTagHandler)
+wx.html.HtmlWinParser_AddTagHandler(DocumentTagHandler)
 wx.html.HtmlWinParser_AddTagHandler(TokenTagHandler)
 
 

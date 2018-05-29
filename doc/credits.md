@@ -1,3 +1,25 @@
+# Credits
+
+# README
+
+sources:
+tidytext package
+
+https://elitedatascience.com/python-nlp-libraries
+
+https://stackoverflow.com/questions/3920759/unsupervised-sentiment-analysis
+
+
+## wxpython
+
+Tutorials
+
+* Pearse, Scott. "Scientific Visualization with wxPython and Matplotlib." [link](wxpython/matplotlib-in-wxpython.pdf).
+* Dunn, Robin. "Up & Running with wxPython." [link](wxpython/wxPython-OSCON2004.pdf).
+
+Creating Executables
+* wxpython wiki. [link](https://wiki.wxpython.org/CreatingStandaloneExecutables).
+
 # GUI Examples and Tests
 
 ## General Tasks:
@@ -24,6 +46,6 @@
   * _Incorporating HTML into wxPython : Part 1_. 2006. [link](http://www.indicthreads.com/1106/incorporating-html-into-wxpython-part-1/)
 * Others
   * Some comments about relative vs absolute relation of mouse positions. [link](http://wxpython-users.1045709.n5.nabble.com/No-Highlight-of-text-selection-td2345889.html)
-  
-  
+
+
 * https://github.com/suurjaak/Skyperious/blob/master/skyperious/controls.py

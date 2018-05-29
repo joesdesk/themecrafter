@@ -89,7 +89,7 @@ class MainWindow(wx.Frame):
         elif id==ID_DATA_LOAD_STUDENTSREVIEWS:
             self.session.load_preset_data(data='StudentsReview')
 
-        text = self.session.to_html()
+        text = self.session.to_html_text()
         self.comment_reader.SetPage(text)
 		
 		
