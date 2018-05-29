@@ -4,7 +4,7 @@ import pandas as pd
 
 from ..datasets import BaseDataSet, NewsGroupsDataSet, BGSurveyDataSet, GradReportsDataSet, StudentsReviewDataSet
 
-from .prettifier import ToHTML
+from ..preprocessing import HtmlCorpus
 
 
 class ThemeCrafterSession:
@@ -51,16 +51,18 @@ class ThemeCrafterSession:
         
     
     def to_html(self):
-        html_text = ToHTML(self.docs)
-        return html_text
+        html = HtmlCorpus(self.docs)
+        return html
     
     
-    def to_html_text(self, file):
-        #html = ''
-        #for doc in self.docs:
-        #    html += '<div style="width: 100px; color: red">' + doc + '</div><br>'
-        #return '<html><body>' + html + '</body></html>'
-        html_text = self.to_html()
+    def to_html_text(self):
+        html = self.to_html()
+        return html.prettify()
+    
+    
+    def to_html_file(self, file):
+        html_text = self.to_html_text()
+        
         f = open(file, 'w+')
         f.write(html_text)
         f.close()
