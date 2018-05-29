@@ -7,6 +7,13 @@ wxPython
 * __Zetcode Tutorial/Examples.__ [http://zetcode.com/wxpython/](http://zetcode.com/wxpython/)
 
 
+## Further Resources
+
+* __wxPython Testing.__ [https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide](https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide)
+
+
+
+
 ## Others Noted
 
 ## Wxpython
