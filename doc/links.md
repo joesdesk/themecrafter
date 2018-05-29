@@ -9,11 +9,13 @@ Most frequent
 
 Useful references
 * __wxPython Testing.__ [https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide](https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide)
+* `self.Bind` vs `self.button.Bind`. https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
 
 Pocket
 * https://www.wxpython.org/presentations/OSCON2004/basic/wxPython-OSCON2004.pdf
 * https://www.cs.colorado.edu/~kena/classes/5448/s11/presentations/pearse.pdf
 * https://wiki.wxpython.org/Passing%20Arguments%20to%20Callbacks
+* https://stackoverflow.com/questions/25703711/simple-wxpython-post-event-from-process
 
 
 # Beautiful Soup
