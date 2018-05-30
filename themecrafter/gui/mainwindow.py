@@ -6,11 +6,9 @@ from .mainwidgets.mainsplitter import MainWindowSplitter
 from .commentwindow import CommentWindow
 from .mainwidgets.tokenlist import TokenListCtrl
 
-from ..interface.session import ThemeCrafterSession
+from ..output.session import ThemeCrafterSession
 
-from .dataloading.events import EVT_DATA_LOAD, \
-    ID_DATA_LOAD_NEWSGROUPS, ID_DATA_LOAD_BGSURVEY, \
-    ID_DATA_LOAD_GRADREPORTS, ID_DATA_LOAD_STUDENTSREVIEWS
+from .dataloading import EVT_DATA_LOAD
 
 # https://wxpython.org/Phoenix/docs/html/events_overview.html#custom-event-summary
 # event propagation http://zetcode.com/wxpython/events/
@@ -30,7 +28,6 @@ class MainWindow(wx.Frame):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=title, size=(800,600))
 
         # Create a new session with the winddow to interact with package routines
-        self.session = ThemeCrafterSession()
 
         # Add a main menu
         main_menubar = MainMenuBar()
@@ -78,22 +75,9 @@ class MainWindow(wx.Frame):
         print('Event reached main window.')
         
         data = evt.attr
-        id = evt.GetId()
+        session = ThemeCrafterSession(data)
         
-        if data is not None:
-            self.session.load_data(data=data)
-            id = -1
-            
-        if id==ID_DATA_LOAD_NEWSGROUPS:
-            self.session.load_preset_data(data='NewsGroups')
-        elif id==ID_DATA_LOAD_BGSURVEY:
-            self.session.load_preset_data(data='BGSurvey')
-        elif id==ID_DATA_LOAD_GRADREPORTS:
-            self.session.load_preset_data(data='GradReports')
-        elif id==ID_DATA_LOAD_STUDENTSREVIEWS:
-            self.session.load_preset_data(data='StudentsReview')
-
-        text = self.session.to_html_text()
+        text = session.as_html_text()
         self.comment_reader.SetPage(text)
 		
 		
