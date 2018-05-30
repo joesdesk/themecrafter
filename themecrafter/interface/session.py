@@ -1,36 +1,14 @@
 import random
 
-import pandas as pd
-
-from ..datasets import BaseDataSet, NewsGroupsDataSet, BGSurveyDataSet, GradReportsDataSet, StudentsReviewDataSet
+from .load_data_session import LoadDataSession
 
 from ..preprocessing import HtmlCorpus
 
 
-class ThemeCrafterSession:
+class ThemeCrafterSession(LoadDataSession):
 
     def __init__(self):
-        pass
-
-
-    def load_preset_data(self, data=None):
-        '''Loads preset data according to name.'''
-        if data=='NewsGroups':
-            dataset = NewsGroupsDataSet()
-        elif data=='BGSurvey':
-            dataset = BGSurveyDataSet()
-        elif data=='GradReports':
-            dataset = GradReportsDataSet()
-        elif data=='StudentsReview':
-            dataset = StudentsReviewDataSet()
-        else:
-            dataset = BaseDataSet()
-        self.load_data(dataset.X)
-        
-    
-    def load_data(self, data=None):
-        '''Loads a list of strings as documents.'''
-        self.docs = data
+        LoadDataSession.__init__(self)
 
 
     def read_doc(self, id=None):
@@ -71,5 +49,4 @@ class ThemeCrafterSession:
     def tokenize(self):
         ''''''
         pass
-        
         
