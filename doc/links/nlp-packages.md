@@ -33,14 +33,19 @@
 
 ## pyStatParser
 * Git repository. [link](https://github.com/emilmont/pyStatParser). 
-* English grammar for parsing in NLTK. From [link](https://stackoverflow.com/questions/6115677/english-grammar-for-parsing-in-nltk). Also [link](https://stackoverflow.com/questions/6115677/english-grammar-for-parsing-in-nltk/26854669#26854669).
-* Another potentially useful python package. [link](https://www.clips.uantwerpen.be/pages/pattern-en#tree)
+* English grammar for parsing in NLTK. From [link](https://stackoverflow.com/questions/6115677/english-grammar-for-parsing-in-nltk).
+
 
 Install directly from git (since not on PyPI) through
 ```
 pip install git+https://github.com/emilmont/pyStatParser
 ```
 To use, see repository.
+
+
+## Pattern
+* Another potentially useful python package. [link](https://www.clips.uantwerpen.be/pages/pattern-en#tree)
+* From Stackoverflow [link](https://stackoverflow.com/questions/6115677/english-grammar-for-parsing-in-nltk/26854669#26854669).
 
 
 ## Spacy
