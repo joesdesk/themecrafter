@@ -1,20 +1,20 @@
-# Module to easily create html elements from the leaves down.
+# Module to easily create tree elements from the leaves down.
 
 
-class HtmlElement:
+class Element:
     
     def __init__(self):
-        self.tag = ''
-        self.attr = dict()
+        self.name = ''
+        self.attrs = dict()
         self.children = []
     
     
     def get_name(self):
-        return self.tag
+        return self.name
     
     
-    def set_name(self, tag):
-        self.tag = tag
+    def set_name(self, name):
+        self.name = name
         
         
     def add(self, element, at=None):
@@ -25,40 +25,40 @@ class HtmlElement:
     
 
     def get_attr(self, key):
-        if key not in self.attr.keys():
+        if key not in self.attrs.keys():
             return None
         else:
-            return self.attr[key]
+            return self.attrs[key]
     
     
     def set_attr(self, key, val):
-        self.attr[key] = val
+        self.attrs[key] = val
         
     
-    def rm_attr(self, key):
-        return self.attr.pop(key, None)
+    def pop_attr(self, key):
+        return self.attrs.pop(key, None)
     
     
-    def dump_attr(self):
+    def attr_to_string(self):
         s = ''
-        for k, v in self.attr.items():
+        for k, v in self.attrs.items():
             s += ' ' + k + '=' + '\"' + str(v) + '\"'
         return s
     
     
-    def dump(self):
+    def to_string(self):
         text = ''
         
         if len(self.children)!=0:
-            attr = self.dump_attr()
-            text += u'<' + self.tag + attr + '>'
+            attrs = self.attr_to_string()
+            text += u'<' + self.name + attrs + '>'
         
         for c in self.children:
             if type(c)==str:
                 text += c
             else:
                 text += c.dump()
-        text += '</' + self.tag + '>'
+        text += '</' + self.name + '>'
         return text
     
         
