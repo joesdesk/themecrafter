@@ -4,7 +4,7 @@ from .mainwidgets.mainmenu import MainMenuBar
 
 from .mainwidgets.mainsplitter import MainWindowSplitter
 from .commentwindow import CommentWindow
-from .mainwidgets.tokenlist import TokenListCtrl
+from .elementlist.tokenlist import TokenListCtrl
 
 from ..output.session import ThemeCrafterSession
 
@@ -63,9 +63,9 @@ class MainWindow(wx.Frame):
         # List of vocabulary, tokens and n-grams
         notebook = wx.Notebook(LB_panel)
         
-        token_list = TokenListCtrl(notebook)
+        self.token_list_ctrl = TokenListCtrl(notebook)
         
-        notebook.AddPage(token_list, 'Tokens')
+        notebook.AddPage(self.token_list_ctrl, 'Tokens')
         
         LB_sizer.Add(notebook, proportion=1, flag=wx.EXPAND|wx.ALL)
         LB_panel.SetSizer(LB_sizer)
@@ -75,7 +75,12 @@ class MainWindow(wx.Frame):
         data = evt.attr
         session = ThemeCrafterSession(data)
         
-        text = session.as_html_text()
-        self.comment_reader.SetPage(text)
-		
+        #text = session.as_html_text()
+        #self.comment_reader.SetPage(text)
+        
+        #tokens = session.get_token_list()
+        tokens = []
+        for i in range(10):
+            tokens.append(str((5,3)))
+        self.token_list_ctrl.set_data(tokens)
 		

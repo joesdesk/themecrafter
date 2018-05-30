@@ -22,10 +22,10 @@ class TokenListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         #
 
     def set_data(self, data):
-        '''Sets the data in the list control.'''
+        '''Sets the data, a list of tuples, in the list control.'''
         idx = 0
-        for i in data:
-            index = self.InsertItem(idx, i[0])
-            self.SetItem(index, 1, i[1])
-            self.SetItem(index, 2, i[2])
+        for tupl in data:
+            item = self.InsertItem(idx, tupl[0])
+            self.SetItem(item, 1, tupl[1])
+            self.SetItem(item, 2, tupl[2])
             idx += 1
