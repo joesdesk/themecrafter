@@ -23,7 +23,7 @@
 
 
 ## Grammar
-* Alphabetical list of part-of-speech tags used in the Penn Treebank Project. [link](http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html)
+* Alphabetical list of part-of-speech tags used in the Penn Treebank Project. [link](http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html). Also [link](http://www.surdeanu.info/mihai/teaching/ista555-fall13/readings/PennTreebankConstituents.html)
 * Determiners, quantifiers. [link](https://learnenglish.britishcouncil.org/en/english-grammar/determiners-and-quantifiers)
 * Gerund. [link](http://www.chompchomp.com/terms/gerund.htm)
 * Prepositional Phrases. [link](http://www.gingersoftware.com/content/grammar-rules/preposition/prepositional-phrases/)

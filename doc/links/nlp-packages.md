@@ -23,7 +23,6 @@
 * documentation. [link](http://www.nltk.org/index.html)
 
 ### Related
-* English grammar for parsing in NLTK. [link](https://github.com/emilmont/pyStatParser). From [link](https://stackoverflow.com/questions/6115677/english-grammar-for-parsing-in-nltk)
 * Indices from original text after tokenization. [link](https://stackoverflow.com/questions/31668493/get-indices-of-original-text-from-nltk-word-tokenize)
 * Words surrounding text. [link](https://stackoverflow.com/questions/43317187/python-searching-text-with-nltk). Also [link](https://stackoverflow.com/questions/29110950/python-concordance-command-in-nltk). See "Concordance". [link](Concordance (publishing))
 
@@ -32,9 +31,22 @@
 * Incorrect POS tag. [link](https://stackoverflow.com/questions/30821188/python-nltk-pos-tag-not-returning-the-correct-part-of-speech-tag)
 
 
+## pyStatParser
+* Git repository. [link](https://github.com/emilmont/pyStatParser). 
+* English grammar for parsing in NLTK. From [link](https://stackoverflow.com/questions/6115677/english-grammar-for-parsing-in-nltk). Also [link](https://stackoverflow.com/questions/6115677/english-grammar-for-parsing-in-nltk/26854669#26854669).
+* Another potentially useful python package. [link](https://www.clips.uantwerpen.be/pages/pattern-en#tree)
+
+Install directly from git (since not on PyPI) through
+```
+pip install git+https://github.com/emilmont/pyStatParser
+```
+To use, see repository.
+
+
 ## Spacy
 * API. [link](https://spacy.io/api/).
 * Guides. [link](https://spacy.io/usage/linguistic-features).
+
 
 ## Textblob
 * Python
