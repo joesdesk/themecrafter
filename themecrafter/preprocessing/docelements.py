@@ -9,7 +9,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 class TokenElement(BaseElement):
     def __init__(self, text):
         BaseElement.__init__(self)
-        self.set_name('Token')
+        self.set_name('token')
         self.parse(text)
         
     def parse(self, text):
@@ -19,7 +19,7 @@ class TokenElement(BaseElement):
 class SentenceElement(BaseElement):
     def __init__(self, text):
         BaseElement.__init__(self)
-        self.set_name('Sentence')
+        self.set_name('sentence')
         self.parse(text)
         
     def parse(self, text):
@@ -52,7 +52,7 @@ class SentenceElement(BaseElement):
 class DocumentElement(BaseElement):
     def __init__(self, text):
         BaseElement.__init__(self)
-        self.set_name('Document')
+        self.set_name('document')
         self.parse(text)
         
     def parse(self, text):
@@ -82,6 +82,7 @@ class CorpusElement:
     def __init__(self, docs):
         '''Initialize a corpus with a list of documents.'''
         BaseElement.__init__(self)
+        self.set_name('corpus')
         
         for d in docs:
             document = DocumentElement(d)
