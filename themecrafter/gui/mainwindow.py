@@ -8,7 +8,7 @@ from .mainwidgets.tokenlist import TokenListCtrl
 
 from ..output.session import ThemeCrafterSession
 
-from .dataloading import EVT_DATA_LOAD
+from . import EVT_DATA_LOAD
 
 # https://wxpython.org/Phoenix/docs/html/events_overview.html#custom-event-summary
 # event propagation http://zetcode.com/wxpython/events/
@@ -72,8 +72,6 @@ class MainWindow(wx.Frame):
 
 		
     def data_loaded(self, evt):
-        print('Event reached main window.')
-        
         data = evt.attr
         session = ThemeCrafterSession(data)
         
