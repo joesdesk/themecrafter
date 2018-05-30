@@ -33,13 +33,13 @@ class ThemeCrafterSession(LoadDataSession):
         return html
     
     
-    def to_html_text(self):
+    def as_html_text(self):
         html = self.to_html()
-        return html.prettify()
+        return html.as_html_text()
     
     
     def to_html_file(self, file):
-        html_text = self.to_html_text()
+        html_text = self.as_html_text()
         
         f = open(file, 'w+')
         f.write(html_text)
