@@ -3,10 +3,13 @@
 # Using anchors, id vs name
 # https://stackoverflow.com/questions/484719/html-anchors-with-name-or-id
 
+import copy
+
 from bs4 import BeautifulSoup
 
 from .document import Corpus
 from .htmlelement import HtmlElement
+
 
 
 class TokenElement(HtmlElement):
@@ -25,7 +28,12 @@ class TokenElement(HtmlElement):
         self.attr = attr
         
         self.children = [t.text]
-
+        
+    
+    def copy(self):
+        '''Returns a copy of the element.'''
+        return copy.deepcopy(self)
+        
         
         
 class SentenceElement(HtmlElement):
@@ -49,7 +57,7 @@ class SentenceElement(HtmlElement):
             
             t_elem = TokenElement(t)
             self.insert_element(t_elem)
-
+            
             
             
 class DocumentElement(HtmlElement):
@@ -62,22 +70,16 @@ class DocumentElement(HtmlElement):
         attr = dict()
         attr['i'] = d.i
         
-        p = HtmlElement()
-        p.tag = 'p'
-        
         last_stop = 0
         for s in d.sentences:
 
             space = ' '*(s.dloc - last_stop)
-            p.insert_element(space)
+            self.insert_element(space)
             last_stop = s.dloc + len(s.text)
             
             s_elem = SentenceElement(s)
-            p.insert_element(s_elem)
+            self.insert_element(s_elem)
             
-        self.insert_element(p)
-            
-
 
             
 class HtmlCorpus(HtmlElement):
@@ -109,4 +111,9 @@ class HtmlCorpus(HtmlElement):
     def prettify(self):
         return self.dump()
     
+
+    def htmlize(self):
+        pass
+
         
+#<head><link rel="stylesheet" type="text/css" href="mystyle.css"><head>
