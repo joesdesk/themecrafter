@@ -3,10 +3,28 @@
 
 import wx
 
+import pandas as pd
+
+from ...datasets import NewsGroupsDataSet, BGSurveyDataSet, \
+    GradReportsDataSet, StudentsReviewDataSet
+
 from . import CsvDialog
-from .events import OnDataLoad, ID_DATA_LOADED
-from .events import ID_DATA_LOAD_NEWSGROUPS, ID_DATA_LOAD_BGSURVEY
-from .events import ID_DATA_LOAD_GRADREPORTS, ID_DATA_LOAD_STUDENTSREVIEWS
+
+import wx.lib.newevent
+
+# Command events can be propagated up the parent heirarchy through e.Skip()
+ID_DATA_LOADED = 50
+
+ID_DATA_LOAD_NEWSGROUPS = 55
+ID_DATA_LOAD_BGSURVEY = 56
+ID_DATA_LOAD_GRADREPORTS = 57
+ID_DATA_LOAD_STUDENTSREVIEWS = 58
+
+# This class defines global events associated with different
+# interactions with the session, which is the package interface.
+# See: https://wiki.wxpython.org/CustomEventClasses
+
+OnDataLoad, EVT_DATA_LOAD = wx.lib.newevent.NewCommandEvent()
 
 
 class DataMenu(wx.Menu):
@@ -43,15 +61,31 @@ class DataMenu(wx.Menu):
                 # See https://wxpython.org/Phoenix/docs/html/wx.Dialog.html
                 return None
 
-        data = csv_dialog.data
-        evt = OnDataLoad(attr=csv_dialog.data, id=ID_DATA_LOADED)
+        series = pd.read_csv(csv_dialog.filename, sep=',', \
+            header=csv_dialog.header_line_num, \
+            usecols=[csv_dialog.header_label], squeeze=True)
+        data = series.tolist()
+        
+        evt = OnDataLoad(attr=data, id=ID_DATA_LOADED)
         wx.PostEvent(self.parent, evt)
         
         
     def load_preset_data(self, event):
         '''Event handler for "load preset data" events from submenus.'''
         id = event.GetId()
-        evt = OnDataLoad(attr=None, id=id)
+        
+        if id==ID_DATA_LOAD_NEWSGROUPS:
+            data = NewsGroupsDataSet()
+        elif id==ID_DATA_LOAD_BGSURVEY:
+            data = BGSurveyDataSet()
+        elif id==ID_DATA_LOAD_GRADREPORTS:
+            data = GradReportsDataSet()
+        elif id==ID_DATA_LOAD_STUDENTSREVIEWS:
+            data = StudentsReviewDataSet()
+        else:
+            data = []
+        
+        evt = OnDataLoad(attr=data.X, id=id)
         wx.PostEvent(self.parent, evt)
 
         
