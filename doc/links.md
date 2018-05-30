@@ -1,29 +1,21 @@
 # Links
 
-## wxPython
-
-Most frequent
-* __wxPython API__. [https://wxpython.org/Phoenix/docs/html/index.html](https://wxpython.org/Phoenix/docs/html/index.html)
-* __Zetcode Tutorial/Examples.__ [http://zetcode.com/wxpython/](http://zetcode.com/wxpython/)
-* __wxPython Wiki.__ [https://wiki.wxpython.org/FrontPage](https://wiki.wxpython.org/FrontPage)
-
-Useful references
-* __wxPython Testing.__ [https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide](https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide)
-* `self.Bind` vs `self.button.Bind`. https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
-
-Pocket
-* https://www.wxpython.org/presentations/OSCON2004/basic/wxPython-OSCON2004.pdf
-* https://www.cs.colorado.edu/~kena/classes/5448/s11/presentations/pearse.pdf
-* https://wiki.wxpython.org/Passing%20Arguments%20to%20Callbacks
-* https://stackoverflow.com/questions/25703711/simple-wxpython-post-event-from-process
-
 
 # Beautiful Soup
 * Documentation. [https://www.crummy.com/software/BeautifulSoup/bs4/doc/#beautiful-soup-documentation](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#beautiful-soup-documentation)
 
 
-
 ## Sentiment Analysis
+
+https://www.datacamp.com/community/tutorials/sentiment-analysis-R
+
+https://stackoverflow.com/questions/37116180/sentiment-analysis-lexicon
+
+https://www.r-bloggers.com/sentiment-analysis-using-r/
+http://physics.muni.cz/~vazny/04%20-%20Large%20Scale%20Text%20Classification%20for%20Sentiment%20Analysis.html
+
+Sentiment Analysis Package. https://cran.r-project.org/web/packages/SentimentAnalysis/SentimentAnalysis.pdf
+
 
 Pocket
 * Tidytext
@@ -40,6 +32,9 @@ Pocket
 * NLTK sentiment analysis
   * http://www.nltk.org/api/nltk.sentiment.html
 
+* TSNE
+https://lvdmaaten.github.io/tsne/
+http://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html
 
 
 
