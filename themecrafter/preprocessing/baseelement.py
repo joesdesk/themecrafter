@@ -1,7 +1,7 @@
 # Module to easily create tree elements from the leaves down.
 
 
-class Element:
+class BaseElement:
     
     def __init__(self):
         self.name = ''
