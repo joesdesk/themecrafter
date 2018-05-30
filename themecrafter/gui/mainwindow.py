@@ -63,10 +63,14 @@ class MainWindow(wx.Frame):
         # Add widget to tabulate cells
         LB_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        #word_reader = MySheet(LB_panel)
-        token_list = TokenListCtrl(LB_panel)
-
-        LB_sizer.Add(token_list, proportion=1, flag=wx.EXPAND|wx.ALL)
+        # List of vocabulary, tokens and n-grams
+        notebook = wx.Notebook(LB_panel)
+        
+        token_list = TokenListCtrl(notebook)
+        
+        notebook.AddPage(token_list, 'Tokens')
+        
+        LB_sizer.Add(notebook, proportion=1, flag=wx.EXPAND|wx.ALL)
         LB_panel.SetSizer(LB_sizer)
 
 		
