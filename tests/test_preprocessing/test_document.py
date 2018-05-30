@@ -1,8 +1,6 @@
 import pytest
-import sys
-sys.path.append('../')
 
-from themecrafter.preprocessing.document import TokenElement, \
+from themecrafter.preprocessing.docelements import TokenElement, \
     SentenceElement, DocumentElement, CorpusElement
 
 
