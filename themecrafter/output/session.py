@@ -1,3 +1,8 @@
+# https://www.crummy.com/software/BeautifulSoup/bs4/doc/#modifying-the-tree
+
+# Using anchors, id vs name
+# https://stackoverflow.com/questions/484719/html-anchors-with-name-or-id
+
 import random
 
 from .load_data_session import LoadDataSession
