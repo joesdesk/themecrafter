@@ -1,12 +1,14 @@
 import wx
 
+from pandas import DataFrame
+
 from .mainwidgets.mainmenu import MainMenuBar
 
 from .mainwidgets.mainsplitter import MainWindowSplitter
 from .commentwindow import CommentWindow
 from .elementlist.tokenlist import TokenListCtrl
 
-from ..output.session import ThemeCrafterSession
+from ..preprocessing import NltkPlain
 
 from . import EVT_DATA_LOAD
 
@@ -73,14 +75,20 @@ class MainWindow(wx.Frame):
 		
     def data_loaded(self, evt):
         data = evt.attr
-        session = ThemeCrafterSession(data)
+        print("event reached mainwindow")
         
-        #text = session.as_html_text()
-        #self.comment_reader.SetPage(text)
+        session = NltkPlain(data)
+        print("Session started.")
         
-        #tokens = session.get_token_list()
-        tokens = []
-        for i in range(10):
-            tokens.append(str((5,3)))
+        text = session.as_html_text()
+        print("Data converted to HTML")
+        
+        self.comment_reader.SetPage(text)
+        print("Html Page set")
+        
+        tokens = session.tokens_summary()
+        print('Get tokens summary')
+        
+        #tokens = DataFrame([(4,2),(2,2),(2,22)], columns=['swe','wer'])
         self.token_list_ctrl.set_data(tokens)
 		
