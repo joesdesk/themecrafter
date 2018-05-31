@@ -1,14 +1,11 @@
 import wx
 
 from ..dataloading.datamenu import DataMenu
-#from ..dataloading.events import OnDataLoad, EVT_DATA_LOAD
 
 # Custom event ids: http://zetcode.com/wxpython/events/
 #ID_MENU_NEW = wx.NewId()
 #ID_MENU_OPEN = wx.NewId()
 #ID_MENU_SAVE = wx.NewId()
-
-#ID_LOAD_DATA_CSV = 50
 
 
 class MainMenuBar(wx.MenuBar):
@@ -39,3 +36,5 @@ class MainMenuBar(wx.MenuBar):
         # Menu for data loading
         datamenu = DataMenu(self)
         self.Append(datamenu, "Data")
+        
+        
