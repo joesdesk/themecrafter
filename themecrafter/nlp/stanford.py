@@ -10,7 +10,7 @@ class NLP:
         
     def open(self):
         self.nlp = StanfordCoreNLP(r'../stanford-corenlp-full-2018-02-27/', \
-            quiet=False)
+            quiet=False, lang='en')
         
         
     def word_tokenize(self, sentence):
@@ -51,6 +51,7 @@ class NLP:
     def annotate(self, text, annotators=None):
         '''Uses the general stanford annotators'''
         if annotators is None:
+            # Full list https://stanfordnlp.github.io/CoreNLP/annotators.html
             annotators = 'tokenize,ssplit,pos,lemma,ner,parse,depparse,dcoref'
         props={'annotators': annotators, \
             'pipelineLanguage': 'en', \
@@ -67,7 +68,7 @@ if __name__=='__main__':
     nlp = NLP()
     nlp.open()
     sentence = 'The sky is blue. It is a great color.'
-    k = nlp.annotate(sentence)
+    k = nlp.annotate(sentence, 'pos')
     print(k)
     nlp.close()
     
