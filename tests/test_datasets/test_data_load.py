@@ -1,21 +1,24 @@
 import pytest
-from themecrafter.output.session import ThemeCrafterSession
-
+from themecrafter.datasets import NewsGroupsDataSet, BGSurveyDataSet, \
+    GradReportsDataSet, StudentsReviewDataSet, SixDayWarDataSet
+    
+    
 def test_load_preset_data():
     """Test a session's ability to load preset data."""
-    session = ThemeCrafterSession()
     
-    session.load_preset_data('NewsGroups')
-    assert len(session.docs) > 0
+    dataset = NewsGroupsDataSet().X
+    assert len(dataset) > 0
     
-    session.load_preset_data('BGSurvey')
-    assert len(session.docs) > 0
+    dataset = BGSurveyDataSet().X
+    assert len(dataset) > 0
     
-    #session.load_preset_data('GradReports')
-    #assert len(session.docs) > 0
+    #dataset = GradReportsDataSet().X
+    #assert len(dataset) > 0
     
-    session.load_preset_data('StudentsReview')
-    assert len(session.docs) > 0
+    dataset = StudentsReviewDataSet().X
+    assert len(dataset) > 0
     
-    session.load_preset_data()
-    assert len(session.docs)==0
+    dataset = SixDayWarDataSet().X
+    assert len(dataset) > 0
+    
+    
