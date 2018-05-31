@@ -2,6 +2,8 @@
 
 from collections import Counter
 
+import pandas as pd
+
 from nltk import pos_tag
 from nltk.tokenize import sent_tokenize, word_tokenize
 
@@ -161,7 +163,7 @@ class CorpusElement(BaseElement):
             self.add(document)
             
 
-class NltkPlain:
+class NltkPlain(CorpusElement):
     def __init__(self, docs):
         CorpusElement.__init__(self, docs)
         
@@ -174,9 +176,29 @@ class NltkPlain:
                     tokens.append(t)
         return tokens
     
-    def get_unique_tokens(self):
+    def tokens_summary(self):
+        '''All tokens as a data frame.'''
+        all_tokens = []
+        for i, d in enumerate(self.get_elements()):
+            for j, s in enumerate(d.get_elements()):
+                for k, t in enumerate(s.get_elements()):
+                    
+                    ttext = t.as_plaintext()
+                    tpos = t.get_attr('pos')
+                    tok = (ttext, tpos)
+                    
+                    all_tokens.append((ttext, tpos, i, j, k))
+        
+        #columns=['token', 'pos', 'doc id', 'sen id', 'tok id']
+        #df = pd.DataFrame(all_tokens, columns=columns)
+        
+        return all_tokens #df
+    
+    def count_tokens(self):
         '''Extracts unique tokens to be part of the lexicon.'''
-        lexicon = []
+        unique_tokens = []
+        token_count = []
+        
         for t in self.get_all_tokens():
             txt = t.as_plaintext()
             if txt not in lexicon:
