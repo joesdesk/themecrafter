@@ -2,7 +2,7 @@ import wx
 
 class MainWindowSplitter(wx.SplitterWindow):
 
-    def __init__(self, parent, style=wx.SP_3D):
+    def __init__(self, parent, style=wx.SP_BORDER|wx.SP_LIVE_UPDATE):
         '''Initializes the main '''
         wx.SplitterWindow.__init__(self, parent=parent, style=style)
         self.SetSashGravity(0.5)

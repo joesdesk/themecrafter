@@ -1,3 +1,7 @@
+# Python string literals
+
+https://stackoverflow.com/questions/2081640/what-exactly-do-u-and-r-string-flags-do-and-what-are-raw-string-literals
+
 # LDA Related
 
 * SenGen: Sentence Generating Neural Variational Topic Model. (https://arxiv.org/pdf/1708.00308.pdf)
