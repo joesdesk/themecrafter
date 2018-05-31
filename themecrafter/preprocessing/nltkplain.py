@@ -189,10 +189,10 @@ class NltkPlain(CorpusElement):
                     
                     all_tokens.append((ttext, tpos, i, j, k))
         
-        #columns=['token', 'pos', 'doc id', 'sen id', 'tok id']
-        #df = pd.DataFrame(all_tokens, columns=columns)
+        columns=['token', 'pos', 'doc id', 'sen id', 'tok id']
+        df = pd.DataFrame(all_tokens, columns=columns)
         
-        return all_tokens #df
+        return df
     
     def count_tokens(self):
         '''Extracts unique tokens to be part of the lexicon.'''
