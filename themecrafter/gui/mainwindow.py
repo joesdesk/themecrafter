@@ -7,6 +7,7 @@ from .mainwidgets.mainmenu import MainMenuBar
 from .mainwidgets.mainsplitter import MainWindowSplitter
 from .commentwindow import CommentWindow
 from .elementlist.tokenlist import TokenListCtrl
+from .plotting.mtplot import CanvasPanel
 
 from ..preprocessing import NltkPlain
 
@@ -71,6 +72,13 @@ class MainWindow(wx.Frame):
         
         LB_sizer.Add(notebook, proportion=1, flag=wx.EXPAND|wx.ALL)
         LB_panel.SetSizer(LB_sizer)
+        
+        # Add plot to diagram
+        RB_sizer = wx.BoxSizer(wx.VERTICAL)
+        plot = CanvasPanel(RB_panel)
+        RB_sizer.Add(plot, proportion=1, flag=wx.EXPAND|wx.ALL)
+        RB_panel.SetSizer(RB_sizer)
+        
 
 		
     def data_loaded(self, evt):
