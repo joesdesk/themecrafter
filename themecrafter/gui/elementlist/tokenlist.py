@@ -2,6 +2,8 @@
 #http://www.blog.pythonlibrary.org/2011/01/04/wxpython-wx-listctrl-tips-and-tricks/
 #http://nullege.com/codes/show/src%40p%40a%40paimei-HEAD%40console%40modules%40_PAIMEIpstalker%40HitsListCtrl.py/30/wx.lib.mixins.listctrl.ListCtrlAutoWidthMixin/python
 
+from pandas import DataFrame
+
 import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
@@ -13,19 +15,33 @@ class TokenListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         # Initialize list control with column widths that fills parent
         wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT)
         ListCtrlAutoWidthMixin.__init__(self)
+    
+    def clear(self):
+        '''Reset the list control.'''
+        self.DeleteAllItems()
+        self.DeleteAllColumns()
+    
+    def set_columns(self, columns):
+        '''Set columns in the list control.'''
+        for i, colname in enumerate(columns):
+            self.InsertColumn(i, colname, width=90)
+    
 
-        # Pre-set columns
-        self.InsertColumn(0, 'token', width=140)
-        self.InsertColumn(1, 'synonyms', width=130)
-        self.InsertColumn(2, 'counts', width=90)
-
-        #
-
-    def set_data(self, data):
+    def set_data(self, df):
         '''Sets the data, a list of tuples, in the list control.'''
-        idx = 0
-        for tupl in data:
-            item = self.InsertItem(idx, tupl[0])
-            self.SetItem(item, 1, tupl[1])
-            self.SetItem(item, 2, tupl[2])
-            idx += 1
+        
+        # Empty contents
+        self.clear()
+        
+        # Pre-set columns
+        nrows, ncols = df.shape
+        columns = df.columns.values.tolist()
+        self.set_columns(columns)
+        
+        # Set data
+        df_data = df.astype(str).values.tolist()
+        for j, row in enumerate(df_data):
+            self.InsertItem(j, '')
+            for i, col in enumerate(row):
+                self.SetItem(j, i, col)
+                
