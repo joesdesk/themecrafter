@@ -1,16 +1,16 @@
 import wx
 
+from pandas import DataFrame
+
 from .mainwidgets.mainmenu import MainMenuBar
 
 from .mainwidgets.mainsplitter import MainWindowSplitter
 from .commentwindow import CommentWindow
-from .mainwidgets.tokenlist import TokenListCtrl
+from .elementlist.tokenlist import TokenListCtrl
 
-from ..interface.session import ThemeCrafterSession
+from ..preprocessing import NltkPlain
 
-from .dataloading.events import EVT_DATA_LOAD, \
-    ID_DATA_LOAD_NEWSGROUPS, ID_DATA_LOAD_BGSURVEY, \
-    ID_DATA_LOAD_GRADREPORTS, ID_DATA_LOAD_STUDENTSREVIEWS
+from . import EVT_DATA_LOAD
 
 # https://wxpython.org/Phoenix/docs/html/events_overview.html#custom-event-summary
 # event propagation http://zetcode.com/wxpython/events/
@@ -30,7 +30,6 @@ class MainWindow(wx.Frame):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=title, size=(800,600))
 
         # Create a new session with the winddow to interact with package routines
-        self.session = ThemeCrafterSession()
 
         # Add a main menu
         main_menubar = MainMenuBar()
@@ -63,33 +62,33 @@ class MainWindow(wx.Frame):
         # Add widget to tabulate cells
         LB_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        #word_reader = MySheet(LB_panel)
-        token_list = TokenListCtrl(LB_panel)
-
-        LB_sizer.Add(token_list, proportion=1, flag=wx.EXPAND|wx.ALL)
+        # List of vocabulary, tokens and n-grams
+        notebook = wx.Notebook(LB_panel)
+        
+        self.token_list_ctrl = TokenListCtrl(notebook)
+        
+        notebook.AddPage(self.token_list_ctrl, 'Tokens')
+        
+        LB_sizer.Add(notebook, proportion=1, flag=wx.EXPAND|wx.ALL)
         LB_panel.SetSizer(LB_sizer)
 
 		
     def data_loaded(self, evt):
-        print('Event reached main window.')
-        
         data = evt.attr
-        id = evt.GetId()
+        print("event reached mainwindow")
         
-        if data is not None:
-            self.session.load_data(data=data)
-            id = -1
-            
-        if id==ID_DATA_LOAD_NEWSGROUPS:
-            self.session.load_preset_data(data='NewsGroups')
-        elif id==ID_DATA_LOAD_BGSURVEY:
-            self.session.load_preset_data(data='BGSurvey')
-        elif id==ID_DATA_LOAD_GRADREPORTS:
-            self.session.load_preset_data(data='GradReports')
-        elif id==ID_DATA_LOAD_STUDENTSREVIEWS:
-            self.session.load_preset_data(data='StudentsReview')
-
-        text = self.session.to_html_text()
+        session = NltkPlain(data)
+        print("Session started.")
+        
+        text = session.as_html_text()
+        print("Data converted to HTML")
+        
         self.comment_reader.SetPage(text)
-		
+        print("Html Page set")
+        
+        tokens = session.tokens_summary()
+        print('Get tokens summary')
+        
+        #tokens = DataFrame([(4,2),(2,2),(2,22)], columns=['swe','wer'])
+        self.token_list_ctrl.set_data(tokens)
 		

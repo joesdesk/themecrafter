@@ -1,5 +1,5 @@
 import pytest
-from themecrafter.interface.session import ThemeCrafterSession
+from themecrafter.output.session import ThemeCrafterSession
 
 def test_load_preset_data():
     """Test a session's ability to load preset data."""
