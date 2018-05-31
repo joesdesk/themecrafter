@@ -126,31 +126,7 @@ class CsvDialog(wx.Dialog):
 
     
     def extract_data(self, e):
-        filename = self.filename
-        lnum = self.header_line_num
-        header = self.header_label
-        
-        # Load the data
-        with open(filename, encoding='utf-8') as f:
-            df = pd.read_csv(f, sep=',', skiprows=lnum,
-                na_filter=False,
-                skip_blank_lines=False, header=0)
-        
-        # except IOError:
-            # wx.LogError("Cannot open file '%s'." % newfile)
-        
-        # Extract the text data
-        data = df[header].values.tolist()
-        #print("EXTRACT_DATA")
-        self.data = data
-        #e.Skip()
         self.EndModal(1)
-        
-        #e.Skip()
-        #return data
-        #evt = OnDataLoad(attr=data, id=ID_DATA_LOADED)
-        #wx.PostEvent(self.GetParent(), evt)
-        
         
             
     def doNothing(self, event):
