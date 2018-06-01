@@ -11,6 +11,8 @@ class NLTKPlain:
     def __init__(self):
         self.tbuilder = ET.TreeBuilder()
         
+        # Specify tokenizers
+        self.sent_tokenizer = None
         self.word_tokenizer = TreebankWordTokenizer()
         
     def make_attr(self, id=None, offset=None):
