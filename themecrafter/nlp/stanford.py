@@ -1,16 +1,42 @@
 # Taken from https://github.com/Lynten/stanford-corenlp
 
+import xml.etree.ElementTree as ET
+
 from stanfordcorenlp import StanfordCoreNLP
 
-class NLP:
 
-    def __init__(self):
+class StanfordPlain:
+
+    def __init__(self, annotators=None):
+        self.annotators = annotators
+        
+    def parse_corpus(self, docs):
+    
+        nlp = StanfordBase()
+        nlp.open()
+        
+        root = ET.Element('root')
+        
+        for doc in docs:
+            
+            xmltagged = nlp.annotate(doc, self.annotators)
+            xml = ET.fromstring(xmltext)
+    
+            root.append(xml)
+        
+        nlp.close()
+        return root
+
+
+class StanfordBase:
+
+    def __init__(self, quiet=True):
         self.nlp = None
-
+        self.quiet = quiet
         
     def open(self):
         self.nlp = StanfordCoreNLP(r'../stanford-corenlp-full-2018-02-27/', \
-            quiet=False, lang='en')
+            quiet=self.quiet, lang='en')
         
         
     def word_tokenize(self, sentence):
@@ -62,13 +88,5 @@ class NLP:
     def close(self):
         '''Do not forget to close! The backend server will consume a lot memery.'''
         self.nlp.close()
-
-
-if __name__=='__main__':
-    nlp = NLP()
-    nlp.open()
-    sentence = 'The sky is blue. It is a great color.'
-    k = nlp.annotate(sentence, 'pos')
-    print(k)
-    nlp.close()
-    
+        
+        
