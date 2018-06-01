@@ -1,7 +1,6 @@
 import pytest
 
-from themecrafter.preprocessing.nltkplain import TokenElement, \
-    SentenceElement, DocumentElement, CorpusElement
+from themecrafter.nlp import NLTKPlain, StanfordPlain
 
 
 def test_token_element():
