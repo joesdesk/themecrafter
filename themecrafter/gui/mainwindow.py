@@ -9,7 +9,8 @@ from .commentwindow import CommentWindow
 from .elementlist.tokenlist import TokenListCtrl
 from .plotting.mtplot import CanvasPanel
 
-from ..preprocessing import NltkPlain
+from ..nlp.session import PreprocessingSession
+from ..output.html2 import HTMLTransform
 
 from . import EVT_DATA_LOAD
 
@@ -85,18 +86,23 @@ class MainWindow(wx.Frame):
         data = evt.attr
         print("event reached mainwindow")
         
-        session = NltkPlain(data)
+        session = PreprocessingSession()
+        session.load_docs(data)
+        session.docs_to_tree()
+        xmlstring = session.tree_as_string()
         print("Session started.")
         
-        text = session.as_html_text()
+        html = HTMLTransform(xmlstring)
+        html.render()
+        text = html.show_page()
         print("Data converted to HTML")
         
         self.comment_reader.SetPage(text)
         print("Html Page set")
         
-        tokens = session.tokens_summary()
-        print('Get tokens summary')
+        #tokens = session.tokens_summary()
+        #print('Get tokens summary')
         
         #tokens = DataFrame([(4,2),(2,2),(2,22)], columns=['swe','wer'])
-        self.token_list_ctrl.set_data(tokens)
+        #self.token_list_ctrl.set_data(tokens)
 		
