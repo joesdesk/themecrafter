@@ -1,11 +1,6 @@
 # Using simple nltk process documents into sentences and tokens.
 
 import xml.etree.ElementTree as ET
-#import TreeBuilder, ElementTree#Element, Elementroot, 
-
-from collections import Counter
-
-import pandas as pd
 
 from nltk import pos_tag
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -256,53 +251,4 @@ class CorpusElement(BaseElement):
             document = DocumentElement(d)
             self.add(document)
             
-
-class NltkPlainX(CorpusElement):
-    def __init__(self, docs):
-        CorpusElement.__init__(self, docs)
-        
-    def get_all_tokens(self):
-        '''Obtains all tokens from a corpus element.'''
-        tokens = []
-        for d in self.get_elements():
-            for s in d.get_elements():
-                for t in s.get_elements():
-                    tokens.append(t)
-        return tokens
-    
-    def tokens_summary(self):
-        '''All tokens as a data frame.'''
-        all_tokens = []
-        for i, d in enumerate(self.get_elements()):
-            for j, s in enumerate(d.get_elements()):
-                for k, t in enumerate(s.get_elements()):
-                    
-                    ttext = t.as_plaintext()
-                    tpos = t.get_attr('pos')
-                    tok = (ttext, tpos)
-                    
-                    all_tokens.append((ttext, tpos, i, j, k))
-        
-        columns=['token', 'pos', 'doc id', 'sen id', 'tok id']
-        df = pd.DataFrame(all_tokens, columns=columns)
-        
-        return df
-    
-    def count_tokens(self):
-        '''Extracts unique tokens to be part of the lexicon.'''
-        unique_tokens = []
-        token_count = []
-        
-        for t in self.get_all_tokens():
-            txt = t.as_plaintext()
-            if txt not in lexicon:
-                lexicon.append(txt)
-        return lexicon
-    
-    def to_html_file(self, file):
-        html_text = self.as_html_text()
-        
-        f = open(file, 'w+')
-        f.write(html_text)
-        f.close()
-    
+            
