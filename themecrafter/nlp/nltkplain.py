@@ -36,6 +36,9 @@ class NLTKPlain:
         
     def parse_doc(self, doc, id=None, offset=None):
         
+        # Make sure document is a string
+        assert type(doc) is str, "Input must be a string."
+        
         attr = self.make_attr(id, offset)
         self.tbuilder.start('doc', attr)
         
