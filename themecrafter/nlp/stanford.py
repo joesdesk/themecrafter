@@ -12,14 +12,14 @@ class StanfordPlain:
         
     def parse_corpus(self, docs):
     
-        nlp = StanfordBase()
+        nlp = StanfordBase(quiet=False)
         nlp.open()
         
         root = ET.Element('root')
         
         for doc in docs:
             
-            xmltagged = nlp.annotate(doc, self.annotators)
+            xmltext = nlp.annotate(doc, self.annotators)
             xml = ET.fromstring(xmltext)
     
             root.append(xml)
@@ -35,7 +35,7 @@ class StanfordBase:
         self.quiet = quiet
         
     def open(self):
-        self.nlp = StanfordCoreNLP(r'../stanford-corenlp-full-2018-02-27/', \
+        self.nlp = StanfordCoreNLP(r'thirdparty/stanford-corenlp-full-2018-02-27/', \
             quiet=self.quiet, lang='en')
         
         
