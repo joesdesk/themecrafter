@@ -3,7 +3,7 @@
 # and lemmatization.
 
 from collections import Counter
-import numpy as np
+from scipy.sparse import lil_matrix
 
 
 class TF:
@@ -23,23 +23,53 @@ class CountMatrix:
     def __init__(self):
         pass
         
-    def fit(self):
-        pass
+    def fit(self, docs):
+        n_docs = len(docs)
         
+        tf = TF()
+        wcounts_by_doc = [tf.fit(doc) for doc in docs]
+        
+        vocab = set()
+        for wcs in wcounts_by_doc:
+            for w, c in wcs.items():
+                vocab.add(w)
+        vocab = list(vocab)
+        n_terms = len(vocab)
+        
+        # Now that we know the size of the vocabulary
+        M = lil_matrix((n_docs, n_terms))
+        for i in range(n_docs):
+            for j in range(n_terms):
+                w = vocab[j]
+                M[i,j] = wcounts_by_doc[i].pop(w, 0)
+        return M
 
         
 if __name__=='__main__':
     
     # Test the functions
-    tf = TF()
-    doc = """The Colt Python is a .357 Magnum caliber revolver formerly
-manufactured by Colt's Manufacturing Company of Hartford, Connecticut.
-It is sometimes referred to as a "Combat Magnum".[1] It was first introduced
-in 1955, the same year as Smith &amp; Wesson's M29 .44 Magnum. The now discontinued
-Colt Python targeted the premium revolver market segment. Some firearm
-collectors and writers such as Jeff Cooper, Ian V. Hogg, Chuck Hawks, Leroy
-Thompson, Renee Smeets and Martin Dougherty have described the Python as the
-finest production revolver ever made."""
-    wc = tf.fit(doc.split(' '))
-    for w, c in wc.items():
-        print(w, c)
+    from themecrafter.datasets import SixDayWarDataSet
+    docs = SixDayWarDataSet().X
+    
+    #tf = TF()
+    #wc = tf.fit(doc.split(' '))
+    #for w, c in wc.items():
+    #    print(w, c)
+    
+    from nltk.tokenize import word_tokenize
+    docs = [word_tokenize(doc) for doc in docs]
+    
+    countmatrix = CountMatrix()
+    M = countmatrix.fit(docs)
+    
+    M.todense()
+    #print(M)
+    
+    from sklearn.decomposition import LatentDirichletAllocation as LDA
+    lda = LDA(n_components=3, learning_method='batch')
+    lda.fit(M)
+    
+    print(lda.components_)
+    
+    
+    
