@@ -62,7 +62,16 @@ class CountMatrix:
                 M[i,j] = wcounts_by_doc[i].pop(w, 0)
         return M
 
+
+class TFIDFMatrix:
+
+    def __init__(self):
+        pass
         
+    def fit(self, docs):
+        pass
+
+
 if __name__=='__main__':
     
     # Test the functions
