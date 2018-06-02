@@ -2,6 +2,7 @@
 # already been preprocessed: i.e. tokenized, potentially including stemming
 # and lemmatization.
 
+from math import log
 from collections import Counter
 from scipy.sparse import lil_matrix
 
@@ -9,10 +10,27 @@ from scipy.sparse import lil_matrix
 class TF:
     
     def __init__(self, method='count'):
-        if method=='count':
-            pass
-        
+        self.method = method
+    
     def fit(self, words):
+        '''Returns a dictionary with words as keys and weighted counts as values.'''
+        wc = self.fit_count(words)
+        if self.method=='count':
+            pass
+        if self.method=='binary':
+            for w, c in wc.items():
+                wc[w] = 1 if c>0 else 0
+        if self.method=='term frequency':
+            sum_count = sum(list(wc.values()))
+            for w, c in wc.items():
+                wc[w] = c / sum_count
+        if self.method=='log normalization':
+            for w, c in wc.items():
+                wc[w] = log(1 + c)
+        
+        return wc
+    
+    def fit_count(self, words):
         '''Returns a dictionary with words as keys and counts as values.'''
         wc = Counter(words)
         return dict(wc)
