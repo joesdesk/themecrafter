@@ -39,7 +39,7 @@ class TF:
 class CountMatrix:
     
     def __init__(self):
-        pass
+        self.vocab = None
         
     def fit(self, docs):
         n_docs = len(docs)
@@ -52,6 +52,7 @@ class CountMatrix:
             for w, c in wcs.items():
                 vocab.add(w)
         vocab = list(vocab)
+        self.vocab = vocab
         n_terms = len(vocab)
         
         # Now that we know the size of the vocabulary
