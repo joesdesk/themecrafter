@@ -19,6 +19,7 @@ class PageNavigator(wx.Frame):
         
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(self.pagenum_txtctrl, 0, wx.ALIGN_CENTER_VERTICAL, 0)
+        sizer.Add(width=10, height=0)
         sizer.Add(self.scrollbar, 0, wx.ALIGN_CENTER_VERTICAL, 0)
         
         self.SetSizer(sizer)
@@ -28,8 +29,10 @@ class PageNavigator(wx.Frame):
     
     
     def print_page(self, event):
-        print('page')
-    
+        page_num = self.scrollbar.GetValue()
+        txt = "Page " + str(page_num)
+        self.pagenum_txtctrl.SetLabel(txt)
+        
     
 
 if __name__=='__main__':
