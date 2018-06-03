@@ -7,10 +7,10 @@
 import wx
 from wx.lib.stattext import GenStaticText
 
-class PageNavigator(wx.Frame):
+class PageNavigator(wx.Panel):
 
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent)
+        wx.Panel.__init__(self, parent)
         
         self.scrollbar = wx.Slider()
         self.scrollbar.Create(self)

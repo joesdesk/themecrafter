@@ -5,7 +5,7 @@ from pandas import DataFrame
 from .mainwidgets.mainmenu import MainMenuBar
 
 from .mainwidgets.mainsplitter import MainWindowSplitter
-from .commentwindow import CommentWindow
+from .commentwindow.comment_panel import CommentPanel
 from .elementlist.tokenlist import TokenListCtrl
 from .plotting.mtplot import CanvasPanel
 
@@ -51,7 +51,7 @@ class MainWindow(wx.Frame):
         # Add widget to read comments
         RT_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.comment_reader = CommentWindow(RT_panel, "aweg")
+        self.comment_reader = CommentPanel(RT_panel)
         #comment_reader = wx.TextCtrl(RT_panel)
 
         #comment_reader = wx.html.HtmlWindow(RT_panel)
@@ -93,8 +93,8 @@ class MainWindow(wx.Frame):
         print("Session started.")
         
         html = HTMLTransform(xmlstring)
-        html.render()
-        text = html.show_page()
+        #html.show_first_page()
+        text = html.show_first_page()
         print("Data converted to HTML")
         
         self.comment_reader.SetPage(text)
