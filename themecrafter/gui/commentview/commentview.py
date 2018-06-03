@@ -29,7 +29,9 @@ class CommentView(wx.Panel):
         self.xmlstring = xmlstring
     
     def set_page(self, event):
-        print("Event reached panel.")
+        page = self.pagenav.scrollbar.GetValue()
+        txt = "Event reached panel. page = {:d}".format(page)
+        self.commentwindow.SetPage(txt)
     
 
 if __name__=='__main__':
