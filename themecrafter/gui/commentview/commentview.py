@@ -4,23 +4,6 @@ from .commentwindow import CommentWindow
 from .navctrl import PageNavigator
 
 
-class MainFrame(wx.Frame):
-
-    def __init__(self, parent):
-        wx.Frame.__init__(self, parent)
-        
-        comment_panel = CommentPanel(self)
-        
-        comment_panel.commentwindow.SetPage('awef')
-        #comment_panel = wx.TextCtrl(self)
-        
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(comment_panel, 1, wx.EXPAND, 0)
-        self.SetSizer(sizer)
-        
-        #comment_panel.Layout()
-    
-
 class CommentView(wx.Panel):
     
     def __init__(self, parent):
@@ -40,17 +23,9 @@ class CommentView(wx.Panel):
 if __name__=='__main__':
     
     app = wx.App()
+    frame = wx.Frame(None)
     
-    frame = MainFrame(None)
-    #sizer = wx.BoxSizer()
-    
-    
-    
-    #sizer.Add(comment_panel, 1, wx.GROW, 0)
-    #frame.SetSizer(sizer)
-    
-    #sizer.Fit(frame)
-    
+    comment_panel = CommentView(frame)
     frame.Show()
     
     app.MainLoop()
