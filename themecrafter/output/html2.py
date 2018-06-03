@@ -77,6 +77,11 @@ class HTMLTransform:
             counted += n_per_page
 
         return len(self.pages)
+        
+    def show_first_page(self):
+        '''Shows the first 10 comments of xml.'''
+        docs = self.docs[:10]
+        return self.render(docs)
 
     def show_page(self, page=0):
         '''Returns the paginated html at given page.'''
