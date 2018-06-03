@@ -1,3 +1,6 @@
+# The idea behind this module is to act only as 
+# a visualization of the comments.
+
 from bs4 import BeautifulSoup
 
 
@@ -5,17 +8,16 @@ class HTMLTransform:
 
     def __init__(self, xmlstring):
         '''Prepares the soup for formatting by adding spaces where needed.'''
-        self.soup = BeautifulSoup(xmlstring, "xml")
-
-    def render(self):
-        self.space_out()
-        self.rename_tags()
-        self.paginate()
-
-    def space_out(self):
+        soup = BeautifulSoup(xmlstring, "xml")
+        docs = list(soup.corpus.children)
+        for doc in docs:
+            self._spaceout(doc)
+        self.docs = docs
+        
+    def _spaceout(self, doc):
         '''Add spaces where appropriate'''
         offset = 0
-        for tag in self.soup.find_all('tok'):
+        for tag in doc.find_all('tok'):
 
             new_offset = int(tag['offset'])
             space_len = max(0, new_offset - offset)
@@ -24,22 +26,43 @@ class HTMLTransform:
             tag.insert_before(space)
             l = len(tag.string) if tag.string is not None else 0
             offset = new_offset + l
-
-    def rename_tags(self):
+            
+    def _rename_tags(self, soup):
         '''Change XML tags to HTML elements.'''
-        for tag in self.soup.find_all('tok'):
+        for tag in soup.find_all('tok'):
             tag['type'] = 'tok'
             tag.name = 'span'
 
-        for tag in self.soup.find_all('sent'):
+        for tag in soup.find_all('sent'):
             tag['type'] = 'sent'
             tag.name = 'span'
 
-        for tag in self.soup.find_all('doc'):
+        for tag in soup.find_all('doc'):
             tag['type'] = 'doc'
             tag.name = 'div'
 
-        self.soup.corpus.name = 'html'
+        soup.corpus.name = 'html'
+        
+    def render(self, docs, rename_tags=False):
+        '''Renders the selection of documents.'''
+        soup = BeautifulSoup('', "lxml")
+        
+        # Add containing element
+        toptag = soup.new_tag('corpus')
+        soup.append(toptag)
+        
+        # Add documents
+        for doc in docs:
+            soup.corpus.append(doc)
+        
+        # Rename of needed
+        if rename_tags:
+            self._rename_tags(soup)
+            
+        # Do highlighting
+        # ...
+        
+        return str(soup)
 
     def paginate(self, n_per_page=10):
         '''Splits the soup into a list of different pages.'''
