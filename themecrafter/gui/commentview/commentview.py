@@ -9,6 +9,9 @@ class CommentView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         
+        # Data to view by the widget
+        self.xmlstring = ''
+        
         self.commentwindow = CommentWindow(self, 'awef')
         self.commentwindow.SetPage('awef')
         self.pagenav = PageNavigator(self)
@@ -18,6 +21,9 @@ class CommentView(wx.Panel):
         sizer.Add(self.pagenav, 0, wx.ALIGN_CENTER_HORIZONTAL, 0)
         
         self.SetSizer(sizer)
+        
+    def set_data(self, xmlstring):
+        self.xmlstring = xmlstring
         
 
 if __name__=='__main__':
