@@ -69,7 +69,13 @@ class CountMatrix:
                 indices.append(index)
                 data.append(1)
             indptr.append(len(indices))
-            
+        
+        # Invert the vocabulary
+        len_vocab = len(vocabulary)
+        self.vocab = [None]*len_vocab
+        for k, v in vocabulary.items():
+            self.vocab[v] = k
+        
         return csr_matrix((data, indices, indptr), dtype=int)
 
         
