@@ -21,7 +21,7 @@ class MainFrame(wx.Frame):
         #comment_panel.Layout()
     
 
-class CommentPanel(wx.Panel):
+class CommentView(wx.Panel):
     
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
