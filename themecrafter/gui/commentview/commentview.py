@@ -22,9 +22,15 @@ class CommentView(wx.Panel):
         
         self.SetSizer(sizer)
         
+        # Page navigation events
+        self.pagenav.Bind(wx.EVT_SCROLL_CHANGED, self.set_page)
+        
     def set_data(self, xmlstring):
         self.xmlstring = xmlstring
-        
+    
+    def set_page(self, event):
+        print("Event reached panel.")
+    
 
 if __name__=='__main__':
     

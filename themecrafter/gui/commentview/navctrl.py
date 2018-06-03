@@ -32,7 +32,7 @@ class PageNavigator(wx.Panel):
         page_num = self.scrollbar.GetValue()
         txt = "Page " + str(page_num)
         self.pagenum_txtctrl.SetLabel(txt)
-        
+        event.Skip()
     
 
 if __name__=='__main__':
