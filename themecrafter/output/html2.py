@@ -14,6 +14,10 @@ class HTMLTransform:
             self._spaceout(doc)
         self.docs = docs
         
+        # Number of documents and number of pages
+        self.n_per_page = 10
+        self.pages = self.paginate(10)
+        
     def _spaceout(self, doc):
         '''Add spaces where appropriate'''
         offset = 0
@@ -64,35 +68,27 @@ class HTMLTransform:
         
         return str(soup)
 
-    def paginate(self, n_per_page=10):
-        '''Splits the soup into a list of different pages.'''
-        doc_elems = [str(tag) for tag in self.soup.find_all('div')]
-
-        self.pages = []
+    def paginate(self, n_per_page):
+        '''Finds the number of pages.'''
+        n_docs = len(self.docs)
+        pages = []
         counted = 0
-        while not counted > len(doc_elems):
-            page = ''.join(doc_elems[counted:counted+n_per_page])
-            page = '<html>' + page + '</html>'
-            self.pages.append(page)
-            counted += n_per_page
-
+        while counted < n_docs:
+            upto = min(counted + n_per_page, n_docs)
+            page = self.docs[counted: upto]
+            
+            pages.append(page)
+            counted = upto
+            
+        self.pages = pages
+        self.n_per_page = n_per_page
         return len(self.pages)
         
-    def show_first_page(self):
-        '''Shows the first 10 comments of xml.'''
-        docs = self.docs[:10]
-        return self.render(docs)
-
-    def show_page(self, page=0):
-        '''Returns the paginated html at given page.'''
-        page = min(0, page)
-        page = max(page, len(self.pages)-1)
-
-        return self.pages[page]
-
-    def to_string(self, page=0):
-        ''''''
-        return str(self.soup)
+    def show_page(self, n):
+        '''Shows the page, a list of documents to be rendered.
+        Here, n is from 1 to the total number of pages.'''
+        page = self.pages[n-1]
+        return self.render(page)
 
     def highlight_words(self, words, fgcolors, bgcolors):
         '''Highlight each word with a color.'''
@@ -100,3 +96,16 @@ class HTMLTransform:
             if tag.string in words:
                 style = "color:" + fgcolor + "; background-color:" + bgcolor
                 tag['style'] = '"' + style + '"'
+
+                
+if __name__=='__main__':
+    
+    from ..nlp.session import PreprocessingSession
+    
+    session = PreprocessingSession()
+    session.open_tree('try.xml')
+    xmlstring = session.tree_as_string()
+    
+    html = HTMLTransform(xmlstring)
+    
+    
