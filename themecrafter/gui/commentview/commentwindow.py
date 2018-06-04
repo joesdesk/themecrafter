@@ -10,7 +10,7 @@ wx.html.HtmlWinParser_AddTagHandler(TokenTagHandler)
 class CommentWindow(wx.html.HtmlWindow):
     '''A small widget to view html formatted comments.'''
     
-    def __init__(self, parent, title):
+    def __init__(self, parent):
         wx.html.HtmlWindow.__init__(self, parent)
 
         if "gtk2" in wx.PlatformInfo or "gtk3" in wx.PlatformInfo:
@@ -29,10 +29,10 @@ class CommentWindow(wx.html.HtmlWindow):
         
 
         #self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
-        self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.check_format)
+        #self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.check_format)
         #self.Bind(DATA_LOAD, self.show_data)
 
-        self.Bind(wx.EVT_KEY_DOWN, self.CatchHKeyScroll)
+        #self.Bind(wx.EVT_KEY_DOWN, self.CatchHKeyScroll)
         #self.Bind(wx.EVT_KEY_UP, self.CatchHKeyScroll)
         
         
@@ -121,7 +121,7 @@ class CommentWindow(wx.html.HtmlWindow):
     
     def CatchHKeyScroll(self, event):
         '''Disables horizontal key presses from scrolling horizontally.'''
-        
+        print('window caught keypress')
         # See: https://wxpython.org/Phoenix/docs/html/wx.KeyCategoryFlags.enumeration.html#wx-keycategoryflags
         if event.IsKeyInCategory(wx.WXK_CATEGORY_ARROW):
             # See: https://wxpython.org/Phoenix/docs/html/wx.KeyEvent.html#wx.KeyEvent.GetKeyCode
@@ -129,9 +129,11 @@ class CommentWindow(wx.html.HtmlWindow):
             
             # See: https://wxpython.org/Phoenix/docs/html/wx.KeyCode.enumeration.html#wx-keycode
             if keycode==wx.WXK_LEFT:
+                event.Skip()
                 return None
             
             if keycode==wx.WXK_RIGHT:
+                event.Skip()
                 return None
             
         event.Skip()
