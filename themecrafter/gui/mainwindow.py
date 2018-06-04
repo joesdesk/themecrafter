@@ -51,13 +51,10 @@ class MainWindow(wx.Frame):
         # Add widget to read comments
         RT_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.comment_reader = CommentView(RT_panel)
-        #comment_reader = wx.TextCtrl(RT_panel)
+        self.commentview = CommentView(RT_panel)
 
-        #comment_reader = wx.html.HtmlWindow(RT_panel)
-        #comment_reader.SetPage("<html>awefawef</html>")
 
-        RT_sizer.Add(self.comment_reader, proportion=1, flag=wx.EXPAND|wx.ALL)
+        RT_sizer.Add(self.commentview, proportion=1, flag=wx.EXPAND|wx.ALL)
         RT_panel.SetSizer(RT_sizer)
 
 
@@ -92,12 +89,7 @@ class MainWindow(wx.Frame):
         xmlstring = session.tree_as_string()
         print("Session started.")
         
-        html = HTMLTransform(xmlstring)
-        #html.show_first_page()
-        text = html.show_first_page()
-        print("Data converted to HTML")
-        
-        self.comment_reader.SetPage(text)
+        self.commentview.set_data(xmlstring)
         print("Html Page set")
         
         #tokens = session.tokens_summary()

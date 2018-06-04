@@ -13,6 +13,7 @@ class CommentView(wx.Panel):
         
         # Data to view by the widget
         self.xmlstring = ''
+        self.html = None
         
         # Control components
         self.commentwindow = CommentWindow(self)
@@ -49,8 +50,9 @@ class CommentView(wx.Panel):
             self.set_page(page)
             
     def set_page(self, page):
-        text = self.html.show_page(page)
-        self.commentwindow.SetPage(text)
+        if self.html is not None:
+            text = self.html.show_page(page)
+            self.commentwindow.SetPage(text)
             
             
 if __name__=='__main__':
