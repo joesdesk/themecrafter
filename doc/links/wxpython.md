@@ -5,6 +5,8 @@ Most frequent
 * __Zetcode Tutorial/Examples.__ [http://zetcode.com/wxpython/](http://zetcode.com/wxpython/)
 * __wxPython Wiki.__ [https://wiki.wxpython.org/FrontPage](https://wiki.wxpython.org/FrontPage)
 
+Screenshots of widgets: http://docs.wxwidgets.org/trunk/page_screenshots.html
+
 Useful references
 * __wxPython Testing.__ [https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide](https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide)
 * `self.Bind` vs `self.button.Bind`. https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
