@@ -58,7 +58,8 @@ class NltkSentParser:
             
             word, pos = poses[k]
             
-            offset = text.find(word, offset)
+            # Fix the replacement done by package
+            word, offset = self.find(sent, word, offset)
             
             attrib = {}
             attrib['id'] = k 
@@ -71,6 +72,13 @@ class NltkSentParser:
             offset += len(word)
         
         return None
+    
+    def find(self, sentence, word, offset=0):
+        '''Fixes substitutions done that prevents finding.'''
+        if word in ['``', "''"]:
+            word = '"'
+        
+        return word, sentence.find(word, offset)
         
 
 if __name__=='__main__':
