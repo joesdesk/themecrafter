@@ -6,7 +6,7 @@ import pandas as pd
 from collections import Counter
 
 def show_tree(tree, level=0):
-    print('\t'*level, tree, tree.text)
+    print('  '*level, tree, tree.tag, str(tree.attrib), tree.text, tree.tail)
     for c in tree.getchildren():
         show_tree(c, level+1)
 
