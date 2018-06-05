@@ -12,7 +12,10 @@ class CorpusParser:
         builder.start('corpus')
         
         for i, doc in enumerate(list_of_docs):
-            attrib = {'id':i, 'len':len(doc)}
+        
+            attrib = {}
+            attrib['id'] = str(i)
+            attrib['len'] = str(len(doc))
             
             builder.start('tok', attrib)
             builder.data(doc)

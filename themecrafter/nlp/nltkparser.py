@@ -26,9 +26,9 @@ class NltkDocParser:
             offset = text.find(sent, offset)
             
             attrib = {}
-            attrib['id'] = i
-            attrib['offset'] = offset
-            attrib['len'] = len(sent)
+            attrib['id'] = str(i)
+            attrib['offset'] = str(offset)
+            attrib['len'] = str(len(sent))
             
             token = SubElement(element, 'tok', attrib)
             token.text = sent
@@ -59,12 +59,12 @@ class NltkSentParser:
             word, pos = poses[k]
             
             # Fix the replacement done by package
-            word, offset = self.find(sent, word, offset)
+            word, offset = self.find(text, word, offset)
             
             attrib = {}
-            attrib['id'] = k 
-            attrib['offset'] = offset
-            attrib['len'] = len(word)
+            attrib['id'] = str(k) 
+            attrib['offset'] = str(offset)
+            attrib['len'] = str(len(word))
             attrib['pos'] = pos
             
             token = SubElement(element, 'tok', attrib)
