@@ -32,9 +32,10 @@ class NLTKPlain2:
             parser.parse(t)
         
         # Then, parse words if necessary
-        parser = ReParser()
-        for t in tree.findall('.//tok'):
-            parser.parse(t)
+        # A little expensive.
+        #parser = ReParser()
+        #for t in tree.findall('.//tok'):
+        #    parser.parse(t)
         
         return tree
         
