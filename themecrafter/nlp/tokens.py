@@ -1,10 +1,12 @@
 # Filter out stop words and punctuations
 
 from string import punctuation
-punctuation = list(punctuation)
+punctuation = frozenset(punctuation)
 
-from nltk.corpus import stopwords
-nltk_stopwords = stopwords.words('english')
+from nltk.corpus import stopwords as nltk_stopwords
+nltk_stopwords = frozenset(nltk_stopwords.words('english'))
 
-from gensim.parsing.preprocessing import STOPWORDS
-gensim_stopwords = list(STOPWORDS)
+from gensim.parsing.preprocessing import STOPWORDS as gensim_stopwords
+
+
+all = nltk_stopwords | gensim_stopwords
