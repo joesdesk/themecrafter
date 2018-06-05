@@ -6,6 +6,32 @@ from nltk import pos_tag
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.tokenize import TreebankWordTokenizer
 
+from .corpusparser import CorpusParser
+from .nltkparser import NltkDocParser, NltkSentParser
+
+class NLTKPlain2:
+
+    def __init__(self):
+        pass
+    
+    def parse(self, docs):
+        # First, parse the corpus
+        parser = CorpusParser()
+        tree = parser.parse(docs)
+        
+        # Then, parse the documents
+        parser = NltkDocParser()
+        for t in tree.findall('.//tok'):
+            parser.parse(t)
+            
+        # Then, parse the sentences
+        parser = NltkSentParser()
+        for t in tree.findall('.//tok'):
+            parser.parse(t)
+        
+        return tree
+        
+
 class NLTKPlain:
 
     def __init__(self):
