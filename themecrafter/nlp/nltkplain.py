@@ -8,6 +8,8 @@ from nltk.tokenize import TreebankWordTokenizer
 
 from .corpusparser import CorpusParser
 from .nltkparser import NltkDocParser, NltkSentParser
+from .reparser import ReParser
+
 
 class NLTKPlain2:
 
@@ -26,6 +28,11 @@ class NLTKPlain2:
             
         # Then, parse the sentences
         parser = NltkSentParser()
+        for t in tree.findall('.//tok'):
+            parser.parse(t)
+        
+        # Then, parse words if necessary
+        parser = ReParser()
         for t in tree.findall('.//tok'):
             parser.parse(t)
         
