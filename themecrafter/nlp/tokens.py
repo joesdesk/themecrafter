@@ -9,4 +9,4 @@ nltk_stopwords = frozenset(nltk_stopwords.words('english'))
 from gensim.parsing.preprocessing import STOPWORDS as gensim_stopwords
 
 
-all = nltk_stopwords | gensim_stopwords
+all_stopwords = nltk_stopwords | gensim_stopwords
