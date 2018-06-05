@@ -11,8 +11,10 @@ class CorpusParser:
         builder = TreeBuilder()
         builder.start('corpus')
         
-        for doc in list_of_docs:
-            builder.start('tok')
+        for i, doc in enumerate(list_of_docs):
+            attrib = {'id':i, 'len':len(doc)}
+            
+            builder.start('tok', attrib)
             builder.data(doc)
             builder.end('tok')
         
