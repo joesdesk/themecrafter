@@ -5,6 +5,10 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 from collections import Counter
 
+def show_tree(tree, level=0):
+    print('\t'*level, tree, tree.text)
+    for c in tree.getchildren():
+        show_tree(c, level+1)
 
 def save_tree(tree, filename):
     '''Saves the preprocessed documents.'''
