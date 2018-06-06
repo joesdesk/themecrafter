@@ -34,16 +34,19 @@ class DocumentTagHandler(wx.html.HtmlWinTagHandler):
         wx.html.HtmlWinTagHandler.__init__(self)
         
     def GetSupportedTags(self):
-        return "DOCUMENT"
+        return "DOC"
     
     def HandleTag(self, tag):
         parser = self.GetParser()
         
         parser.CloseContainer()
-        newc = parser.OpenContainer()
         
-        newc.SetWidthFloat(100, wx.html.HTML_UNITS_PERCENT)
-        newc.SetBackgroundColour('#BBBBBB')
+        newc = parser.OpenContainer()
+         
+        newc.SetIndent(20, wx.html.HTML_INDENT_BOTTOM)
+        
+        #newc.SetWidthFloat(100, wx.html.HTML_UNITS_PERCENT)
+        #newc.SetBackgroundColour('#BBBBBB')
         
         id = tag.GetParam("ID")
         newc.SetId(id)
