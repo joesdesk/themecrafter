@@ -8,10 +8,80 @@ from nltk.tokenize import TreebankWordTokenizer
 
 from .corpusparser import CorpusParser
 from .nltkparser import NltkDocParser, NltkSentParser
-from .pywsd import PyWSDParser
-from .reparser import ReParser
-    
+#from .pywsd import PyWSDParser
 
+from .reparser import ReParser
+from .labelling import label_special, label_word
+
+from ..nlp.utils import open_tree, show_tree, save_tree
+
+
+class NLTKPlain:
+    '''The most basic parser.'''
+    def __init__(self):
+        pass
+    
+    def parse(self, docs):
+        # First, parse the corpus
+        parser = CorpusParser()
+        tree = parser.parse(docs)
+        
+        # Then, parse the documents
+        parser = NltkDocParser()
+        for t in tree.findall('.//tok'):
+            parser.parse(t)
+            
+        # Then, parse the sentences
+        parser = NltkSentParser()
+        for t in tree.findall('.//tok'):
+            parser.parse(t)
+        
+        return tree
+        
+
+class NLTKPlain2:
+    '''Adds labels for special tokens found.'''
+    def __init__(self):
+        self.init_parser = NLTKPlain()
+        
+    def parse(self, docs):
+        tree = self.init_parser.parse(docs)
+        
+        # Then, label some text with special characters.
+        for t in tree.findall('.//tok'):
+            self.label_special(t)
+            self.label_word(t)
+        
+        # Then, reparse
+        parser = ReParser()
+        for t in tree.findall('.//tok'):
+            if t.get('label', None) is None:
+                parser.parse(t)
+            
+        # Then, label all special text again.
+        for t in tree.findall('.//tok'):
+            self.label_special(t)
+            self.label_word(t)
+        
+        return tree
+        
+    def label_special(self, t):
+        '''Find all special text and label them.'''
+        if t.get('label', None) is None:
+            label_, pos_ = label_special( t.text )
+            if pos_ is not None:
+                t.set('label', label_)
+                t.set('pos', pos_)
+    
+    def label_word(self, t):
+        '''Find all special text and label them.'''
+        if t.get('label', None) is None:        
+            label_ = label_word( t.text )
+            if label_ is not None:
+                t.set('label', label_)
+
+                
+                
 class NLTKPlainWS:
 
     def __init__(self):
@@ -35,147 +105,15 @@ class NLTKPlainWS:
         return tree
         
 
-class NLTKPlain2:
-
-    def __init__(self):
-        pass
-    
-    def parse(self, docs):
-        # First, parse the corpus
-        parser = CorpusParser()
-        tree = parser.parse(docs)
-        
-        # Then, parse the documents
-        parser = NltkDocParser()
-        for t in tree.findall('.//tok'):
-            parser.parse(t)
-            
-        # Then, parse the sentences
-        parser = NltkSentParser()
-        for t in tree.findall('.//tok'):
-            parser.parse(t)
-        
-        return tree
 
 
-class NLTKPlain3(NLTKPlain2):
+
+class NLTKPlain3:
     
     def __init__(self):
-        NLTKPlain2.__init__(self)
+        self.init_parser = NLTKPlain2()
         
-    def parse(self, docs):
-        tree = self.parse(docs)
-        
-        # Then, parse words if necessary
-        # A little expensive.
-        labeller = None
-        
-        parser = ReParser()
-        for t in tree.findall('.//tok'):
-            parser.parse(t)
-
-        return tree
-        
-
-class NLTKPlain:
-
-    def __init__(self):
-        self.tbuilder = ET.TreeBuilder()
-        
-        # Specify tokenizers
-        self.sent_tokenizer = None
-        self.word_tokenizer = TreebankWordTokenizer()
-        
-    def make_attr(self, id=None, offset=None):
-        attr = {}
-        if id is not None:
-            attr['id'] = str(id)
-        if offset is not None:
-            attr['offset'] = str(offset)
-        return attr
     
-    def parse_corpus(self, docs, id=None, offset=None):
-        
-        attr = self.make_attr(id, offset)
-        self.tbuilder.start('corpus', attr)
-        
-        for i, doc in enumerate(docs):
-            self.parse_doc(doc, id=i, offset=0) # docs are indep = offset 0
-        
-        self.tbuilder.end('corpus')
-        return self.tbuilder.close()
-        
-    def parse_doc(self, doc, id=None, offset=None):
-        
-        # Make sure document is a string
-        assert type(doc) is str, "Input must be a string."
-        
-        attr = self.make_attr(id, offset)
-        self.tbuilder.start('doc', attr)
-        
-        # Break the document into sentences.
-        k = 0
-        rel_offset = 0
-        sentences = sent_tokenize(doc)
-        for j, s in enumerate(sentences):
-            
-            # Indicate space before sentence
-            rel_offset = doc.find(s, rel_offset)
-            assert rel_offset >= 0, s + ' not in ' + id + ' past ' + str(rel_offset)
-            self.parse_sent(s, j, offset+rel_offset)
-            rel_offset += len(s)
-        
-        self.tbuilder.end('doc')
-        return self.tbuilder.close()
-    
-    def parse_sent(self, sent, id=None, offset=None):
-        
-        attr = self.make_attr(id, offset)
-        self.tbuilder.start('sent', attr)
-        
-        rel_offset = 0
-        
-        # Bug: can't find single quote substrings
-        #spans = self.word_tokenizer.span_tokenize(sent)
-        words = self.word_tokenizer.tokenize(sent)
-        #assert len(spans)==len(words)
-        
-        # Do parts of speech tagging in addition to tokenization
-        poss = pos_tag(words)
-        assert len(poss)==len(words)
-        
-        for k in range(len(words)):
-            
-            # Indicate space before token
-            word, pos = poss[k]
-            
-            # Stupid replacements by package
-            word, rel_offset = self.find(sent, word, rel_offset)
-            assert rel_offset >= 0, word + ', not in :' + sent
-            
-            self.parse_word(word, pos, k, offset+rel_offset)
-            rel_offset += len(word)
-            k += 1
-        
-        self.tbuilder.end('sent')
-        return self.tbuilder.close()
-    
-    def parse_word(self, word, pos, id=None, offset=None):
-    
-        attr = self.make_attr(id, offset)
-        attr['pos'] = pos
-        self.tbuilder.start('tok', attr)
-        
-        self.tbuilder.data(word)
-        
-        self.tbuilder.end('token')
-        return self.tbuilder.close()
-
-    def find(self, sentence, word, offset=0):
-        '''Fixes substitutions done that prevents finding.'''
-        if word in ['``', "''"]:
-            word = '"'
-        
-        return word, sentence.find(word, offset)
+       
         
         
