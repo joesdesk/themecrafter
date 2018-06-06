@@ -65,12 +65,29 @@ class TokenTagHandler(wx.html.HtmlWinTagHandler):
         wx.html.HtmlWinTagHandler.__init__(self)
 
     def GetSupportedTags(self):
-        return "TOKEN"
+        return "TOK,SENT"
 
     def HandleTag(self, tag):
-        old = self.GetParser().GetActualColor()
+        parser = self.GetParser()
+        old = parser.GetActualColor()
+        oldfont = parser.CreateCurrentFont()
+        
+        tagparams = tag.GetAllParams()
+        print(tagparams)
+        
+        oldfontsize = parser.GetFontSize()
+        oldfontunderlined = parser.GetFontUnderlined()
+        oldfontitalic = parser.GetFontItalic()
+        oldfontface = parser.GetFontFace()
+        
+        #topic = tag.GetParam("topic")
+        
+        
+        newfont = wx.Font(wx.FontInfo().FaceName("Helvetica").Italic())
+        #oldfont = wx.Font(wx.FontInfo().FaceName(oldfontface))
+        
         clr = "#0000FF"
-        if tag.HasParam("SHADE"):
+        if tag.HasParam("style"):
             shade = tag.GetParam("SHADE")
             if shade.upper() == "SKY":
                 clr = "#3299CC"
@@ -80,14 +97,21 @@ class TokenTagHandler(wx.html.HtmlWinTagHandler):
                 clr = "#00008B"
             elif shade.upper == "NAVY":
                 clr = "#23238E"
+            
+            parser.GetContainer().InsertCell(wx.html.HtmlFontCell(newfont))
+            
 
-        self.GetParser().SetActualColor(clr)
-        self.GetParser().GetContainer().InsertCell(wx.html.HtmlColourCell(clr))
+        #self.GetParser().SetActualColor(clr)
+        #self.GetParser().GetContainer().InsertCell(wx.html.HtmlColourCell(clr))
+        #parser.GetContainer().InsertCell(wx.html.HtmlFontCell(newfont))
 
         self.ParseInner(tag)
 
-        self.GetParser().SetActualColor(old)
-        self.GetParser().GetContainer().InsertCell(wx.html.HtmlColourCell(old))
+        if tag.HasParam("style"):
+        #self.GetParser().SetActualColor(old)
+        #self.GetParser().GetContainer().InsertCell(wx.html.HtmlColourCell(old))
+            parser.GetContainer().InsertCell(wx.html.HtmlFontCell(oldfont))
+            print('apply old font')
 
         return True
 
@@ -118,7 +142,7 @@ class BlueTagHandler(wx.html.HtmlWinTagHandler):
 
         # Create special tagging cell
         pp = tag.GetAllParams()
-        print(pp)
+        #print(pp)
 
         # Set Format
         container.InsertCell(wx.html.HtmlColourCell('#23238E', wx.html.HTML_CLR_BACKGROUND))

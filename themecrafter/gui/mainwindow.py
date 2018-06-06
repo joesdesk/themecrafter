@@ -93,11 +93,14 @@ class MainWindow(wx.Frame):
         #session = PreprocessingSession()
         #session.load_docs(data)
         #session.docs_to_tree()
-        tree = open_tree('M:/themecrafter/results/NLTKPlain2.xml')
+        tree = open_tree('M:/themecrafter/results/NLTKPlain2_topwords.xml')
         xmlstring = tree2string(tree)
         #print("Session started.")
         
         html = HTMLTransform(xmlstring)
+        
+        html.highlight('student', '#CCCCCC')
+        
         pages = [html.show_page(i) for i in range(html.n_pages)]
         #print(pages[1])    
         

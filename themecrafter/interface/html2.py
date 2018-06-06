@@ -108,12 +108,12 @@ class HTMLTransform:
                 tag['style'] = '"' + style + '"'
                 
     def highlight(self, topic, color):
-        for doc in docs:
+        for doc in self.docs:
             for tag in doc.find_all(attrs={'topic':True}):
                 loc = tag['topic'].find(topic)
                 if not loc < 0:
-                    tag['style'] = "color:blue;background-color:red"
-
+                    tag['style'] = "color:blue;"
+                    pass
                 
 if __name__=='__main__':
     
@@ -124,3 +124,4 @@ if __name__=='__main__':
     
     html = HTMLTransform(xmlstring)
     
+    html.highlight('student', '#CCCCCC')
