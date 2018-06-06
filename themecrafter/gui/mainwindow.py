@@ -8,6 +8,7 @@ from .mainwidgets.mainsplitter import MainWindowSplitter
 from .commentview import CommentView
 from .elementlist.tokenlist import TokenListCtrl
 from .plotting.mtplot import CanvasPanel
+from .topicmodelview.topiclist import MyPanel as TopicListCtrl
 
 from ..nlp.utils import open_tree, tree2string
 from ..interface.html2 import HTMLTransform
@@ -70,6 +71,12 @@ class MainWindow(wx.Frame):
         
         LB_sizer.Add(notebook, proportion=1, flag=wx.EXPAND|wx.ALL)
         LB_panel.SetSizer(LB_sizer)
+        
+        # Add widget to list topics
+        LT_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.topic_list_ctrl = TopicListCtrl(LT_panel)
+        LT_sizer.Add(self.topic_list_ctrl, proportion=1, flag=wx.EXPAND|wx.ALL)
+        LT_panel.SetSizer(LT_sizer)
         
         # Add plot to diagram
         RB_sizer = wx.BoxSizer(wx.VERTICAL)
