@@ -98,7 +98,7 @@ class HTMLTransform:
         '''Shows the page, a list of documents to be rendered.
         Here, n is from 1 to the total number of pages.'''
         page = self.pages[n-1]
-        return self.render(page)
+        return self.render(page, rename_tags=False)
 
     def highlight_words(self, words, fgcolors, bgcolors):
         '''Highlight each word with a color.'''
@@ -109,11 +109,14 @@ class HTMLTransform:
                 
     def highlight(self, topic, color):
         for doc in self.docs:
+            #print(doc.name)
+            #doc.name = "doc"
             for tag in doc.find_all(attrs={'topic':True}):
                 loc = tag['topic'].find(topic)
                 if not loc < 0:
-                    tag['style'] = "color:blue;"
+                    tag['style'] = "color:white; background-color:green;"
                     pass
+        
                 
 if __name__=='__main__':
     

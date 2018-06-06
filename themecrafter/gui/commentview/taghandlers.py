@@ -69,7 +69,10 @@ class TokenTagHandler(wx.html.HtmlWinTagHandler):
 
     def HandleTag(self, tag):
         parser = self.GetParser()
+        container = parser.GetContainer()
         old = parser.GetActualColor()
+        oldbgcolor = wx.Colour(255,255,255)#container.GetBackgroundColour()
+        print(oldbgcolor)
         oldfont = parser.CreateCurrentFont()
         
         tagparams = tag.GetAllParams()
@@ -83,10 +86,10 @@ class TokenTagHandler(wx.html.HtmlWinTagHandler):
         #topic = tag.GetParam("topic")
         
         
-        newfont = wx.Font(wx.FontInfo().FaceName("Helvetica").Italic())
+        newfont = wx.Font(wx.FontInfo().Underlined())
         #oldfont = wx.Font(wx.FontInfo().FaceName(oldfontface))
         
-        clr = "#0000FF"
+        clr = "#FFFFCC" #"#0000FF"
         if tag.HasParam("style"):
             shade = tag.GetParam("SHADE")
             if shade.upper() == "SKY":
@@ -98,20 +101,20 @@ class TokenTagHandler(wx.html.HtmlWinTagHandler):
             elif shade.upper == "NAVY":
                 clr = "#23238E"
             
-            parser.GetContainer().InsertCell(wx.html.HtmlFontCell(newfont))
+            #container.InsertCell(wx.html.HtmlFontCell(newfont))
             
 
-        #self.GetParser().SetActualColor(clr)
-        #self.GetParser().GetContainer().InsertCell(wx.html.HtmlColourCell(clr))
-        #parser.GetContainer().InsertCell(wx.html.HtmlFontCell(newfont))
+            #self.GetParser().SetActualColor(clr)
+            container.InsertCell(wx.html.HtmlColourCell(clr, wx.html.HTML_CLR_BACKGROUND))
+            #parser.GetContainer().InsertCell(wx.html.HtmlFontCell(newfont))
 
         self.ParseInner(tag)
 
         if tag.HasParam("style"):
-        #self.GetParser().SetActualColor(old)
-        #self.GetParser().GetContainer().InsertCell(wx.html.HtmlColourCell(old))
-            parser.GetContainer().InsertCell(wx.html.HtmlFontCell(oldfont))
-            print('apply old font')
+            #self.GetParser().SetActualColor(old)
+            container.InsertCell(wx.html.HtmlColourCell(oldbgcolor, wx.html.HTML_CLR_BACKGROUND))
+            #container.InsertCell(wx.html.HtmlFontCell(oldfont))
+            #print('apply old font')
 
         return True
 
