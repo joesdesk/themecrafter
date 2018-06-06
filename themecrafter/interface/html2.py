@@ -106,15 +106,21 @@ class HTMLTransform:
             if tag.string in words:
                 style = "color:" + fgcolor + "; background-color:" + bgcolor
                 tag['style'] = '"' + style + '"'
+                
+    def highlight(self, topic, color):
+        for doc in docs:
+            for tag in doc.find_all(attrs={'topic':True}):
+                loc = tag['topic'].find(topic)
+                if not loc < 0:
+                    tag['style'] = "color:blue;background-color:red"
 
                 
 if __name__=='__main__':
     
     from ..nlp.utils import open_tree, tree2string
     
-    tree = open_tree('try.xml')
+    tree = open_tree('M:/themecrafter/results/NLTKPlain2_topwords.xml')
     xmlstring = tree2string(tree)
     
     html = HTMLTransform(xmlstring)
-    
     
