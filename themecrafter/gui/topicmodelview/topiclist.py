@@ -32,7 +32,6 @@ class MyPanel(wx.Panel):
  
         self.list_ctrl = wx.ListCtrl(self, size=(-1,100),
                                 style=wx.LC_REPORT
-                                |wx.BORDER_SUNKEN
                                 )
         self.list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.onItemSelected)
         self.list_ctrl.InsertColumn(0, "Make")
@@ -43,7 +42,7 @@ class MyPanel(wx.Panel):
         index = 0
         self.myRowDict = {}
         for row in rows:
-            self.list_ctrl.InsertStringItem(index, row.make)
+            self.list_ctrl.InsertItem(index, row.make)
             self.list_ctrl.SetItem(index, 1, row.model)
             self.list_ctrl.SetItem(index, 2, row.year)
             self.list_ctrl.SetItem(index, 3, row.color)
