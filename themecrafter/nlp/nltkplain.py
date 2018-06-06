@@ -179,12 +179,3 @@ class NLTKPlain:
         return word, sentence.find(word, offset)
         
         
-if __name__=='__main__':
-    
-    from ..datasets import BGSurveyDataSet
-    docs = BGSurveyDataSet().X
-    
-    parser = NLTKPlainWS()
-    tree = parser.parse(docs)
-    
-    
