@@ -10,7 +10,7 @@ from .elementlist.tokenlist import TokenListCtrl
 from .plotting.mtplot import CanvasPanel
 
 from ..nlp.utils import open_tree, tree2string
-#from ..output.html2 import HTMLTransform
+from ..interface.html2 import HTMLTransform
 
 from . import EVT_DATA_LOAD
 
@@ -90,7 +90,11 @@ class MainWindow(wx.Frame):
         xmlstring = tree2string(tree)
         #print("Session started.")
         
-        #self.commentview.set_data(xmlstring)
+        html = HTMLTransform(xmlstring)
+        pages = [html.show_page(i) for i in range(html.n_pages)]
+        #print(pages[1])    
+        
+        self.commentview.set_data(pages)
         #print("Html Page set")
         
         #tokens = session.tokens_summary()
