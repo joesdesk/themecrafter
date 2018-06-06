@@ -9,8 +9,8 @@ from .commentview import CommentView
 from .elementlist.tokenlist import TokenListCtrl
 from .plotting.mtplot import CanvasPanel
 
-from ..nlp.session import PreprocessingSession
-from ..output.html2 import HTMLTransform
+from ..nlp.utils import open_tree, tree2string
+#from ..output.html2 import HTMLTransform
 
 from . import EVT_DATA_LOAD
 
@@ -83,14 +83,15 @@ class MainWindow(wx.Frame):
         data = evt.attr
         print("event reached mainwindow")
         
-        session = PreprocessingSession()
-        session.load_docs(data)
-        session.docs_to_tree()
-        xmlstring = session.tree_as_string()
-        print("Session started.")
+        #session = PreprocessingSession()
+        #session.load_docs(data)
+        #session.docs_to_tree()
+        tree = open_tree('M:/themecrafter/results/NLTKPlain2.xml')
+        xmlstring = tree2string(tree)
+        #print("Session started.")
         
-        self.commentview.set_data(xmlstring)
-        print("Html Page set")
+        #self.commentview.set_data(xmlstring)
+        #print("Html Page set")
         
         #tokens = session.tokens_summary()
         #print('Get tokens summary')
