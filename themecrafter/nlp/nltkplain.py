@@ -8,8 +8,32 @@ from nltk.tokenize import TreebankWordTokenizer
 
 from .corpusparser import CorpusParser
 from .nltkparser import NltkDocParser, NltkSentParser
+from .pywsd import PyWSDParser
 from .reparser import ReParser
+    
 
+class NLTKPlainWS:
+
+    def __init__(self):
+        pass
+    
+    def parse(self, docs):
+        # First, parse the corpus
+        parser = CorpusParser()
+        tree = parser.parse(docs)
+        
+        # Then, parse the documents
+        parser = NltkDocParser()
+        for t in tree.findall('.//tok'):
+            parser.parse(t)
+            
+        # Then, parse the sentences
+        parser = PyWSDParser()
+        for t in tree.findall('.//tok'):
+            parser.parse(t)
+        
+        return tree
+        
 
 class NLTKPlain2:
 
@@ -31,12 +55,25 @@ class NLTKPlain2:
         for t in tree.findall('.//tok'):
             parser.parse(t)
         
+        return tree
+
+
+class NLTKPlain3(NLTKPlain2):
+    
+    def __init__(self):
+        NLTKPlain2.__init__(self)
+        
+    def parse(self, docs):
+        tree = self.parse(docs)
+        
         # Then, parse words if necessary
         # A little expensive.
-        #parser = ReParser()
-        #for t in tree.findall('.//tok'):
-        #    parser.parse(t)
+        labeller = None
         
+        parser = ReParser()
+        for t in tree.findall('.//tok'):
+            parser.parse(t)
+
         return tree
         
 
@@ -142,3 +179,12 @@ class NLTKPlain:
         return word, sentence.find(word, offset)
         
         
+if __name__=='__main__':
+    
+    from ..datasets import BGSurveyDataSet
+    docs = BGSurveyDataSet().X
+    
+    parser = NLTKPlainWS()
+    tree = parser.parse(docs)
+    
+    
