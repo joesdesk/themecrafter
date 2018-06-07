@@ -40,14 +40,14 @@ class CommentView(wx.Panel):
         keycode = event.GetKeyCode()
         page = self.pagenav.pagenum
         if keycode==wx.WXK_LEFT:
-            page = self.pagenav.set_page(page-1)
-            self.set_page(page)
+            self.set_page(page-1)
         if keycode==wx.WXK_RIGHT:
-            page = self.pagenav.set_page(page+1)
-            self.set_page(page)
+            self.set_page(page+1)
             
     def set_page(self, page):
         if self.htmlpages is not None:
+            page = self.pagenav.set_page(page)
+            
             text = self.htmlpages[page-1]
             self.commentwindow.SetPage(text)
             
