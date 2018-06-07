@@ -51,7 +51,7 @@ class CommentView(wx.Panel):
             text = self.htmlpages[page]
             self.commentwindow.SetPage(text)
             
-            internal = self.commentwindow.GetInternalRepresentation()
+            #internal = self.commentwindow.GetInternalRepresentation()
             #print(internal)
             #self.parse(internal)
             
