@@ -78,11 +78,16 @@ class MainWindow(wx.Frame):
         LT_sizer.Add(self.topic_list_ctrl, proportion=1, flag=wx.EXPAND|wx.ALL)
         LT_panel.SetSizer(LT_sizer)
         
+        self.topic_list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.sel_topic)
+        
         # Add plot to diagram
         RB_sizer = wx.BoxSizer(wx.VERTICAL)
         plot = CanvasPanel(RB_panel)
         RB_sizer.Add(plot, proportion=1, flag=wx.EXPAND|wx.ALL)
         RB_panel.SetSizer(RB_sizer)
+        
+        # Finally, add the interface
+        self.html = None
         
 
 		
@@ -97,11 +102,11 @@ class MainWindow(wx.Frame):
         xmlstring = tree2string(tree)
         #print("Session started.")
         
-        html = HTMLTransform(xmlstring)
+        self.html = HTMLTransform(xmlstring)
         
-        html.highlight('student', '#CCCCCC')
+        self.html.highlight('student', '#CCCCCC')
         
-        pages = [html.show_page(i) for i in range(html.n_pages)]
+        pages = [self.html.show_page(i) for i in range(self.html.n_pages)]
         #print(pages[1])    
         
         self.commentview.set_data(pages)
@@ -113,3 +118,13 @@ class MainWindow(wx.Frame):
         #tokens = DataFrame([(4,2),(2,2),(2,22)], columns=['swe','wer'])
         #self.token_list_ctrl.set_data(tokens)
 		
+        
+    def sel_topic(self, event):
+        '''Handles the selection of a topic.'''
+        
+        # Obtain the topic index
+        index = event.GetIndex()
+        if self.html is not None:
+            self.html.highlight('student', "#DDDDDD")
+        
+        # Select the topic through the interface to obtain pages.

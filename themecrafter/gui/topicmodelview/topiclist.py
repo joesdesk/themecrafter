@@ -58,10 +58,11 @@ class MyPanel(wx.Panel):
         """"""
         currentItem = event.GetIndex()
         car = self.myRowDict[currentItem]
-        print(car.make)
-        print(car.model)
-        print(car.color)
-        print(car.year)
+        #print(car.make)
+        #print(car.model)
+        #print(car.color)
+        #print(car.year)
+        event.Skip()
  
 ########################################################################
 class MyFrame(wx.Frame):
