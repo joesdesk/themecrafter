@@ -2,20 +2,9 @@
 # http://www.blog.pythonlibrary.org/2011/01/04/wxpython-wx-listctrl-tips-and-tricks/
 
 import wx
- 
-########################################################################
-class Car(object):
-    """"""
- 
-    #----------------------------------------------------------------------
-    def __init__(self, make, model, year, color="Blue"):
-        """Constructor"""
-        self.make = make
-        self.model = model
-        self.year = year
-        self.color = color
- 
-########################################################################
+import pandas as pd
+
+
 class TopicList(wx.ListCtrl):
     
     def __init__(self, parent):
@@ -39,7 +28,16 @@ class TopicList(wx.ListCtrl):
             self.InsertItem(j, '')
             for i, col in enumerate(row):
                 self.SetItem(j, i, col)
-
+    
+    def clear(self):
+        '''Reset the list control.'''
+        self.DeleteAllItems()
+        self.DeleteAllColumns()
+        
+    def set_columns(self, columns):
+        '''Set columns in the list control.'''
+        for i, colname in enumerate(columns):
+            self.InsertColumn(i, colname, width=90)
  
 ########################################################################
 class MyPanel(wx.Panel):
@@ -49,29 +47,20 @@ class MyPanel(wx.Panel):
     def __init__(self, parent):
         """Constructor"""
         wx.Panel.__init__(self, parent)
- 
-        rows = [Car("Ford", "Taurus", "1996"),
-                Car("Nissan", "370Z", "2010"),
-                Car("Porche", "911", "2009", "Red")
-                ]
- 
+        
         self.list_ctrl = TopicList(self)
+        
+        # Create data frame to test
+        data = [("Ford", "Taurus", "1996"),
+                ("Nissan", "370Z", "2010"),
+                ("Porche", "911", "2009", "Red")]
+       
+        df = pd.DataFrame(data, columns=["Make", "Model", "Year", "Color"])
+        
+        self.list_ctrl.set_data(df)
+        
         self.list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.onItemSelected)
-        self.list_ctrl.InsertColumn(0, "Make")
-        self.list_ctrl.InsertColumn(1, "Model")
-        self.list_ctrl.InsertColumn(2, "Year")
-        self.list_ctrl.InsertColumn(3, "Color")
- 
-        index = 0
-        self.myRowDict = {}
-        for row in rows:
-            self.list_ctrl.InsertItem(index, row.make)
-            self.list_ctrl.SetItem(index, 1, row.model)
-            self.list_ctrl.SetItem(index, 2, row.year)
-            self.list_ctrl.SetItem(index, 3, row.color)
-            self.myRowDict[index] = row
-            index += 1
- 
+        
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.list_ctrl, 0, wx.ALL|wx.EXPAND, 5)
         self.SetSizer(sizer)
@@ -81,6 +70,7 @@ class MyPanel(wx.Panel):
         """"""
         index = event.GetIndex()
         event.Skip()
+        
  
 ########################################################################
 class MyFrame(wx.Frame):
