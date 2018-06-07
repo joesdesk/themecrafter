@@ -12,6 +12,7 @@ from .topicmodelview.topiclist import TopicListCtrl
 
 from ..nlp.utils import open_tree, tree2string
 from ..interface.html2 import HTMLTransform
+from ..interface.topnouns_interface import TopNounsInterface
 
 from . import EVT_DATA_LOAD
 
@@ -103,16 +104,21 @@ class MainWindow(wx.Frame):
         #print("Session started.")
         
         self.html = HTMLTransform(xmlstring)
+        #print(self.html.docs)
+        #self.html.highlight('student', '#CCCCCC')
         
-        self.html.highlight('student', '#CCCCCC')
+        pages = self.html.pages
         
-        pages = [self.html.show_page(i) for i in range(self.html.n_pages)]
+        
         #print(pages[1])    
         
         self.commentview.set_data(pages)
         #print("Html Page set")
         
-        topics = read_csv("M:/themecrafter/results/NLTKPlain2_topwords.csv", index_col=False)
+        
+        
+        self.top_nouns = TopNounsInterface()
+        topics = self.top_nouns.topic_summary()
         
         self.topic_list_ctrl.set_data(topics)
         
@@ -128,7 +134,22 @@ class MainWindow(wx.Frame):
         
         # Obtain the topic index
         index = event.GetIndex()
+        #print(index)
+        
+        # 
+        sel_ids = self.top_nouns.get_docs(index)
+        topic_name = self.top_nouns.topics[index]
+        print(sel_ids[:5])
+        
+        #
+        
         if self.html is not None:
-            self.html.highlight('student', "#DDDDDD")
+            print("What??")
+            self.html.set_sel(sel_ids)
+            self.html.highlight(topic_name, "#DDDDDD")
+            self.html.paginate(10)
+            
+            pages = self.html.pages
+            self.commentview.set_data(pages)
         
         # Select the topic through the interface to obtain pages.

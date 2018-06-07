@@ -12,14 +12,19 @@ class HTMLTransform:
         docs = soup.corpus.contents
         for doc in docs:
             self._spaceout(doc)
+        self._rename_tags(soup)
         self.docs = docs
+        
+        # Indices for selection and order of documents
+        self.sel_ids = None
         
         # Number of documents and number of pages
         self.n_per_page = 10
+        
+        self.pages = None
         self.n_pages = self.paginate(10)
         
-        # Extract the mapping of documents to topics
-        
+       
         
     def _spaceout(self, tag):
         '''Add spaces where appropriate'''
@@ -84,13 +89,27 @@ class HTMLTransform:
         return str(soup)
 
     def paginate(self, n_per_page):
-        '''Finds the number of pages.'''
-        n_docs = len(self.docs)
+        '''Sets the text of the pages.'''
+        print(len(self.docs))
+        # First, apply selection
+        if self.sel_ids is not None:
+            docs = []
+            for i in self.sel_ids:
+                assert i < len(self.docs), str(i) + "is not less than" + str(len(self.docs))
+                docs.append(self.docs[i])
+        else:
+            docs = self.docs
+                
+        n_docs = len(docs)
         pages = []
         counted = 0
         while counted < n_docs:
             upto = min(counted + n_per_page, n_docs)
-            page = self.docs[counted: upto]
+            
+            page = r'<html>'
+            for i in range(counted,upto):
+                page += str(docs[i])
+            page += r'</html>'
             
             pages.append(page)
             counted = upto
@@ -99,11 +118,13 @@ class HTMLTransform:
         self.n_per_page = n_per_page
         return len(self.pages)
         
-    def show_page(self, n):
-        '''Shows the page, a list of documents to be rendered.
-        Here, n is from 1 to the total number of pages.'''
-        page = self.pages[n]
-        return self.render(page, rename_tags=True)
+    
+    #def pages(self):
+        #'''Shows the page, a list of documents to be rendered.
+        #Here, n is from 1 to the total number of pages.'''
+        #return self.pages
+        #page = self.pages[n]
+        #return self.render(page, rename_tags=True)
 
     def highlight_words(self, words, fgcolors, bgcolors):
         '''Highlight each word with a color.'''
@@ -124,12 +145,16 @@ class HTMLTransform:
                         tag['style'] = "color:white; background-color:green;"
                     else:
                         tag['style'] = "color:white; background-color:black;"
+                else:
+                    tag['style'] = ""
+                        
         
-    def sel_topic(self, topic_num):
-        #topic1
-        pass
+    def set_sel(self, indices):
+        '''Takes a list of indices to sort and select the documents
+        prior to pagination.'''
+        self.sel_ids = indices
         
-    
+        
 if __name__=='__main__':
     
     from ..nlp.utils import open_tree, tree2string
