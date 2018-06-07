@@ -51,6 +51,33 @@ class CommentView(wx.Panel):
             text = self.htmlpages[page]
             self.commentwindow.SetPage(text)
             
+            internal = self.commentwindow.GetInternalRepresentation()
+            #print(internal)
+            #self.parse(internal)
+            
+    
+    def parse(self, container, lvl=0):
+        if container is None:
+            pass
+            #print('    '*lvl + 'None')
+        #elif lvl>=2:
+        #    pass
+        else:
+            
+            if str(type(container))==r"<class 'wx._html.HtmlContainerCell'>":
+                bgcolor = container.GetBackgroundColour()
+                halign = container.GetAlignHor()
+                valign = container.GetAlignVer()
+                print('    '*lvl + str(bgcolor) + str(halign) + str(valign) )
+            elif str(type(container))==r"<class 'wx._html.HtmlWordCell'>":
+                #textrep = container.word
+                print('    '*lvl + str('HTML_WORD_CELL') )
+            else:
+                print('    '*lvl + str(type(container)) )
+            
+            self.parse(container.GetFirstChild(), lvl+1)
+            self.parse(container.GetNext(), lvl)
+    
             
 if __name__=='__main__':
     

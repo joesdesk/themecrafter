@@ -70,13 +70,17 @@ class TokenTagHandler(wx.html.HtmlWinTagHandler):
     def HandleTag(self, tag):
         parser = self.GetParser()
         container = parser.GetContainer()
-        old = parser.GetActualColor()
-        oldbgcolor = wx.Colour(255,255,255)#container.GetBackgroundColour()
-        print(oldbgcolor)
+        oldbgcolor = parser.GetActualColor()
+        #oldbgcolor = container.GetBackgroundColour()
+            
+        #if oldbgcolor==wx.NullColour:
+        #    oldbgcolor = wx.Colour(255,255,255)
+        
+        #print(oldbgcolor)
         oldfont = parser.CreateCurrentFont()
         
         tagparams = tag.GetAllParams()
-        print(tagparams)
+        #print(tagparams)
         
         oldfontsize = parser.GetFontSize()
         oldfontunderlined = parser.GetFontUnderlined()
@@ -104,14 +108,14 @@ class TokenTagHandler(wx.html.HtmlWinTagHandler):
             #container.InsertCell(wx.html.HtmlFontCell(newfont))
             
 
-            #self.GetParser().SetActualColor(clr)
+            self.GetParser().SetActualColor(clr)
             container.InsertCell(wx.html.HtmlColourCell(clr, wx.html.HTML_CLR_BACKGROUND))
             #parser.GetContainer().InsertCell(wx.html.HtmlFontCell(newfont))
 
         self.ParseInner(tag)
 
         if tag.HasParam("style"):
-            #self.GetParser().SetActualColor(old)
+            self.GetParser().SetActualColor(old)
             container.InsertCell(wx.html.HtmlColourCell(oldbgcolor, wx.html.HTML_CLR_BACKGROUND))
             #container.InsertCell(wx.html.HtmlFontCell(oldfont))
             #print('apply old font')

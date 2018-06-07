@@ -50,14 +50,16 @@ class HTMLTransform:
         for tag in soup.find_all('sent'):
             tag['type'] = 'sent'
             tag.name = 'span'
+            #tag['style'] = "font-size:10pt"
 
         for tag in soup.find_all('doc'):
             tag['type'] = 'doc'
-            tag.name = 'div'
+            #tag.name = 'div'
+            #tag['style'] = "padding-bottom:10px"
 
         soup.corpus.name = 'html'
         
-    def render(self, docs, rename_tags=False):
+    def render(self, docs, rename_tags=True):
         '''Renders the selection of documents.'''
         soup = BeautifulSoup('', "lxml")
         
@@ -98,7 +100,7 @@ class HTMLTransform:
         '''Shows the page, a list of documents to be rendered.
         Here, n is from 1 to the total number of pages.'''
         page = self.pages[n-1]
-        return self.render(page, rename_tags=False)
+        return self.render(page, rename_tags=True)
 
     def highlight_words(self, words, fgcolors, bgcolors):
         '''Highlight each word with a color.'''
@@ -112,10 +114,13 @@ class HTMLTransform:
             #print(doc.name)
             #doc.name = "doc"
             for tag in doc.find_all(attrs={'topic':True}):
+                #print(tag.name)
                 loc = tag['topic'].find(topic)
                 if not loc < 0:
-                    tag['style'] = "color:white; background-color:green;"
-                    pass
+                    if tag.name == 'sent':
+                        tag['style'] = "color:white; background-color:green;"
+                    else:
+                        tag['style'] = "color:white; background-color:black;"
         
                 
 if __name__=='__main__':
