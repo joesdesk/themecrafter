@@ -15,19 +15,11 @@ class HTMLTransform:
             self._rename_tags(doc)
         self.docs = docs
         
-        # Indices for selection and order of documents
-        self.sel_ids = None
-        
-        # Topic to highlight
-        self.highlight = None
+        # Dictionary of topics containing the selections as strings
+        self.cached_pages = dict()
         
         # Number of documents and number of pages
         self.n_per_page = 10
-        
-        self.pages = None
-        self.n_pages = self.paginate(10)
-        
-       
         
     def _spaceout(self, tag):
         '''Add spaces where appropriate'''
@@ -70,41 +62,13 @@ class HTMLTransform:
 
         doc_elem.name = 'doc'
         doc_elem['type'] = 'doc'
-        #print(str(doc_elem))
         
-    def render(self, docs, rename_tags=True):
-        '''Renders the selection of documents.'''
-        soup = BeautifulSoup('', "lxml")
+    def paginate(self, docs):
+        '''Turns the documents into a list of html strings for pages.'''
         
-        # Add containing element
-        toptag = soup.new_tag('corpus')
-        soup.append(toptag)
-        
-        # Add documents
-        for doc in docs:
-            soup.corpus.append(doc)
-        
-        # Rename of needed
-        if rename_tags:
-            self._rename_tags(soup)
-            
-        # Do highlighting
-        # ...
-        
-        return str(soup)
-
-    def paginate(self, n_per_page):
-        '''Sets the text of the pages.'''
-        
-        # First, apply selection
-        if self.sel_ids is not None:
-            docs = []
-            for i in self.sel_ids:
-                docs.append(self.docs[i])
-        else:
-            docs = self.docs
-                
         n_docs = len(docs)
+        n_per_page = self.n_per_page
+        
         pages = []
         counted = 0
         while counted < n_docs:
@@ -113,24 +77,19 @@ class HTMLTransform:
             page = r'<html>'
             for i in range(counted,upto):
                 doc = docs[i]
-                self.highlight_doc(doc)
                 page += str(doc)
             page += r'</html>'
             
             pages.append(page)
             counted = upto
             
-        self.pages = pages
-        self.n_per_page = n_per_page
-        return len(self.pages)
+        return pages
 
-    def highlight_doc(self, doc):
+    def highlight_doc(self, doc, topic=None):
         '''Highlight each word with a color.'''
-        if self.highlight==None:
+        if topic==None:
             return None
-        
-        topic = self.highlight
-        
+
         for tag in doc.find_all(attrs={'topic':True}):
             
             # Clear existing styles
@@ -144,18 +103,24 @@ class HTMLTransform:
                     pass
                 if tagtype=='sent':
                     tag['style'] = "background-color:#E8D898;"
-                #if tagtype=='tok':
-                    #tag['style'] = "background-color:#E8D898;"
+                if tagtype=='tok':
                     pass
                 
-                
-    def set_highlight(self, topic=None):
-        self.highlight = topic
-        
-    def set_sel(self, indices):
+    def add_cache(self, topic=None, indices=None):
         '''Takes a list of indices to sort and select the documents
         prior to pagination.'''
-        self.sel_ids = indices
+        
+        if indices is None:
+            docs = self.docs
+        else:
+            docs = []
+            for i in indices:
+                doc = self.docs[i]
+                self.highlight_doc(doc, topic)
+                docs.append(self.docs[i])
+        
+        pages = self.paginate(docs)
+        self.cached_pages[topic] = pages
         
         
 if __name__=='__main__':
@@ -166,6 +131,7 @@ if __name__=='__main__':
     xmlstring = tree2string(tree)
     
     html = HTMLTransform(xmlstring)
-    
+    html.add_cache()
+    html.add_cache('hello', [1,2,3])
     
     

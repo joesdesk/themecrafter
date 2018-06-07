@@ -94,62 +94,42 @@ class MainWindow(wx.Frame):
 		
     def data_loaded(self, evt):
         data = evt.attr
-        print("event reached mainwindow")
         
-        #session = PreprocessingSession()
-        #session.load_docs(data)
-        #session.docs_to_tree()
-        tree = open_tree('M:/themecrafter/results/NLTKPlain2_topwords.xml')
-        xmlstring = tree2string(tree)
-        #print("Session started.")
-        
-        self.html = HTMLTransform(xmlstring)
-        #print(self.html.docs)
-        #self.html.highlight('student', '#CCCCCC')
-        
-        pages = self.html.pages
-        
-        
-        #print(pages[1])    
-        
-        self.commentview.set_data(pages)
-        #print("Html Page set")
-        
-        
-        
+        # Set Topic View
         self.top_nouns = TopNounsInterface()
-        topics = self.top_nouns.topic_summary()
         
+        topics = self.top_nouns.topic_summary()
         self.topic_list_ctrl.set_data(topics)
         
-        #tokens = session.tokens_summary()
-        #print('Get tokens summary')
+        # Set HTML
+        tree = open_tree('M:/themecrafter/results/NLTKPlain2_topwords.xml')
+        xmlstring = tree2string(tree)
         
-        #tokens = DataFrame([(4,2),(2,2),(2,22)], columns=['swe','wer'])
-        #self.token_list_ctrl.set_data(tokens)
-		
+        self.html = HTMLTransform(xmlstring)
+        self.html.n_per_page = 10
+        
+        self.html.add_cache()
+        
+        pages = self.html.cached_pages[None]
+        self.commentview.set_data(pages)
+        
+        for i, topic in enumerate(self.top_nouns.topics):
+            sel_ids = self.top_nouns.topic2docs[i]
+            self.html.add_cache(topic, sel_ids)
+        
         
     def sel_topic(self, event):
         '''Handles the selection of a topic.'''
         
         # Obtain the topic index
         index = event.GetIndex()
-        #print(index)
         
-        # 
-        sel_ids = self.top_nouns.topic2docs[index]
-        topic_name = self.top_nouns.topics[index]
-        #print(sel_ids[:5])
+        # Get the topic name
+        topic = self.top_nouns.topics[index]
         
-        #
-        
+        # Get html pages from cache
         if self.html is not None:
-            #print("What??")
-            self.html.set_sel(sel_ids)
-            self.html.set_highlight(topic_name)
-            self.html.paginate(10)
-            
-            pages = self.html.pages
+            pages = self.html.cached_pages[topic]
             self.commentview.set_data(pages)
-        
-        # Select the topic through the interface to obtain pages.
+            
+            
