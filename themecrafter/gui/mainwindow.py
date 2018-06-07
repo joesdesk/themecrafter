@@ -139,14 +139,14 @@ class MainWindow(wx.Frame):
         # 
         sel_ids = self.top_nouns.get_docs(index)
         topic_name = self.top_nouns.topics[index]
-        print(sel_ids[:5])
+        #print(sel_ids[:5])
         
         #
         
         if self.html is not None:
-            print("What??")
+            #print("What??")
             self.html.set_sel(sel_ids)
-            self.html.highlight(topic_name, "#DDDDDD")
+            self.html.set_highlight(topic_name)
             self.html.paginate(10)
             
             pages = self.html.pages
