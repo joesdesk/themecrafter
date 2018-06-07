@@ -5,7 +5,7 @@ import wx
 import pandas as pd
 
 
-class TopicList(wx.ListCtrl):
+class TopicListCtrl(wx.ListCtrl):
     
     def __init__(self, parent):
         wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT)
@@ -48,7 +48,7 @@ class MyPanel(wx.Panel):
         """Constructor"""
         wx.Panel.__init__(self, parent)
         
-        self.list_ctrl = TopicList(self)
+        self.list_ctrl = TopicListCtrl(self)
         
         # Create data frame to test
         data = [("Ford", "Taurus", "1996"),

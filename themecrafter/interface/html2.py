@@ -18,6 +18,9 @@ class HTMLTransform:
         self.n_per_page = 10
         self.n_pages = self.paginate(10)
         
+        # Extract the mapping of documents to topics
+        
+        
     def _spaceout(self, tag):
         '''Add spaces where appropriate'''
         offset = 0
@@ -122,7 +125,11 @@ class HTMLTransform:
                     else:
                         tag['style'] = "color:white; background-color:black;"
         
-                
+    def sel_topic(self, topic_num):
+        #topic1
+        pass
+        
+    
 if __name__=='__main__':
     
     from ..nlp.utils import open_tree, tree2string
@@ -133,3 +140,5 @@ if __name__=='__main__':
     html = HTMLTransform(xmlstring)
     
     html.highlight('student', '#CCCCCC')
+    
+    

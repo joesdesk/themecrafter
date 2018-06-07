@@ -1,6 +1,6 @@
 import wx
 
-from pandas import DataFrame
+from pandas import read_csv, DataFrame
 
 from .mainwidgets.mainmenu import MainMenuBar
 
@@ -8,7 +8,7 @@ from .mainwidgets.mainsplitter import MainWindowSplitter
 from .commentview import CommentView
 from .elementlist.tokenlist import TokenListCtrl
 from .plotting.mtplot import CanvasPanel
-from .topicmodelview.topiclist import MyPanel as TopicListCtrl
+from .topicmodelview.topiclist import TopicListCtrl
 
 from ..nlp.utils import open_tree, tree2string
 from ..interface.html2 import HTMLTransform
@@ -111,6 +111,10 @@ class MainWindow(wx.Frame):
         
         self.commentview.set_data(pages)
         #print("Html Page set")
+        
+        topics = read_csv("M:/themecrafter/results/NLTKPlain2_topwords.csv", index_col=False)
+        
+        self.topic_list_ctrl.set_data(topics)
         
         #tokens = session.tokens_summary()
         #print('Get tokens summary')
