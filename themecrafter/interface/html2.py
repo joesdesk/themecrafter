@@ -95,12 +95,11 @@ class HTMLTransform:
 
     def paginate(self, n_per_page):
         '''Sets the text of the pages.'''
-        print(len(self.docs))
+        
         # First, apply selection
         if self.sel_ids is not None:
             docs = []
             for i in self.sel_ids:
-                assert i < len(self.docs), str(i) + "is not less than" + str(len(self.docs))
                 docs.append(self.docs[i])
         else:
             docs = self.docs

@@ -137,7 +137,7 @@ class MainWindow(wx.Frame):
         #print(index)
         
         # 
-        sel_ids = self.top_nouns.get_docs(index)
+        sel_ids = self.top_nouns.topic2docs[index]
         topic_name = self.top_nouns.topics[index]
         #print(sel_ids[:5])
         
