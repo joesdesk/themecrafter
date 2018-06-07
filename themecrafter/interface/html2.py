@@ -12,11 +12,14 @@ class HTMLTransform:
         docs = soup.corpus.contents
         for doc in docs:
             self._spaceout(doc)
-        self._rename_tags(soup)
+            self._rename_tags(doc)
         self.docs = docs
         
         # Indices for selection and order of documents
         self.sel_ids = None
+        
+        # Topic to highlight
+        self.highlight = None
         
         # Number of documents and number of pages
         self.n_per_page = 10
@@ -49,23 +52,25 @@ class HTMLTransform:
                 text_len = int(t.get('len'))
                 offset = loc_offset + text_len
             
-    def _rename_tags(self, soup):
+    def _rename_tags(self, doc_elem):
         '''Change XML tags to HTML elements.'''
-        for tag in soup.find_all('tok'):
+        for tag in doc_elem.find_all('tok'):
             tag['type'] = 'tok'
             tag.name = 'span'
 
-        for tag in soup.find_all('sent'):
+        for tag in doc_elem.find_all('sent'):
             tag['type'] = 'sent'
             tag.name = 'span'
             #tag['style'] = "font-size:10pt"
 
-        for tag in soup.find_all('doc'):
-            tag['type'] = 'doc'
+        #for tag in doc_elem.find_all('doc'):
+            #tag['type'] = 'doc'
             #tag.name = 'div'
             #tag['style'] = "padding-bottom:10px"
 
-        soup.corpus.name = 'html'
+        doc_elem.name = 'doc'
+        doc_elem['type'] = 'doc'
+        #print(str(doc_elem))
         
     def render(self, docs, rename_tags=True):
         '''Renders the selection of documents.'''
@@ -108,7 +113,9 @@ class HTMLTransform:
             
             page = r'<html>'
             for i in range(counted,upto):
-                page += str(docs[i])
+                doc = docs[i]
+                self.highlight_doc(doc)
+                page += str(doc)
             page += r'</html>'
             
             pages.append(page)
@@ -117,37 +124,34 @@ class HTMLTransform:
         self.pages = pages
         self.n_per_page = n_per_page
         return len(self.pages)
-        
-    
-    #def pages(self):
-        #'''Shows the page, a list of documents to be rendered.
-        #Here, n is from 1 to the total number of pages.'''
-        #return self.pages
-        #page = self.pages[n]
-        #return self.render(page, rename_tags=True)
 
-    def highlight_words(self, words, fgcolors, bgcolors):
+    def highlight_doc(self, doc):
         '''Highlight each word with a color.'''
-        for tag in self.soup.find_all('tok'):
-            if tag.string in words:
-                style = "color:" + fgcolor + "; background-color:" + bgcolor
-                tag['style'] = '"' + style + '"'
+        if self.highlight==None:
+            return None
+        
+        topic = self.highlight
+        
+        for tag in doc.find_all(attrs={'topic':True}):
+            
+            # Clear existing styles
+            tag['style'] = None
+            
+            # Assign styles
+            loc = tag['topic'].find(topic)
+            if not loc < 0:
+                tagtype = tag['type']
+                if tagtype=='doc':
+                    pass
+                if tagtype=='sent':
+                    tag['style'] = "background-color:#E8D898;"
+                #if tagtype=='tok':
+                    #tag['style'] = "background-color:#E8D898;"
+                    pass
                 
-    def highlight(self, topic, color):
-        for doc in self.docs:
-            #print(doc.name)
-            #doc.name = "doc"
-            for tag in doc.find_all(attrs={'topic':True}):
-                #print(tag.name)
-                loc = tag['topic'].find(topic)
-                if not loc < 0:
-                    if tag.name == 'sent':
-                        tag['style'] = "color:white; background-color:green;"
-                    else:
-                        tag['style'] = "color:white; background-color:black;"
-                else:
-                    tag['style'] = ""
-                        
+                
+    def set_highlight(self, topic=None):
+        self.highlight = topic
         
     def set_sel(self, indices):
         '''Takes a list of indices to sort and select the documents
@@ -164,6 +168,5 @@ if __name__=='__main__':
     
     html = HTMLTransform(xmlstring)
     
-    html.highlight('student', '#CCCCCC')
     
     
