@@ -15,6 +15,31 @@ class Car(object):
         self.year = year
         self.color = color
  
+########################################################################
+class TopicList(wx.ListCtrl):
+    
+    def __init__(self, parent):
+        wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT)
+        
+        
+    def set_data(self, df):
+        '''Sets the data, a list of tuples, in the list control.'''
+        
+        # Empty contents
+        self.clear()
+        
+        # Pre-set columns
+        nrows, ncols = df.shape
+        columns = df.columns.values.tolist()
+        self.set_columns(columns)
+        
+        # Set data
+        df_data = df.astype(str).values.tolist()
+        for j, row in enumerate(df_data):
+            self.InsertItem(j, '')
+            for i, col in enumerate(row):
+                self.SetItem(j, i, col)
+
  
 ########################################################################
 class MyPanel(wx.Panel):
@@ -30,9 +55,7 @@ class MyPanel(wx.Panel):
                 Car("Porche", "911", "2009", "Red")
                 ]
  
-        self.list_ctrl = wx.ListCtrl(self, size=(-1,100),
-                                style=wx.LC_REPORT
-                                )
+        self.list_ctrl = TopicList(self)
         self.list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.onItemSelected)
         self.list_ctrl.InsertColumn(0, "Make")
         self.list_ctrl.InsertColumn(1, "Model")
@@ -56,12 +79,7 @@ class MyPanel(wx.Panel):
     #----------------------------------------------------------------------
     def onItemSelected(self, event):
         """"""
-        currentItem = event.GetIndex()
-        car = self.myRowDict[currentItem]
-        #print(car.make)
-        #print(car.model)
-        #print(car.color)
-        #print(car.year)
+        index = event.GetIndex()
         event.Skip()
  
 ########################################################################
