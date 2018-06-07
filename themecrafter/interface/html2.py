@@ -102,7 +102,7 @@ class HTMLTransform:
     def show_page(self, n):
         '''Shows the page, a list of documents to be rendered.
         Here, n is from 1 to the total number of pages.'''
-        page = self.pages[n-1]
+        page = self.pages[n]
         return self.render(page, rename_tags=True)
 
     def highlight_words(self, words, fgcolors, bgcolors):

@@ -48,7 +48,7 @@ class CommentView(wx.Panel):
             
     def set_page(self, page):
         if self.htmlpages is not None:
-            text = self.htmlpages[page]
+            text = self.htmlpages[page-1]
             self.commentwindow.SetPage(text)
             
             #internal = self.commentwindow.GetInternalRepresentation()
