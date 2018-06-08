@@ -83,8 +83,8 @@ class MainWindow(wx.Frame):
         
         # Add plot to diagram
         RB_sizer = wx.BoxSizer(wx.VERTICAL)
-        plot = CanvasPanel(RB_panel)
-        RB_sizer.Add(plot, proportion=1, flag=wx.EXPAND|wx.ALL)
+        self.plot = CanvasPanel(RB_panel)
+        RB_sizer.Add(self.plot, proportion=1, flag=wx.EXPAND|wx.ALL)
         RB_panel.SetSizer(RB_sizer)
         
         # Finally, add the interface
@@ -132,4 +132,8 @@ class MainWindow(wx.Frame):
             pages = self.html.cached_pages[topic]
             self.commentview.set_data(pages)
             
-            
+        # Obtain the concurrence of the topic
+        concr = self.top_nouns.topic_concurrence[index]
+        
+        self.plot.bar(self.top_nouns.topics, concr)
+        
