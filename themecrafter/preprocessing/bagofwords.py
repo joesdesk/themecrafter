@@ -49,11 +49,59 @@ class BagOfWords:
         self.bows_ = bows    
         
         
-if __name__=='__main__':
-
+def get_bag_of_words():
+    
+    # Obtain documents
     from ..nlp.utils import open_tree, show_tree, save_tree
-    tree = open_tree("M:/themecrafter/results/NLTKPlain2.xml")
+    tree = open_tree("M:/themecrafter/trees/NLTKPlain2.xml")
 
-    x = BagOfWords('label', tree)
+    # Reduce labelling
+    from .labeltransform import LabelTransform
+    from ..nlp.nltklemmatizer import NOUN_POS
+
+    labeltransform = LabelTransform(labelname='label2')
+
+    labeltransform.lemmatize = True
+    labeltransform.rm_stopwords = True
+    labeltransform.rm_punctuation = True
+    labeltransform.rm_char_len = 2
+
+    labeltransform.pos_whitelist = NOUN_POS
+    labeltransform.label_blacklist = ['program', 'ubc', 'school', \
+        'student', 'course']
+
+    # Add new labels to tree
+    labeltransform.fit(tree)
+    #show_tree(tree)
+
+    # Obtain all tokens with the new label
+    all_labels = [t.get('label2') for t in tree.findall('.//tok[@label2]')]
+
+    # Now we remove the most common words
+    from collections import Counter
+    token_counts = Counter(all_labels)
+
+    blacklist = []
+    for k, v in token_counts.items():
+        if v < 10:
+            blacklist.append(k)
+
+    # Remove the labels which are in the blacklist
+    for t in tree.findall('.//tok[@label2]'):
+        word = t.get('label2')
+        if word in blacklist:
+            t.attrib.pop('label2')
+
+    # Finally, we convert the tree into a list of lists of words
+    #from ..preprocessing.bagofwords import BagOfWords
+    bow = BagOfWords(tokenlabel='label2', doc_sel="DOCUMENT")
+    bow.fit(tree)
+
+    # Bag of words representation of each document (sentence)
+    bows = bow.bows_
+    return bows
+
+    # Corresponding tree elements for later retagging
+    #tags = bow.tags_
     
     
