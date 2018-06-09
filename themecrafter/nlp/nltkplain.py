@@ -17,7 +17,7 @@ from ..nlp.utils import open_tree, show_tree, save_tree
 
 
 class NLTKPlain:
-    '''The most basic parser.'''
+    '''The most basic parser. This keeps the sentences in tact.'''
     def __init__(self):
         pass
     
@@ -31,13 +31,6 @@ class NLTKPlain:
         for t in tree.findall('.//tok'):
             parser.parse(t)
             
-        # Then, parse the sentences
-        parser = NltkSentParser()
-        for t in tree.findall('.//tok'):
-            parser.parse(t)
-        
-        return tree
-        
 
 class NLTKPlain2:
     '''Adds labels for special tokens found.'''
@@ -45,7 +38,15 @@ class NLTKPlain2:
         self.init_parser = NLTKPlain()
         
     def parse(self, docs):
+        # Add element tags around the sentences
         tree = self.init_parser.parse(docs)
+        
+        # Then, add element tags around the tokens
+        parser = NltkSentParser()
+        for t in tree.findall('.//tok'):
+            parser.parse(t)
+        
+        return tree
         
         # Then, label some text with special characters.
         for t in tree.findall('.//tok'):
@@ -79,23 +80,16 @@ class NLTKPlain2:
             label_ = label_word( t.text )
             if label_ is not None:
                 t.set('label', label_)
-
                 
                 
 class NLTKPlainWS:
 
     def __init__(self):
-        pass
+        self.init_parser = NLTKPlain()
     
     def parse(self, docs):
-        # First, parse the corpus
-        parser = CorpusParser()
-        tree = parser.parse(docs)
-        
-        # Then, parse the documents
-        parser = NltkDocParser()
-        for t in tree.findall('.//tok'):
-            parser.parse(t)
+        # Add element tags around the sentences
+        tree = self.init_parser.parse(docs)
             
         # Then, parse the sentences
         parser = PyWSDParser()
@@ -104,9 +98,6 @@ class NLTKPlainWS:
         
         return tree
         
-
-
-
 
 class NLTKPlain3:
     
