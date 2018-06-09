@@ -33,13 +33,13 @@ class LabelTransform:
                 newlabel = wordnet_lemmatize(newlabel, pos)
             
             # Filter new label
-            if len(label ) <self.rm_char_len:
+            if len(newlabel) < self.rm_char_len:
                 newlabel=None
-            if (self.rm_stopwords) and (label in all_stopwords):
+            if (self.rm_stopwords) and (newlabel in all_stopwords):
                 newlabel=None
-            if (self.rm_punctuation) and (label in punctuation):
+            if (self.rm_punctuation) and (newlabel in punctuation):
                 newlabel=None
-            if label in self.label_blacklist:
+            if newlabel in self.label_blacklist:
                 newlabel=None
             
             if (newlabel is not None) and (pos is not None): 
