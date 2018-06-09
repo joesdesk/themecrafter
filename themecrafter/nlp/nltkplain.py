@@ -13,8 +13,6 @@ from .nltkparser import NltkDocParser, NltkSentParser
 from .reparser import ReParser
 from .labelling import label_special, label_word
 
-from ..nlp.utils import open_tree, show_tree, save_tree
-
 
 class NLTKPlain:
     '''The most basic parser. This keeps the sentences in tact.'''
@@ -30,6 +28,8 @@ class NLTKPlain:
         parser = NltkDocParser()
         for t in tree.findall('.//tok'):
             parser.parse(t)
+        
+        return tree
             
 
 class NLTKPlain2:
@@ -45,8 +45,6 @@ class NLTKPlain2:
         parser = NltkSentParser()
         for t in tree.findall('.//tok'):
             parser.parse(t)
-        
-        return tree
         
         # Then, label some text with special characters.
         for t in tree.findall('.//tok'):
@@ -105,6 +103,15 @@ class NLTKPlain3:
         self.init_parser = NLTKPlain2()
         
     
-       
-        
-        
+if __name__=="__main__":
+
+    from ..datasets import BGSurveyDataSet as Data
+    docs = Data().X
+    
+    parser = NLTKPlain2()
+    tree = parser.parse(docs)
+    
+    from .utils import open_tree, show_tree, save_tree
+    save_tree(tree, "M:/themecrafter/results/NLTKPlain2.xml")
+    
+    
