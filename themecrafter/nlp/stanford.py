@@ -36,7 +36,8 @@ class StanfordBase:
         
     def open(self):
         self.nlp = StanfordCoreNLP(r'thirdparty/stanford-corenlp-full-2018-02-27/', \
-            quiet=self.quiet, lang='en')
+            quiet=self.quiet, lang='en', memory='2g', \
+            timeout=15000)
         
         
     def word_tokenize(self, sentence):
@@ -78,7 +79,8 @@ class StanfordBase:
         '''Uses the general stanford annotators'''
         if annotators is None:
             # Full list https://stanfordnlp.github.io/CoreNLP/annotators.html
-            annotators = 'tokenize,ssplit,pos,lemma,ner,parse,depparse,dcoref'
+            #annotators = 'tokenize,ssplit,pos,lemma,ner,regexner,sentiment,parse,depparse,dcoref'
+            annotators = 'tokenize,ssplit,pos,parse,lemma,ner,regexner,sentiment,depparse,dcoref'
         props={'annotators': annotators, \
             'pipelineLanguage': 'en', \
             'outputFormat': 'xml'}
@@ -86,7 +88,14 @@ class StanfordBase:
 
         
     def close(self):
-        '''Do not forget to close! The backend server will consume a lot memery.'''
+        '''Do not forget to close! The backend server will consume a lot memory.'''
         self.nlp.close()
         
         
+if __name__=='__main__':
+    
+    from ..datasets import SixDayWarDataSet
+    docs = SixDayWarDataSet().X
+    
+    parser = StanfordPlain()
+    parser.parse_corpus(docs)
