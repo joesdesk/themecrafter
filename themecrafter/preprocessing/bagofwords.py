@@ -41,9 +41,12 @@ class BagOfWords:
             
             bows.append(words)
             tags.append(d)
-            
-        self.tags_ = tags    # Keep the tag references for later retagging
-        self.bows_ = bows    # Keep the bag of words
+        
+        # Keep the tag references for later retagging
+        self.tags_ = tags
+        
+        # Keep the bag of words
+        self.bows_ = bows    
         
         
 if __name__=='__main__':
