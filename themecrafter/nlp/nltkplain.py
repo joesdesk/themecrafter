@@ -8,7 +8,7 @@ from nltk.tokenize import TreebankWordTokenizer
 
 from .corpusparser import CorpusParser
 from .nltkparser import NltkDocParser, NltkSentParser
-from .pywsd import PyWSDParser
+#from .pywsd import PyWSDParser
 
 from .reparser import ReParser
 from .labelling import label_special, label_word

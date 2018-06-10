@@ -17,7 +17,7 @@
 
 #from pywsd.lesk import simple_lesk
 
-from .pywsdmod import disambiguate
+#from .pywsdmod import disambiguate
 #from pywsd.similarity import max_similarity as maxsim
 
 #from pywsd.lesk import cached_signatures
