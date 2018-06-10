@@ -55,22 +55,16 @@ def get_bag_of_words():
     from ..nlp.utils import open_tree, show_tree, save_tree
     tree = open_tree("M:/themecrafter/trees/NLTKPlain2.xml")
 
-    # Reduce labelling
+    # Add transformed labels to tree to use
     from .labeltransform import LabelTransform
     from ..nlp.nltklemmatizer import NOUN_POS
-
-    labeltransform = LabelTransform(labelname='label2')
-
-    labeltransform.lemmatize = True
-    labeltransform.rm_stopwords = True
-    labeltransform.rm_punctuation = True
-    labeltransform.rm_char_len = 2
-
+    
+    labeltransform = LabelTransform(labelname='label2', lemmatize = True,
+        rm_stopwords = True, rm_punctuation = True, rm_char_len = 2)
     labeltransform.pos_whitelist = NOUN_POS
     labeltransform.label_blacklist = ['program', 'ubc', 'school', \
         'student', 'course']
-
-    # Add new labels to tree
+        
     labeltransform.fit(tree)
     #show_tree(tree)
 

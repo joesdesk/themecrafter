@@ -9,14 +9,15 @@ from nltk.util import flatten
 
 class LabelTransform:
     
-    def __init__(self, labelname='new_label_name'):
+    def __init__(self, labelname='new_label_name', lemmatize=True, 
+        rm_stopwords=True, rm_punctuation=True, rm_char_len=1):
         '''A list of tokens, which are tuples indicating the label and pos.'''
         self.labelname = labelname
         
-        self.lemmatize = True
-        self.rm_stopwords = True
-        self.rm_punctuation = True
-        self.rm_char_len = 1
+        self.lemmatize = rm_punctuation
+        self.rm_stopwords = rm_stopwords
+        self.rm_punctuation = rm_punctuation
+        self.rm_char_len = rm_char_len
         
         self.pos_whitelist = []
         self.label_blacklist = []
