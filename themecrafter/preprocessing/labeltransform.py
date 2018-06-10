@@ -9,8 +9,8 @@ from nltk.util import flatten
 
 class LabelTransform:
     
-    def __init__(self, labelname='new_label_name', lemmatize=True, 
-        rm_stopwords=True, rm_punctuation=True, rm_char_len=1):
+    def __init__(self, labelname='label2', lemmatize=True, rm_stopwords=True, 
+        rm_punctuation=True, rm_char_len=1):
         '''A list of tokens, which are tuples indicating the label and pos.'''
         self.labelname = labelname
         
@@ -19,7 +19,7 @@ class LabelTransform:
         self.rm_punctuation = rm_punctuation
         self.rm_char_len = rm_char_len
         
-        self.pos_whitelist = []
+        self.pos_whitelist = None
         self.label_blacklist = []
         
     def fit(self, tree):
@@ -44,8 +44,9 @@ class LabelTransform:
                 newlabel=None
             
             if (newlabel is not None) and (pos is not None): 
-                if pos not in self.pos_whitelist:
-                    newlabel=None
+                if self.pos_whitelist is not None:
+                    if pos not in self.pos_whitelist:
+                        newlabel=None
             
             # Append newlabel if survived filtering
             if newlabel is not None:
