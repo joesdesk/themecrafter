@@ -5,7 +5,7 @@ from .gui import EVT_DATA_LOAD
 from .nlp.utils import open_tree, tree2string
 from .interface.html2 import HTMLTransform
 from .interface.topnouns_interface import TopNounsInterface
-
+from .interface.dataload import DataLoadInterface
 
 
 class Application:
@@ -32,15 +32,18 @@ class Application:
     def data_loaded(self, evt):
         data = evt.attr
         
+        datainterface = DataLoadInterface(data)
+        xmlstring = datainterface.get_xml_string()
+        #print(xmlstring)
         # Set Topic View
-        self.top_nouns = TopNounsInterface()
+        #self.top_nouns = TopNounsInterface()
         
-        topics = self.top_nouns.topic_summary()
-        self.topic_list_ctrl.set_data(topics)
+        #topics = self.top_nouns.topic_summary()
+        #self.topic_list_ctrl.set_data(topics)
         
         # Set HTML
-        tree = open_tree('M:/themecrafter/results/NLTKPlain2_topwords.xml')
-        xmlstring = tree2string(tree)
+        #tree = open_tree('M:/themecrafter/labelled/NLTKPlain2_topwords.xml')
+        #xmlstring = tree2string(tree)
         
         self.html = HTMLTransform(xmlstring)
         self.html.n_per_page = 10
@@ -48,11 +51,13 @@ class Application:
         self.html.add_cache()
         
         pages = self.html.cached_pages[None]
-        self.commentview.set_data(pages)
+        print(pages[0])
+        self.window.commentview.set_data(pages)
+        #self.window.commentview.commentwindow.LoadPage('themecrafter/interface/test.html')
         
-        for i, topic in enumerate(self.top_nouns.topics):
-            sel_ids = self.top_nouns.topic2docs[i]
-            self.html.add_cache(topic, sel_ids)
+        #for i, topic in enumerate(self.top_nouns.topics):
+            #sel_ids = self.top_nouns.topic2docs[i]
+            #self.html.add_cache(topic, sel_ids)
         
         
     
