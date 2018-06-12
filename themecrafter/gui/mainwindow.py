@@ -10,11 +10,8 @@ from .elementlist.tokenlist import TokenListCtrl
 from .plotting.mtplot import CanvasPanel
 from .topicmodelview.topiclist import TopicListCtrl
 
-from ..nlp.utils import open_tree, tree2string
-from ..interface.html2 import HTMLTransform
-from ..interface.topnouns_interface import TopNounsInterface
 
-from . import EVT_DATA_LOAD
+
 
 # https://wxpython.org/Phoenix/docs/html/events_overview.html#custom-event-summary
 # event propagation http://zetcode.com/wxpython/events/
@@ -39,9 +36,6 @@ class MainWindow(wx.Frame):
         main_menubar = MainMenuBar()
         self.SetMenuBar(main_menubar)
 
-            # See https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
-        #self.Bind(wx.EVT_MENU, self.data_loaded, main_menubar)
-        self.Bind(EVT_DATA_LOAD, self.data_loaded)
         
         # Add splitters to obtain 4 panels on which to add widgets.
         main_splitter = MainWindowSplitter(self)
@@ -79,7 +73,7 @@ class MainWindow(wx.Frame):
         LT_sizer.Add(self.topic_list_ctrl, proportion=1, flag=wx.EXPAND|wx.ALL)
         LT_panel.SetSizer(LT_sizer)
         
-        self.topic_list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.sel_topic)
+        
         
         # Add plot to diagram
         RB_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -92,48 +86,5 @@ class MainWindow(wx.Frame):
         
 
 		
-    def data_loaded(self, evt):
-        data = evt.attr
-        
-        # Set Topic View
-        self.top_nouns = TopNounsInterface()
-        
-        topics = self.top_nouns.topic_summary()
-        self.topic_list_ctrl.set_data(topics)
-        
-        # Set HTML
-        tree = open_tree('M:/themecrafter/results/NLTKPlain2_topwords.xml')
-        xmlstring = tree2string(tree)
-        
-        self.html = HTMLTransform(xmlstring)
-        self.html.n_per_page = 10
-        
-        self.html.add_cache()
-        
-        pages = self.html.cached_pages[None]
-        self.commentview.set_data(pages)
-        
-        for i, topic in enumerate(self.top_nouns.topics):
-            sel_ids = self.top_nouns.topic2docs[i]
-            self.html.add_cache(topic, sel_ids)
-        
-        
-    def sel_topic(self, event):
-        '''Handles the selection of a topic.'''
-        
-        # Obtain the topic index
-        index = event.GetIndex()
-        
-        # Get the topic name
-        topic = self.top_nouns.topics[index]
-        
-        # Get html pages from cache
-        if self.html is not None:
-            pages = self.html.cached_pages[topic]
-            self.commentview.set_data(pages)
-            
-        # Obtain the concurrence of the topic
-        concr = self.top_nouns.topic_concurrence[index]
-        
-        self.plot.bar(self.top_nouns.topics, concr)
+
         
