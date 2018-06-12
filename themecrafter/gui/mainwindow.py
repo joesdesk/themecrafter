@@ -1,6 +1,6 @@
 import wx
 
-from pandas import DataFrame
+from pandas import read_csv, DataFrame
 
 from .mainwidgets.mainmenu import MainMenuBar
 
@@ -8,11 +8,10 @@ from .mainwidgets.mainsplitter import MainWindowSplitter
 from .commentview import CommentView
 from .elementlist.tokenlist import TokenListCtrl
 from .plotting.mtplot import CanvasPanel
+from .topicmodelview.topiclist import TopicListCtrl
 
-from ..nlp.session import PreprocessingSession
-from ..output.html2 import HTMLTransform
 
-from . import EVT_DATA_LOAD
+
 
 # https://wxpython.org/Phoenix/docs/html/events_overview.html#custom-event-summary
 # event propagation http://zetcode.com/wxpython/events/
@@ -37,9 +36,6 @@ class MainWindow(wx.Frame):
         main_menubar = MainMenuBar()
         self.SetMenuBar(main_menubar)
 
-            # See https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
-        #self.Bind(wx.EVT_MENU, self.data_loaded, main_menubar)
-        self.Bind(EVT_DATA_LOAD, self.data_loaded)
         
         # Add splitters to obtain 4 panels on which to add widgets.
         main_splitter = MainWindowSplitter(self)
@@ -71,30 +67,41 @@ class MainWindow(wx.Frame):
         LB_sizer.Add(notebook, proportion=1, flag=wx.EXPAND|wx.ALL)
         LB_panel.SetSizer(LB_sizer)
         
+        # Add widget to list topics
+        LT_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.topic_list_ctrl = TopicListCtrl(LT_panel)
+        LT_sizer.Add(self.topic_list_ctrl, proportion=1, flag=wx.EXPAND|wx.ALL)
+        LT_panel.SetSizer(LT_sizer)
+        
+        self.topic_list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.sel_topic)
+        
         # Add plot to diagram
         RB_sizer = wx.BoxSizer(wx.VERTICAL)
-        plot = CanvasPanel(RB_panel)
-        RB_sizer.Add(plot, proportion=1, flag=wx.EXPAND|wx.ALL)
+        self.plot = CanvasPanel(RB_panel)
+        RB_sizer.Add(self.plot, proportion=1, flag=wx.EXPAND|wx.ALL)
         RB_panel.SetSizer(RB_sizer)
         
+        # Finally, add the interface
+        self.html = None
+        
 
-		
-    def data_loaded(self, evt):
-        data = evt.attr
-        print("event reached mainwindow")
+    def sel_topic(self, event):
+        '''Handles the selection of a topic.'''
         
-        session = PreprocessingSession()
-        session.load_docs(data)
-        session.docs_to_tree()
-        xmlstring = session.tree_as_string()
-        print("Session started.")
+        # Obtain the topic index
+        index = event.GetIndex()
         
-        self.commentview.set_data(xmlstring)
-        print("Html Page set")
+        # Get the topic name
+        topic = self.top_nouns.topics[index]
         
-        #tokens = session.tokens_summary()
-        #print('Get tokens summary')
+        # Get html pages from cache
+        if self.html is not None:
+            pages = self.html.cached_pages[topic]
+            self.commentview.set_data(pages)
+            
+        # Obtain the concurrence of the topic
+        concr = self.top_nouns.topic_concurrence[index]
         
-        #tokens = DataFrame([(4,2),(2,2),(2,22)], columns=['swe','wer'])
-        #self.token_list_ctrl.set_data(tokens)
-		
+        self.plot.bar(self.top_nouns.topics, concr)
+
+        
