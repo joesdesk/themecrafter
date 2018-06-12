@@ -60,7 +60,7 @@ class HTMLTransform:
             #tag.name = 'div'
             #tag['style'] = "padding-bottom:10px"
 
-        doc_elem.name = 'doc'
+        doc_elem.name = 'div'
         doc_elem['type'] = 'doc'
         
     def paginate(self, docs):
@@ -74,11 +74,19 @@ class HTMLTransform:
         while counted < n_docs:
             upto = min(counted + n_per_page, n_docs)
             
-            page = r'<html>'
+            page = r'<html><table style="width:100%">'
             for i in range(counted,upto):
                 doc = docs[i]
+                page += r'<tr style="align:center">'
+                page += r'<td></td>'
+                #page += r'<td style="text-align:right; vertical-align:top; background-color:blue; width:100%">300</td>'
+                page += r'<td style="vertical-align:top; width:50">300</td>'
+                page += r'<td style="width:400">'
                 page += str(doc)
-            page += r'</html>'
+                page += str('</td>')
+                page += r'<td></td>'
+                page += r'</tr>'
+            page += r'<table></html>'
             
             pages.append(page)
             counted = upto
