@@ -28,7 +28,7 @@ class MainWindow(wx.Frame):
         '''
 
         # Since we will use a toolbar, we use the wx.Frame
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=title, size=(800,600))
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=title, size=(1000,800))
 
         # Create a new session with the winddow to interact with package routines
 
