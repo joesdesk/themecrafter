@@ -1,6 +1,7 @@
 import wx
 
 from ..dataloading.datamenu import DataMenu
+from ..analyzing.analysismenu import AnalysisMenu
 
 # Custom event ids: http://zetcode.com/wxpython/events/
 #ID_MENU_NEW = wx.NewId()
@@ -37,4 +38,5 @@ class MainMenuBar(wx.MenuBar):
         datamenu = DataMenu(self)
         self.Append(datamenu, "Data")
         
-        
+        analysismenu = AnalysisMenu(self)
+        self.Append(analysismenu, "Analysis")

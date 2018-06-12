@@ -1,6 +1,8 @@
 import wx
 from .gui.mainwindow import MainWindow
+
 from .gui import EVT_DATA_LOAD
+from .gui import EVT_INITIALIZE_MODEL
 
 from .nlp.utils import open_tree, tree2string
 from .interface.html2 import HTMLTransform
@@ -23,6 +25,7 @@ class Application:
             # See https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
         #self.Bind(wx.EVT_MENU, self.data_loaded, main_menubar)
         self.window.Bind(EVT_DATA_LOAD, self.data_loaded)
+        self.window.Bind(EVT_INITIALIZE_MODEL, self.init_model)
         
         
     def start(self):
@@ -60,4 +63,8 @@ class Application:
             #self.html.add_cache(topic, sel_ids)
         
         
-    
+    def init_model(self, evt):
+        data = evt.model_params
+        print(data)
+        print(evt.GetId())
+        
