@@ -6,6 +6,7 @@ Most frequent
 * __wxPython Wiki.__ [https://wiki.wxpython.org/FrontPage](https://wiki.wxpython.org/FrontPage)
 
 Screenshots of widgets: http://docs.wxwidgets.org/trunk/page_screenshots.html
+http://docs.wxwidgets.org/3.1/page_screenshots.html
 
 Useful references
 * __wxPython Testing.__ [https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide](https://wiki.wxpython.org/Unit%20Testing%20Quick%20Start%20Guide)
