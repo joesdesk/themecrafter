@@ -18,11 +18,11 @@ class GensimLDA:
         self.k_topics = None
         self.model = None
         
-    def fit(self, k_topics):
+    def fit(self, k_topics, iterations=50):
         ''''''
         self.k_topics = k_topics
         self.model = LdaModel(corpus=self.corpus, id2word=self.dictionary, \
-            num_topics=k_topics)
+            num_topics=k_topics, iterations=iterations)
         
     def get_document_topic_matrix(self, X=None):
         '''Returns an n_docs x k_topics array of probabilities
