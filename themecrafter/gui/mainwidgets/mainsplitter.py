@@ -26,6 +26,11 @@ class MainWindowSplitter(wx.SplitterWindow):
         # Having set up the secondary sizers, perform the split
         self.SplitVertically(left_splitter, right_splitter)
 
+        self.Bind(wx.EVT_SPLITTER_DCLICK, self.keepslplit)
+        
+    def keepslplit(self, event):
+        #print("Splittercalled")
+        event.Veto()
 
 #ex = wx.App()
 #Mywin(None,'Splitter Demo')
