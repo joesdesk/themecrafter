@@ -81,7 +81,7 @@ class HTMLTransform:
                 page += r'<td></td>'
                 #page += r'<td style="text-align:right; vertical-align:top; background-color:blue; width:100%">300</td>'
                 page += r'<td style="vertical-align:top; width:50">300</td>'
-                page += r'<td style="width:400">'
+                page += r'<td style="width:360">'
                 page += str(doc)
                 page += str('</td>')
                 page += r'<td></td>'
