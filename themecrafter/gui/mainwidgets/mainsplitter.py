@@ -5,7 +5,7 @@ class MainWindowSplitter(wx.SplitterWindow):
     def __init__(self, parent, style=wx.SP_BORDER|wx.SP_LIVE_UPDATE):
         '''Initializes the main '''
         wx.SplitterWindow.__init__(self, parent=parent, style=style)
-        self.SetSashGravity(0.5)
+        self.SetSashGravity(0.3)
 
         # Add a top-bottom splitter on the left panel
         left_splitter = wx.SplitterWindow(parent=self, style=style)
