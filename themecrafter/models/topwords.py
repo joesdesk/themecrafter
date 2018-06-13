@@ -2,6 +2,28 @@ from collections import Counter
 from ..preprocessing.groupdict import GroupedDict
 
 
+def TopWordsInterface:
+
+    def __init__(self, tree):
+        '''Extracts labels from a labelled xml tree to obtain the top words.'''
+        self.tree = tree
+        self.elements = tree.findall('.//*[@label]')
+        words = [t.get('label') for t in tokens]
+    
+        self.model = TopWordsModel()
+        self.model.fit(words)
+        
+    def get_tagged_xml(self):
+        '''Use the topic assignments of the model to
+        add tags to the xml elements.
+        '''
+        y = self.model.get_doc_topics()
+        for i, tag in enumerate(self.elements):
+            topic_id = y[i]
+            tag.set('topic', str(topic_id))
+        return self.tree
+        
+            
 class TopWordsModel:
     
     def __init__(self):
