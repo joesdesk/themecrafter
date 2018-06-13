@@ -22,8 +22,8 @@ def TopWordsInterface:
             topic_id = y[i]
             tag.set('topic', str(topic_id))
         return self.tree
+
         
-            
 class TopWordsModel:
     
     def __init__(self):
@@ -77,7 +77,12 @@ class TopWordsModel:
                 y[i] = topic_id
         
         return y
-        
+    
+    def get_doc_ids(self, topic_id):
+        '''Returns the indices classified as the given topic_id.'''
+        topic = self.topics[topic_id]
+        return self.groupdict.get(topic)
+    
     def get_topics(self, top_n=None):
         '''Gets a list of words which are the most occuring.
         These will be treated as topics.
