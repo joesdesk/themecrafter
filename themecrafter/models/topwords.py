@@ -78,8 +78,9 @@ class TopWordsModel:
         
         return y
     
-    def get_doc_ids(self, topic_id):
-        '''Returns the indices classified as the given topic_id.'''
+    def get_topic_of_original_words(self, topic_id):
+        '''Returns the word indices of original fitted words which are
+        classified into the given topic_id.'''
         topic = self.topics[topic_id]
         return self.groupdict.get(topic)
     
