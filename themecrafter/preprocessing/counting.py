@@ -41,7 +41,6 @@ def count2tfidf(countmatrix):
 
     
 class CountMatrix:
-
     
     def __init__(self):
         '''Initializes the vocabulary.'''
