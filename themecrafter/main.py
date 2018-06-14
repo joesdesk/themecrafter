@@ -1,8 +1,7 @@
 import wx
 from .gui.mainwindow import MainWindow
 
-from .gui import EVT_DATA_LOAD
-from .gui import EVT_INITIALIZE_MODEL
+from .gui import EVT_DATA_LOAD, EVT_XML_LOAD, EVT_INIT_MODEL
 
 from .nlp.utils import open_tree, tree2string
 from .interface.html2 import HTMLTransform
@@ -24,7 +23,7 @@ class Application:
             # See https://wiki.wxpython.org/self.Bind%20vs.%20self.button.Bind
         #self.Bind(wx.EVT_MENU, self.data_loaded, main_menubar)
         self.window.Bind(EVT_DATA_LOAD, self.data_loaded)
-        self.window.Bind(EVT_INITIALIZE_MODEL, self.init_model)
+        self.window.Bind(EVT_INIT_MODEL, self.init_model)
         self.window.topic_list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.sel_topic)
         
     def start(self):

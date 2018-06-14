@@ -1,10 +1,10 @@
 import wx
 import wx.lib.newevent
 
-ID_INIT_MODEL_TOPWORDS = 105
-ID_INIT_MODEL_LDA = 106
+ID_TOPWORDS_MODEL = 105
+ID_LDA_MODEL = 106
 
-OnInitializeModel, EVT_INITIALIZE_MODEL = wx.lib.newevent.NewCommandEvent()
+OnInitializeModel, EVT_INIT_MODEL = wx.lib.newevent.NewCommandEvent()
 
 
 class AnalysisMenu(wx.Menu):
@@ -13,8 +13,8 @@ class AnalysisMenu(wx.Menu):
         wx.Menu.__init__(self)
         self.parent = parent
         
-        self.Append(id=ID_INIT_MODEL_TOPWORDS, item="Top Words")
-        self.Append(id=ID_INIT_MODEL_LDA, item="LDA")
+        self.Append(id=ID_TOPWORDS_MODEL, item="Top Words")
+        self.Append(id=ID_LDA_MODEL, item="LDA")
         #self.AppendSeparator()
 
         # Add submenu for preset data

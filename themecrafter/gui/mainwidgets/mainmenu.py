@@ -1,6 +1,7 @@
 import wx
 
 from ..dataloading.datamenu import DataMenu
+from ..preprocessing.preprocessingmenu import PreprocessingMenu
 from ..analyzing.analysismenu import AnalysisMenu
 
 # Custom event ids: http://zetcode.com/wxpython/events/
@@ -39,12 +40,7 @@ class MainMenuBar(wx.MenuBar):
         self.Append(datamenu, "Data")
         
         # Menu for the preprocessing
-        preprocessingmenu = wx.Menu()
-        preprocessingmenu.Append(wx.ID_ANY, "Load XML")
-        preprocessingmenu.Append(wx.ID_ANY, "Save XML")
-        preprocessingmenu.AppendSeparator()
-        preprocessingmenu.Append(wx.ID_ANY, "NLP")
-        preprocessingmenu.Append(wx.ID_ANY, "Feature Selection")
+        preprocessingmenu = PreprocessingMenu(self)
         self.Append(preprocessingmenu, "Preprocessing")
 
         # Menu for topic modelling
