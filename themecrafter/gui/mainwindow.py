@@ -73,7 +73,7 @@ class MainWindow(wx.Frame):
         LT_sizer.Add(self.topic_list_ctrl, proportion=1, flag=wx.EXPAND|wx.ALL)
         LT_panel.SetSizer(LT_sizer)
         
-        self.topic_list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.sel_topic)
+        
         
         # Add plot to diagram
         RB_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -84,24 +84,4 @@ class MainWindow(wx.Frame):
         # Finally, add the interface
         self.html = None
         
-
-    def sel_topic(self, event):
-        '''Handles the selection of a topic.'''
-        
-        # Obtain the topic index
-        index = event.GetIndex()
-        
-        # Get the topic name
-        topic = self.top_nouns.topics[index]
-        
-        # Get html pages from cache
-        if self.html is not None:
-            pages = self.html.cached_pages[topic]
-            self.commentview.set_data(pages)
-            
-        # Obtain the concurrence of the topic
-        concr = self.top_nouns.topic_concurrence[index]
-        
-        self.plot.bar(self.top_nouns.topics, concr)
-
         
