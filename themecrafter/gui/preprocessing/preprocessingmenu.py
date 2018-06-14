@@ -35,7 +35,9 @@ class PreprocessingMenu(wx.Menu):
         event_id = evt.GetId()
         
         if event_id==ID_XML_LOAD:
-            newevent = OnXMLLoad(id=ID_XML_LOAD)
+            filename = ""
+            newevent = OnXMLLoad(xml_filename=filename, \
+                id=ID_XML_LOAD)
             
         elif event_id==ID_XML_SAVE:
             newevent = OnXMLSave(id=ID_XML_SAVE)
