@@ -132,14 +132,6 @@ class HTMLTransform:
         
         
 if __name__=='__main__':
-    
-    from ..nlp.utils import open_tree, tree2string
-    
-    tree = open_tree('M:/themecrafter/results/NLTKPlain2_topwords.xml')
-    xmlstring = tree2string(tree)
-    
-    html = HTMLTransform(xmlstring)
-    html.add_cache()
-    html.add_cache('hello', [1,2,3])
+    pass
     
     
