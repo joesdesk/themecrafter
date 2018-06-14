@@ -29,14 +29,27 @@ class MainMenuBar(wx.MenuBar):
         self.Append(filemenu, "File")
 
         # Menu for the editing process
-        editmenu = wx.Menu()
-        editmenu.Append(wx.ID_ANY, "Undo")
-        editmenu.Append(wx.ID_ANY, "Redo")
-        self.Append(editmenu, "Edit")
-
+        #editmenu = wx.Menu()
+        #editmenu.Append(wx.ID_ANY, "Undo")
+        #editmenu.Append(wx.ID_ANY, "Redo")
+        #self.Append(editmenu, "Edit")
+        
         # Menu for data loading
         datamenu = DataMenu(self)
         self.Append(datamenu, "Data")
         
+        # Menu for the preprocessing
+        preprocessingmenu = wx.Menu()
+        preprocessingmenu.Append(wx.ID_ANY, "Load XML")
+        preprocessingmenu.Append(wx.ID_ANY, "Save XML")
+        preprocessingmenu.AppendSeparator()
+        preprocessingmenu.Append(wx.ID_ANY, "NLP")
+        preprocessingmenu.Append(wx.ID_ANY, "Feature Selection")
+        self.Append(preprocessingmenu, "Preprocessing")
+
+        # Menu for topic modelling
         analysismenu = AnalysisMenu(self)
         self.Append(analysismenu, "Analysis")
+        
+        
+        
