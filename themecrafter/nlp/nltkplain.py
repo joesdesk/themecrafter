@@ -2,16 +2,11 @@
 
 import xml.etree.ElementTree as ET
 
-from nltk import pos_tag
-from nltk.tokenize import sent_tokenize, word_tokenize
-from nltk.tokenize import TreebankWordTokenizer
-
 from .corpusparser import CorpusParser
 from .nltkparser import NltkDocParser, NltkSentParser
 #from .pywsd import PyWSDParser
 
-from .reparser import ReParser
-from .labelling import label_special, label_word
+from .extrataggers import ExtraTagger
 
 
 class NLTKPlain:
@@ -33,7 +28,7 @@ class NLTKPlain:
             
 
 class NLTKPlain2:
-    '''Adds labels for special tokens found.'''
+    '''Adds corrections to tokens found.'''
     def __init__(self):
         self.init_parser = NLTKPlain()
         
@@ -45,41 +40,16 @@ class NLTKPlain2:
         parser = NltkSentParser()
         for t in tree.findall('.//tok'):
             parser.parse(t)
-        
-        # Then, label some text with special characters.
-        for t in tree.findall('.//tok'):
-            self.label_special(t)
-            self.label_word(t)
-        
-        # Then, reparse
-        parser = ReParser()
-        for t in tree.findall('.//tok'):
-            if t.get('label', None) is None:
-                parser.parse(t)
             
-        # Then, label all special text again.
+        # Finally, add additional tags to the tokens to
+        # indicate alternate forms.
+        parser = ExtraTagger()
         for t in tree.findall('.//tok'):
-            self.label_special(t)
-            self.label_word(t)
+            parser.parse(t)
         
         return tree
         
-    def label_special(self, t):
-        '''Find all special text and label them.'''
-        if t.get('label', None) is None:
-            label_, pos_ = label_special( t.text )
-            if pos_ is not None:
-                t.set('label', label_)
-                t.set('pos', pos_)
-    
-    def label_word(self, t):
-        '''Find all special text and label them.'''
-        if t.get('label', None) is None:        
-            label_ = label_word( t.text )
-            if label_ is not None:
-                t.set('label', label_)
-                
-                
+        
 class NLTKPlainWS:
 
     def __init__(self):
@@ -96,13 +66,7 @@ class NLTKPlainWS:
             
         return tree
         
-
-class NLTKPlain3:
-    
-    def __init__(self):
-        self.init_parser = NLTKPlain2()
         
-    
 if __name__=="__main__":
 
     from ..datasets import BGSurveyDataSet as Data
@@ -112,6 +76,6 @@ if __name__=="__main__":
     tree = parser.parse(docs)
     
     from .utils import open_tree, show_tree, save_tree
-    save_tree(tree, "M:/themecrafter/results/NLTKPlain2.xml")
+    #show_tree(tree)
     
-    
+    #save_tree(tree, "M:/themecrafter/parsed/NLTKPlain2_NEW.xml")

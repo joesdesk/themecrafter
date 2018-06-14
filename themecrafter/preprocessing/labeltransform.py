@@ -3,18 +3,20 @@
 # https://stackoverflow.com/questions/33587667/extracting-all-nouns-from-a-text-file-using-nltk
 
 from ..nlp.tokens import all_stopwords, punctuation
-from ..nlp.nltklemmatizer import wordnet_lemmatize
 from nltk.util import flatten
 
 
 class LabelTransform:
+    '''Selects features for the analysis by adding labels
+    to the elements of the tree.
+    '''
     
-    def __init__(self, labelname='label2', lemmatize=True, rm_stopwords=True, 
-        rm_punctuation=True, rm_char_len=1):
-        '''A list of tokens, which are tuples indicating the label and pos.'''
+    def __init__(self, labelname='label', lemmatize=True, \
+        rm_stopwords=True, rm_punctuation=True, rm_char_len=1):
+        
         self.labelname = labelname
         
-        self.lemmatize = rm_punctuation
+        self.lemmatize = lemmatize
         self.rm_stopwords = rm_stopwords
         self.rm_punctuation = rm_punctuation
         self.rm_char_len = rm_char_len
@@ -24,32 +26,40 @@ class LabelTransform:
         
     def fit(self, tree):
         '''Applies the token transformation throughout the entire tree.'''
-        for t in tree.findall('.//tok[@label]'):
-            label = t.get('label')
+        for t in tree.findall('.//tok'):
+        
+            # Selects labels
+            label = None
+            if self.lemmatize:
+                label = t.get('lemma', None)
+            if label is None:
+                label = t.get('alias', None)
+            if label is None:
+                label = t.get('lcase', None)
+            if label is None:
+                label = t.text
+            
+            # Decide whether to add label to element
             pos = t.get('pos', None)
             
-            # Create new label
-            newlabel = label.lower()
-            if self.lemmatize:
-                newlabel = wordnet_lemmatize(newlabel, pos)
-            
             # Filter new label
-            if len(newlabel) < self.rm_char_len:
-                newlabel=None
-            if (self.rm_stopwords) and (newlabel in all_stopwords):
-                newlabel=None
-            if (self.rm_punctuation) and (newlabel in punctuation):
-                newlabel=None
-            if newlabel in self.label_blacklist:
-                newlabel=None
+            if len(label) < self.rm_char_len:
+                label=None
+            if (self.rm_stopwords) and (label in all_stopwords):
+                label=None
+            if (self.rm_punctuation) and (label in punctuation):
+                label=None
+            if label in self.label_blacklist:
+                label=None
             
-            if (newlabel is not None) and (pos is not None): 
+            if (label is not None) and (pos is not None):
                 if self.pos_whitelist is not None:
                     if pos not in self.pos_whitelist:
-                        newlabel=None
+                        label=None
             
-            # Append newlabel if survived filtering
-            if newlabel is not None:
-                t.set(self.labelname, newlabel)
-            
-            
+            # Append label if survived filtering
+            if label is not None:
+                t.set(self.labelname, label)
+                
+                
+                
