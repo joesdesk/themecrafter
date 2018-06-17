@@ -1,5 +1,5 @@
 import wx
-from .mainframe.mainframe import MainFrame
+from .appframe import ApplicationFrame
 
 class Application:
     '''Container for the application'''
@@ -9,7 +9,7 @@ class Application:
         
     def start(self):
         app = wx.App()
-        frame = MainFrame()
+        frame = ApplicationFrame()
         frame.Show()
         app.MainLoop()
         
