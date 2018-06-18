@@ -30,10 +30,15 @@ class MainFrame(wx.Frame):
         splitter.SplitVertically(self.ctrl_topiclist, self.ctrl_commentview)
         
         # Add Frame specific bindings
-        self.Bind(wx.EVT_MENU, self.Quit, id=wx.ID_EXIT)
+        self.Bind(wx.EVT_MENU, self.quit, id=wx.ID_EXIT)
+    
+    def set_topics(self, df):
+        self.ctrl_topiclist.set_data(df)
         
+    def set_html(self, htmlstring):
+        self.ctrl_commentview.commentwindow.SetPage(htmlstring)
         
-    def Quit(self, e):
+    def quit(self, e):
         '''Closes the frame.'''
         self.Close()
         
