@@ -1,4 +1,4 @@
-# Functions to reconstruct XML documents for rendering
+# Functions to transform XML documents for rendering        
 
 def breaknodes(node_elem):
     '''If a node element is too long,
@@ -59,10 +59,9 @@ def doc2tr(doc_elem):
         tag['type'] = 'sent'
         tag.name = 'span'
         unwrap(tag)
-        #tag['style'] = "font-size:10pt"
     
-    #for tag in doc_elem.find_all('node'):
-    #    tag.unwrap()
+    for tag in doc_elem.find_all('node'):
+        unwrap(tag)
 
     doc_elem.name = 'td'
     doc_elem['type'] = 'doc'
