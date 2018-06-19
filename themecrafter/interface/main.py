@@ -1,4 +1,6 @@
+from ..datasets import SixDayWarDataSet
 from ..nlp.utils import open_tree, show_tree, save_tree, tree2string
+from ..models.gensimlda import GensimLDA
 
 from pandas import DataFrame
 from .html import HTMLInterface
@@ -12,19 +14,24 @@ class MainInterface:
         
         # Sub-interfaces
         self.html = None
+        self.model = None
         
         # Initial commands
         self.loadxml()
         
     def show_data(self):
         '''Quickly parses the data into XML format for viewing'''
-        pass
+        self.data = SixDayWarDataSet().X
         
     def loadxml(self):
+        '''Load XML into interface'''
         self.tree = open_tree("M:/themecrafter/parsed/NLTKPlain2_NEW.xml")
         #tree = open_tree('M:/themecrafter/results/NLTKPlain2_topwords.xml')
         xmlstring = tree2string(self.tree)
         self.html = HTMLInterface(xmlstring)
+    
+    def loadmodel(self):
+        self.model = GensimLDA()
     
     def sel_feat(self):
         pass
