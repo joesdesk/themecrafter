@@ -3,6 +3,7 @@
 from math import floor
 from bs4 import BeautifulSoup
 
+from .html_utils import breaknodes, offset2space, unwrap
 
 def doc2tr(doc_elem):
     '''Convert XML document element to HTML table row element.'''
