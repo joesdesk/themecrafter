@@ -51,3 +51,5 @@ class MainInterface:
     def get_html(self):
         htmlstring = self.html.render(0)
         return htmlstring
+        
+        
