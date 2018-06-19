@@ -35,7 +35,7 @@ class ApplicationFrame(MainFrame):
         self.set_html(htmlstring)
         pagenum = self.interface.html.curr_page
         totalpages = self.interface.html.n_pages
-        self.ctrl_commentview.pagenav.set_page(pagenum, totalpages)
+        self.ctrl_commentview.pagenav.set_page(pagenum+1, totalpages)
         
     def show_topics(self):
         '''Show topics in the topic list.'''
