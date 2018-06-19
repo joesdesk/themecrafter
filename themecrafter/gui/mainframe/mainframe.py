@@ -12,7 +12,8 @@ class MainFrame(wx.Frame):
     '''Base for the main application frame.'''
     
     def __init__(self):
-        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title='ThemeCrafter v0.0', size=(600,400))
+        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, \
+            title='ThemeCrafter v0.0', size=(800,500))
         
         # Add the main menubar
         menubar = MenuBar()
@@ -20,7 +21,7 @@ class MainFrame(wx.Frame):
         
         # Add splitter
         splitter = wx.SplitterWindow(self, style=wx.SP_BORDER|wx.SP_LIVE_UPDATE)
-        splitter.SetSashGravity(0.35)
+        splitter.SetSashGravity(0.3)
         
         # Add controls
         self.ctrl_topiclist = TopicList(splitter)
@@ -36,7 +37,7 @@ class MainFrame(wx.Frame):
         self.ctrl_topiclist.set_data(df)
         
     def set_html(self, htmlstring):
-        self.ctrl_commentview.commentwindow.SetPage(htmlstring)
+        self.ctrl_commentview.commentwindow.load_page(htmlstring)
         
     def quit(self, e):
         '''Closes the frame.'''
