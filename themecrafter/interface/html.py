@@ -31,10 +31,11 @@ class HTMLInterface:
         # Initialize commands
         self.set_doc_sel()
         
-        
-    def add_highlight(self, type, classname, fgcolor, bgcolor):
+    def test_highlight(self, doc_elem, type=None, classname=None, \
+        fgcolor=None, bgcolor=None):
         ''''''
-        pass
+        for tag in doc_elem.find_all('tok'):
+            tag['style'] = "background-color:#E8D898;"
         
     def clr_highlights(self):
         '''Instructs renderer to not add highlights.'''
@@ -80,6 +81,7 @@ class HTMLInterface:
         page = r'<html><table style="width:100%">'
         
         for i in doc_ids:
+            self.test_highlight( self.docs[i] )
             page += r'<tr style="align:center">'
             page += r'<td></td>'
             #page += r'<td style="text-align:right; vertical-align:top; background-color:blue; width:100%">300</td>'
