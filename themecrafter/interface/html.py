@@ -4,6 +4,7 @@ from math import floor
 from bs4 import BeautifulSoup
 
 from .htmlrender import doc2tr
+from .html_styling import highlight
 
 
 class HTMLInterface:
@@ -30,16 +31,6 @@ class HTMLInterface:
         
         # Initialize commands
         self.set_doc_sel()
-        
-    def test_highlight(self, doc_elem, type=None, classname=None, \
-        fgcolor=None, bgcolor=None):
-        ''''''
-        for tag in doc_elem.find_all('tok'):
-            tag['style'] = "background-color:#E8D898;"
-        
-    def clr_highlights(self):
-        '''Instructs renderer to not add highlights.'''
-        pass
         
     def set_doc_sel(self, doc_ids=None):
         '''Changes the list of documents to navigate through.'''
@@ -81,12 +72,14 @@ class HTMLInterface:
         page = r'<html><table style="width:100%">'
         
         for i in doc_ids:
-            self.test_highlight( self.docs[i] )
+            doc = self.docs[i]
+            highlight( doc )
+            
             page += r'<tr style="align:center">'
             page += r'<td></td>'
             #page += r'<td style="text-align:right; vertical-align:top; background-color:blue; width:100%">300</td>'
             page += r'<td style="vertical-align:top; width:50">{:d}</td>'.format(i+1)
-            page += doc2tr( self.docs[i] )
+            page += doc2tr( doc )
             page += r'<td></td>'
             page += r'</tr>'
         
