@@ -35,6 +35,12 @@ class MainInterface:
         xmlstring = tree2string(self.tree)
         self.html = HTMLInterface(xmlstring)
         
+    def savexml(self):
+        '''Save XML into a file'''
+        #filename = ""
+        #save_tree(self.tree, filename)
+        pass
+        
     def loadmodel(self):
         self.model = GensimLDA()
         
