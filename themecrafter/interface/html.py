@@ -4,7 +4,7 @@ from math import floor
 from bs4 import BeautifulSoup
 
 from .htmlrender import doc2tr
-from .html_styling import highlight
+from .html_styling import Doc2HtmlStyler
 
 
 class HTMLInterface:
@@ -21,15 +21,16 @@ class HTMLInterface:
         # only selected documents are rendered saving time.
         self.docs = soup.corpus.contents
         
-        # Selection of documents
-        self.sel_doc_ids = None
+        # Set html styling
+        self.renderer = Doc2HtmlStyler()
         
         # Pagination variables
         self.n_docs_per_page = 10
         self.n_pages = 0
         self.curr_page = 0
         
-        # Initialize commands
+        # Selection of documents
+        self.sel_doc_ids = None
         self.set_doc_sel()
         
     def set_doc_sel(self, doc_ids=None):
@@ -72,14 +73,14 @@ class HTMLInterface:
         page = r'<html><table style="width:100%">'
         
         for i in doc_ids:
-            doc = self.docs[i]
-            highlight( doc )
+            doc_elem = self.docs[i]
+            self.renderer.highlight(doc_elem)
             
             page += r'<tr style="align:center">'
             page += r'<td></td>'
             #page += r'<td style="text-align:right; vertical-align:top; background-color:blue; width:100%">300</td>'
             page += r'<td style="vertical-align:top; width:50">{:d}</td>'.format(i+1)
-            page += doc2tr( doc )
+            page += doc2tr(doc_elem)
             page += r'<td></td>'
             page += r'</tr>'
         
