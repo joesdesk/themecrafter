@@ -131,46 +131,5 @@ class HTMLInterface:
         
     def render_last(self):
         return self.render(self.n_pages-1)
-
-    def highlight_doc(self, doc, topic=None):
-        '''Highlight each word with a color.'''
-        if topic==None:
-            return None
-
-        for tag in doc.find_all(attrs={'topic':True}):
-            
-            # Clear existing styles
-            tag['style'] = None
-            
-            # Assign styles
-            loc = tag['topic'].find(topic)
-            if not loc < 0:
-                tagtype = tag['type']
-                if tagtype=='doc':
-                    pass
-                if tagtype=='sent':
-                    tag['style'] = "background-color:#E8D898;"
-                if tagtype=='tok':
-                    pass
-                
-    def add_cache(self, topic=None, indices=None):
-        '''Takes a list of indices to sort and select the documents
-        prior to pagination.'''
-        
-        if indices is None:
-            docs = self.docs
-        else:
-            docs = []
-            for i in indices:
-                doc = self.docs[i]
-                self.highlight_doc(doc, topic)
-                docs.append(self.docs[i])
-        
-        pages = self.paginate(docs)
-        self.cached_pages[topic] = pages
         
         
-if __name__=='__main__':
-    pass
-    
-    
