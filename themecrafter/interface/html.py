@@ -3,36 +3,9 @@
 from math import floor
 from bs4 import BeautifulSoup
 
-from .html_utils import breaknodes, offset2space, unwrap
+from .htmlrender import doc2tr
 
-def doc2tr(doc_elem):
-    '''Convert XML document element to HTML table row element.'''
-    # First, break up long nodes by adding spaces
-    for tag in doc_elem.find_all('node'):
-        breaknodes(tag)
-    
-    # Convert the tags
-    for tag in doc_elem.find_all('tok'):
-        tag['type'] = 'tok'
-        tag.name = 'span'
-        unwrap(tag)
 
-    for tag in doc_elem.find_all('sent'):
-        tag['type'] = 'sent'
-        tag.name = 'span'
-        unwrap(tag)
-        #tag['style'] = "font-size:10pt"
-    
-    #for tag in doc_elem.find_all('node'):
-    #    tag.unwrap()
-
-    doc_elem.name = 'td'
-    doc_elem['type'] = 'doc'
-    doc_elem['style'] = 'width:360'
-    
-    return str(doc_elem)
-    
-    
 class HTMLInterface:
     '''The interface for viewing the XML documents.'''
     
@@ -57,6 +30,7 @@ class HTMLInterface:
         
         # Initialize commands
         self.set_doc_sel()
+        
         
     def add_highlight(self, type, classname, fgcolor, bgcolor):
         ''''''
@@ -106,14 +80,11 @@ class HTMLInterface:
         page = r'<html><table style="width:100%">'
         
         for i in doc_ids:
-            doc = self.docs[i]
-            offset2space(doc)
-            
             page += r'<tr style="align:center">'
             page += r'<td></td>'
             #page += r'<td style="text-align:right; vertical-align:top; background-color:blue; width:100%">300</td>'
             page += r'<td style="vertical-align:top; width:50">{:d}</td>'.format(i+1)
-            page += doc2tr(doc)
+            page += doc2tr( self.docs[i] )
             page += r'<td></td>'
             page += r'</tr>'
         

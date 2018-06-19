@@ -1,4 +1,4 @@
-# Utilities to aid handling the tags passed to the html interface.
+# Functions to reconstruct XML documents for rendering
 
 def breaknodes(node_elem):
     '''If a node element is too long,
@@ -10,7 +10,8 @@ def breaknodes(node_elem):
         if l > 50:
             tok.insert_before(' ')
             l = 0
-
+            
+            
 def offset2space(elem):
     '''Recursively finds all elements with an offset attribute and
     inserts the appropriate space between tags.
@@ -31,9 +32,42 @@ def offset2space(elem):
         del t['offset']
         del t['len']
         
+        
 def unwrap(tag):
     '''If a tag has a style attribute, don't unwrap it.'''
     if not tag.has_attr('style'):
         tag.unwrap()
         
         
+def doc2tr(doc_elem):
+    '''Convert XML document element to HTML table row element.'''    
+    # Convert offset to spaces
+    offset2space(doc_elem)
+    
+    # Break up long nodes by adding spaces
+    for tag in doc_elem.find_all('node'):
+        breaknodes(tag)
+        unwrap(tag)
+    
+    # Convert the tags
+    for tag in doc_elem.find_all('tok'):
+        tag['type'] = 'tok'
+        tag.name = 'span'
+        unwrap(tag)
+
+    for tag in doc_elem.find_all('sent'):
+        tag['type'] = 'sent'
+        tag.name = 'span'
+        unwrap(tag)
+        #tag['style'] = "font-size:10pt"
+    
+    #for tag in doc_elem.find_all('node'):
+    #    tag.unwrap()
+
+    doc_elem.name = 'td'
+    doc_elem['type'] = 'doc'
+    doc_elem['style'] = 'width:360'
+    
+    return str(doc_elem)
+    
+    
