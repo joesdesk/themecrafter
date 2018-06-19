@@ -1,5 +1,9 @@
 from .mainframe.mainframe import MainFrame
+
 from .dataloading.datamenu import EVT_DATA_LOAD
+
+from .commentview.navbar import EVT_PAGE_CHANGE
+from .commentview.navbar import ID_FIRST, ID_PREV, ID_NEXT, ID_LAST
 
 from ..interface.main import MainInterface
 
@@ -10,18 +14,50 @@ class ApplicationFrame(MainFrame):
         MainFrame.__init__(self)
         
         # Setup Interface
-        self.interface = MainInterface()
+        self.interface = None
         
+        # Bind events to mainwindow
         self.Bind(EVT_DATA_LOAD, self.on_data_load)
+        self.Bind(EVT_PAGE_CHANGE, self.on_page_change)
         
     def on_data_load(self, event):
+        '''Setup an interface when data is loaded'''
+        data = event.attr
+        self.interface = MainInterface(data)
+        
+        htmlstring = self.interface.html.render_first()
+        self.html_update(htmlstring)
+        
+        self.show_topics()
+        
+    def html_update(self, htmlstring):
+        '''Set the page and page number of the commentview.'''
+        self.set_html(htmlstring)
+        pagenum = self.interface.html.curr_page
+        totalpages = self.interface.html.n_pages
+        self.ctrl_commentview.pagenav.set_page(pagenum, totalpages)
+        
+    def show_topics(self):
+        '''Show topics in the topic list.'''
         df = self.interface.get_topics()
         self.set_topics(df)
         
+    def on_page_change(self, evt):
+        '''Changes the html text in the commentview.'''
+        id = evt.GetId()
+        print(id)
         
+        if id==ID_FIRST:
+            htmlstring = self.interface.html.render_first()
+        elif id==ID_PREV:
+            htmlstring = self.interface.html.render_prev()
+        elif id==ID_NEXT:
+            htmlstring = self.interface.html.render_next()
+        elif id==ID_LAST:
+            htmlstring = self.interface.html.render_last()
+        else:
+            return None
         
-    def show_html(self, page):
-        htmlstring = self.interface.get_html()
-        self.set_html(htmlstring)
+        self.html_update(htmlstring)
         
         
