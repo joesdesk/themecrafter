@@ -1,41 +1,46 @@
-from ..datasets import SixDayWarDataSet
+from ..nlp.corpusparser import CorpusParser
 from ..nlp.utils import open_tree, show_tree, save_tree, tree2string
 from ..models.gensimlda import GensimLDA
 
 from pandas import DataFrame
 from .html import HTMLInterface
 
+
 class MainInterface:
     '''Container for all objects of interation for the GUI.'''
     
-    def __init__(self, data):
-        '''Interface must be started with data.'''
-        self.data = data
+    def __init__(self):
+        '''Creates the variables.'''
+        # Parsed XML
+        self.docs = None
+        self.tree = None
         
         # Sub-interfaces
         self.html = None
         self.model = None
         
-        # Initial commands
-        self.loadxml()
-        
-    def show_data(self):
-        '''Quickly parses the data into XML format for viewing'''
-        self.data = SixDayWarDataSet().X
+    def load_docs(self, docs):
+        '''Loads the documents to be analyzed.'''
+        self.docs = docs
+        parser = CorpusParser()
+        tree = parser.parse(self.docs)
+        xmlstring = tree2string(tree)
+        self.html = HTMLInterface(xmlstring)
         
     def loadxml(self):
         '''Load XML into interface'''
-        self.tree = open_tree("M:/themecrafter/parsed/NLTKPlain2_NEW.xml")
-        #tree = open_tree('M:/themecrafter/results/NLTKPlain2_topwords.xml')
+        file = "M:/themecrafter/parsed/NLTKPlain2_NEW.xml"
+        self.tree = open_tree(file)
+        
         xmlstring = tree2string(self.tree)
         self.html = HTMLInterface(xmlstring)
-    
+        
     def loadmodel(self):
         self.model = GensimLDA()
-    
+        
     def sel_feat(self):
         pass
-    
+        
     def add_model(self):
         model = None
         

@@ -14,7 +14,7 @@ class ApplicationFrame(MainFrame):
         MainFrame.__init__(self)
         
         # Setup Interface
-        self.interface = None
+        self.interface = MainInterface()
         
         # Bind events to mainwindow
         self.Bind(EVT_DATA_LOAD, self.on_data_load)
@@ -22,8 +22,8 @@ class ApplicationFrame(MainFrame):
         
     def on_data_load(self, event):
         '''Setup an interface when data is loaded'''
-        data = event.attr
-        self.interface = MainInterface(data)
+        docs = event.attr
+        self.interface.load_docs(docs)
         
         htmlstring = self.interface.html.render_first()
         self.html_update(htmlstring)
