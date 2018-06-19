@@ -2,7 +2,7 @@ from .mainframe.mainframe import MainFrame
 
 from .dataloading.datamenu import EVT_DATA_LOAD
 
-from .preprocessing.preprocessingmenu import EVT_XML_LOAD
+from .preprocessing.preprocessingmenu import EVT_XML_LOAD, EVT_SEL_FEAT
 
 from .commentview.navbar import EVT_PAGE_CHANGE
 from .commentview.navbar import ID_FIRST, ID_PREV, ID_NEXT, ID_LAST
@@ -21,6 +21,7 @@ class ApplicationFrame(MainFrame):
         # Bind events to mainwindow
         self.Bind(EVT_DATA_LOAD, self.on_data_load)
         self.Bind(EVT_XML_LOAD, self.on_xml_load)
+        self.Bind(EVT_SEL_FEAT, self.on_feat_sel)
         self.Bind(EVT_PAGE_CHANGE, self.on_page_change)
         
         
@@ -37,6 +38,12 @@ class ApplicationFrame(MainFrame):
     def on_xml_load(self, event):
         '''Loads the XML into the interface'''
         self.interface.loadxml()
+        htmlstring = self.interface.html.render_first()
+        self.html_update(htmlstring)
+        
+    def on_feat_sel(self, event):
+        '''Performs a feature selection task.'''
+        self.interface.feat_sel()
         htmlstring = self.interface.html.render_first()
         self.html_update(htmlstring)
         

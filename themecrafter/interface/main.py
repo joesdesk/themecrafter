@@ -1,5 +1,6 @@
 from ..nlp.corpusparser import CorpusParser
 from ..nlp.utils import open_tree, show_tree, save_tree, tree2string
+from ..sessions.labeltree import label
 from ..models.gensimlda import GensimLDA
 
 from pandas import DataFrame
@@ -44,8 +45,10 @@ class MainInterface:
     def loadmodel(self):
         self.model = GensimLDA()
         
-    def sel_feat(self):
-        pass
+    def feat_sel(self):
+        '''Performs feature selection.'''
+        label(self.tree)
+        show_tree(self.tree)
         
     def add_model(self):
         model = None
