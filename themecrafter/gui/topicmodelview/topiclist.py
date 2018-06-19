@@ -37,7 +37,7 @@ class TopicListCtrl(wx.ListCtrl):
     def set_columns(self, columns):
         '''Set columns in the list control.'''
         for i, colname in enumerate(columns):
-            self.InsertColumn(i, colname, width=90)
+            self.InsertColumn(i, colname, width=100)
  
 ########################################################################
 class MyPanel(wx.Panel):
