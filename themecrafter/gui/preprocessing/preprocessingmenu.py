@@ -1,3 +1,5 @@
+# Module that handles preprocessing events
+
 import wx
 import wx.lib.newevent
 
