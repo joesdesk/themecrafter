@@ -4,7 +4,10 @@ from ..nlp.utils import open_tree, show_tree, save_tree, tree2string
 from ..preprocessing.labeltransform import LabelTransform
 from ..nlp.nltklemmatizer import NOUN_POS, VERB_POS, ADJ_POS
 
+from ..preprocessing import BagOfWords
+
 from ..models.gensimlda import GensimLDA
+from ..models.utils import hard_assignments
 
 from pandas import DataFrame
 from .html import HTMLInterface
@@ -23,12 +26,14 @@ class MainInterface:
         self.html = None
         self.labeltransform = LabelTransform()
         self.model = None
+        self.topics = None
         
     def load_docs(self, docs):
         '''Loads the documents to be analyzed.'''
         self.docs = docs
         parser = CorpusParser()
         tree = parser.parse(self.docs)
+        show_tree(tree)
         xmlstring = tree2string(tree)
         self.html = HTMLInterface(xmlstring)
         
@@ -49,21 +54,44 @@ class MainInterface:
         #save_tree(tree, dir+"NLTKPlain2-STANDARD.xml")
         pass
         
-    def loadmodel(self):
-        self.model = GensimLDA()
+    def do_model(self):
+        bow = BagOfWords(tokenlabel='label', doc_sel="DOCUMENT")
+        bow.fit(self.tree)
+        
+        # Bag of words representation of each document (sentence)
+        bows = bow.bows_
+        # Corresponding tree elements for later retagging
+        tags = bow.tags_
+        print(bows)
+        
+        # Get model...
+        self.model = GensimLDA(bows)
+        self.model.fit(k_topics=10)
+        
+        V = self.model.get_document_topic_matrix()
+        y = hard_assignments(V)
+        
+        for i, t in enumerate(tags):
+            t.attrib['topic'] = str(y[i])
+        
+        # Create data frame with topics
+        df = DataFrame(columns=['topic','words'])
+        for i, ws in enumerate(self.model.get_topic_bows(7)):
+            topic = 'topic {:d}'.format(i+1)
+            words = ', '.join(ws)
+            df = df.append({'topic':topic,'words':words}, ignore_index=True)
+        #self.get_topics(df)
+        self.topics = df
         
     def feat_sel(self):
         '''Performs feature selection.'''
         if self.tree is not None:
             self.label(self.tree)
             show_tree(self.tree)
-        
-    def add_model(self):
-        model = None
-        
+            
     def get_topics(self):
-        df = DataFrame([("topic1",30)], columns=['topic','weight'])
-        return df
+        if self.topics is not None:
+            return self.topics
         
     def get_html(self):
         htmlstring = self.html.render(0)
@@ -88,7 +116,7 @@ class MainInterface:
         KEEP_ALLPOS = True  ## 
 
         # Extra words to exclude 
-        BLACKLIST = []  ##['program', 'student', 'ubc']
+        BLACKLIST = []
 
         # Initialize labeller
         labeltransform = LabelTransform(labelname='label', lemmatize=LEMMATIZE, \
@@ -111,3 +139,10 @@ class MainInterface:
         labeltransform.fit(tree)
         
         
+if __name__=='__main__':
+    interface = MainInterface()
+    
+    interface.loadxml()
+    interface.label(interface.tree)
+    
+    interface.do_model()

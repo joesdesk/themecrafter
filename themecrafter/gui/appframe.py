@@ -4,6 +4,9 @@ from .dataloading.datamenu import EVT_DATA_LOAD
 
 from .preprocessing.preprocessingmenu import EVT_XML_LOAD, EVT_SEL_FEAT
 
+from .analyzing.analysismenu import EVT_INIT_MODEL
+from .analyzing.analysismenu import ID_TOPWORDS_MODEL, ID_LDA_MODEL
+
 from .commentview.navbar import EVT_PAGE_CHANGE
 from .commentview.navbar import ID_FIRST, ID_PREV, ID_NEXT, ID_LAST
 
@@ -22,6 +25,7 @@ class ApplicationFrame(MainFrame):
         self.Bind(EVT_DATA_LOAD, self.on_data_load)
         self.Bind(EVT_XML_LOAD, self.on_xml_load)
         self.Bind(EVT_SEL_FEAT, self.on_feat_sel)
+        self.Bind(EVT_INIT_MODEL, self.on_init_model)
         self.Bind(EVT_PAGE_CHANGE, self.on_page_change)
         
         
@@ -57,7 +61,8 @@ class ApplicationFrame(MainFrame):
     def show_topics(self):
         '''Show topics in the topic list.'''
         df = self.interface.get_topics()
-        self.set_topics(df)
+        if df is not None:
+            self.set_topics(df)
         
     def on_page_change(self, evt):
         '''Changes the html text in the commentview.'''
@@ -76,4 +81,9 @@ class ApplicationFrame(MainFrame):
         
         self.html_update(htmlstring)
         
+    def on_init_model(self, event):
+        ''''''
+        id = event.GetId()
+        self.interface.do_model()
+        self.show_topics()
         
