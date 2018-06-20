@@ -2,7 +2,8 @@ import wx
 import wx.html
 
 from .container_utils import parse
-from .popupmenu import PopupMenu
+from .popupmenu import PopupMenu, \
+    ID_PROBE_CONTAINER, ID_PROBE_XML
 
 # Depreciated: Format using HTML instead of custom tags
 # from .taghandlers import DocumentTagHandler, TokenTagHandler
@@ -41,6 +42,9 @@ class HtmlWindow(wx.html.HtmlWindow):
         self.Bind(wx.EVT_KEY_UP, self.CatchHKeyScroll)
         
         # Right click to see option to print container structure
+        self.popupmenu = PopupMenu(self)
+        self.popupmenu.Bind(wx.EVT_MENU, self.on_popupmenu_sel)
+        
         self.Bind(wx.EVT_RIGHT_DOWN, self.show_popup)
         
         
@@ -114,13 +118,12 @@ class HtmlWindow(wx.html.HtmlWindow):
         # See: https://wxpython.org/Phoenix/docs/html/wx.KeyCategoryFlags.enumeration.html#wx-keycategoryflags
         if event.IsKeyInCategory(wx.WXK_CATEGORY_ARROW):
             # See: https://wxpython.org/Phoenix/docs/html/wx.KeyEvent.html#wx.KeyEvent.GetKeyCode
-           
             
             # See: https://wxpython.org/Phoenix/docs/html/wx.KeyCode.enumeration.html#wx-keycode
             if (keycode==wx.WXK_LEFT) or (keycode==wx.WXK_RIGHT):
                 event.Skip()
                 return None
-        
+                
         event.Skip()
     
     def load_page(self, htmlstring):
@@ -129,15 +132,14 @@ class HtmlWindow(wx.html.HtmlWindow):
         
     def show_popup(self, event):
         '''Shows the popup menu'''
-        popupmenu = PopupMenu(self)
-        popupmenu.Bind(wx.EVT_MENU, self.on_popupmenu_sel)
-        self.PopupMenu(popupmenu, event.GetPosition())
-        # Must be destroyed after use
-        popupmenu.Destroy()
+        self.PopupMenu(self.popupmenu)
         
     def on_popupmenu_sel(self, event):
         '''Handles events from seleting an item on the popup menu.'''
-        print(event.GetId())
-        self.check_format()
-        
-        
+        id=event.GetId()
+        if id==ID_PROBE_CONTAINER:
+            self.check_format()
+        elif id==ID_PROBE_XML:
+            print(self.htmlstring)
+            
+            
