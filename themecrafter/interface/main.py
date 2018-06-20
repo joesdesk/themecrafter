@@ -75,7 +75,11 @@ class MainInterface:
         y = hard_assignments(V)
         
         for i, t in enumerate(tags):
-            t.attrib['topic'] = str(y[i])
+            t.attrib['class'] = str(y[i])
+            #show_tree(t)
+            
+        xmlstring = tree2string(self.tree)
+        self.html = HTMLInterface(xmlstring)
         
         # Get topic of each document
         docids = []
@@ -118,6 +122,8 @@ class MainInterface:
         rankings = np.argsort(scores)
         k = rank2id(rankings)
         
+        self.html.renderer.highlight_topic(str(topic_num))
+        
         return ids[k]
         
     def feat_sel(self):
@@ -153,7 +159,7 @@ class MainInterface:
         KEEP_ALLPOS = True  ## 
 
         # Extra words to exclude 
-        BLACKLIST = []
+        BLACKLIST = ['program', 'ubc']
 
         # Initialize labeller
         labeltransform = LabelTransform(labelname='label', lemmatize=LEMMATIZE, \

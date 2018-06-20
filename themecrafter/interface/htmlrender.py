@@ -35,7 +35,7 @@ def offset2space(elem):
         
 def unwrap(tag):
     '''If a tag has a style attribute, don't unwrap it.'''
-    if not tag.has_attr('style'):
+    if not tag.has_attr('class'):
         tag.unwrap()
         
         
