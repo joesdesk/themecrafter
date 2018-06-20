@@ -7,7 +7,7 @@ from ..nlp.nltklemmatizer import NOUN_POS, VERB_POS, ADJ_POS
 from ..preprocessing import BagOfWords
 
 from ..models.gensimlda import GensimLDA
-from ..models.utils import hard_assignments
+from ..models.utils import hard_assignments, rank2id
 
 import numpy as np
 from pandas import DataFrame
@@ -27,6 +27,8 @@ class MainInterface:
         self.html = None
         self.labeltransform = LabelTransform()
         self.model = None
+        self.doc_scores = None
+        self.doc_assigns = None
         self.topics = None
         
     def load_docs(self, docs):
@@ -90,12 +92,14 @@ class MainInterface:
             Q = np.sum(V[a:b,:], axis=0)
             E.append( Q / (b-a) )
         R = np.array(E)
-        print(R.shape)
         
         # Obtain entropy
         from scipy.stats import entropy
         entr = np.apply_along_axis(entropy, axis=1, arr=R)
-        print(type(entr))
+        
+        # Save entropies to rank documents
+        self.doc_scores = entr
+        self.doc_assigns = hard_assignments(R)
         
         # Create data frame with topics
         df = DataFrame(columns=['topic','words'])
@@ -105,6 +109,16 @@ class MainInterface:
             df = df.append({'topic':topic,'words':words}, ignore_index=True)
         #self.get_topics(df)
         self.topics = df
+    
+    def show_docs(self, topic_num):
+        '''Gets the document indices for documents related to the topics by weight.'''
+        sel = self.doc_assigns==topic_num
+        ids = np.arange(len(self.doc_assigns))[sel]
+        scores = self.doc_scores[sel]
+        rankings = np.argsort(scores)
+        k = rank2id(rankings)
+        
+        return ids[k]
         
     def feat_sel(self):
         '''Performs feature selection.'''

@@ -55,7 +55,7 @@ class HTMLInterface:
             sel_docs = range(total_docs)
             return list(sel_docs[start_doc_id:end_doc_id])
             
-        total_docs = len(self.sel_docs)
+        total_docs = len(self.sel_doc_ids)
         end_doc_id = min(end_doc_id, total_docs)
         if start_doc_id > end_doc_id:
             return []

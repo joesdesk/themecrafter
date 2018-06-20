@@ -1,3 +1,4 @@
+import wx
 from .mainframe.mainframe import MainFrame
 
 from .dataloading.datamenu import EVT_DATA_LOAD
@@ -26,6 +27,9 @@ class ApplicationFrame(MainFrame):
         self.Bind(EVT_XML_LOAD, self.on_xml_load)
         self.Bind(EVT_SEL_FEAT, self.on_feat_sel)
         self.Bind(EVT_INIT_MODEL, self.on_init_model)
+        
+        self.ctrl_topiclist.Bind(wx.EVT_LIST_ITEM_SELECTED, self.topic_sel)
+        
         self.Bind(EVT_PAGE_CHANGE, self.on_page_change)
         
         
@@ -86,4 +90,11 @@ class ApplicationFrame(MainFrame):
         id = event.GetId()
         self.interface.do_model()
         self.show_topics()
-        
+    
+    def topic_sel(self, event):
+        '''Triggers a display of topics.'''
+        idx = event.GetIndex()
+        ids = self.interface.show_docs(idx)
+        self.interface.html.set_doc_sel(ids)
+        htmlstring = self.interface.html.render_first()
+        self.html_update(htmlstring)
