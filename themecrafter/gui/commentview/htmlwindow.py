@@ -2,6 +2,7 @@ import wx
 import wx.html
 
 from .container_utils import parse
+from .popupmenu import PopupMenu
 
 # Depreciated: Format using HTML instead of custom tags
 # from .taghandlers import DocumentTagHandler, TokenTagHandler
@@ -38,6 +39,10 @@ class HtmlWindow(wx.html.HtmlWindow):
         # Depreciated: Page change event by keypress will be caught by parent
         #self.Bind(wx.EVT_KEY_DOWN, self.CatchHKeyScroll)
         self.Bind(wx.EVT_KEY_UP, self.CatchHKeyScroll)
+        
+        # Right click to see option to print container structure
+        self.Bind(wx.EVT_RIGHT_DOWN, self.show_popup)
+        
         
     def AcceptsFocus(self):
         '''Disables this control from accepting focus.'''
@@ -115,14 +120,24 @@ class HtmlWindow(wx.html.HtmlWindow):
             if (keycode==wx.WXK_LEFT) or (keycode==wx.WXK_RIGHT):
                 event.Skip()
                 return None
-        if keycode==wx.WXK_RETURN:
-            self.check_format()
-        
         
         event.Skip()
     
     def load_page(self, htmlstring):
         self.SetPage(htmlstring)
         self.htmlstring = htmlstring
+        
+    def show_popup(self, event):
+        '''Shows the popup menu'''
+        popupmenu = PopupMenu(self)
+        popupmenu.Bind(wx.EVT_MENU, self.on_popupmenu_sel)
+        self.PopupMenu(popupmenu, event.GetPosition())
+        # Must be destroyed after use
+        popupmenu.Destroy()
+        
+    def on_popupmenu_sel(self, event):
+        '''Handles events from seleting an item on the popup menu.'''
+        print(event.GetId())
+        self.check_format()
         
         
