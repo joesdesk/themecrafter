@@ -9,6 +9,7 @@ from ..preprocessing import BagOfWords
 from ..models.gensimlda import GensimLDA
 from ..models.utils import hard_assignments
 
+import numpy as np
 from pandas import DataFrame
 from .html import HTMLInterface
 
@@ -55,24 +56,46 @@ class MainInterface:
         pass
         
     def do_model(self):
-        bow = BagOfWords(tokenlabel='label', doc_sel="DOCUMENT")
+        bow = BagOfWords(tokenlabel='label', doc_sel="SENTENCE")
         bow.fit(self.tree)
         
         # Bag of words representation of each document (sentence)
         bows = bow.bows_
         # Corresponding tree elements for later retagging
         tags = bow.tags_
-        print(bows)
         
         # Get model...
         self.model = GensimLDA(bows)
         self.model.fit(k_topics=10)
         
         V = self.model.get_document_topic_matrix()
+        print(V.shape)
         y = hard_assignments(V)
         
         for i, t in enumerate(tags):
             t.attrib['topic'] = str(y[i])
+        
+        # Get topic of each document
+        docids = []
+        start = 0
+        for d in self.tree.findall('.//doc'):
+            nsents = len( d.findall('.//sent') )
+            b = start + nsents
+            docids.append((start, b))
+            start = b
+        
+        # Create new matrix on document basis
+        E = []
+        for i, (a,b) in enumerate(docids):
+            Q = np.sum(V[a:b,:], axis=0)
+            E.append( Q / (b-a) )
+        R = np.array(E)
+        print(R.shape)
+        
+        # Obtain entropy
+        from scipy.stats import entropy
+        entr = np.apply_along_axis(entropy, axis=1, arr=R)
+        print(type(entr))
         
         # Create data frame with topics
         df = DataFrame(columns=['topic','words'])
