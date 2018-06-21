@@ -32,7 +32,8 @@ class Frame(wx.Frame):
         '''Initialize our window
         '''
         wx.Frame.__init__(self, parent, id, title,
-                          wx.DefaultPosition, wx.Size(450, 350))
+                          wx.DefaultPosition, wx.Size(450, 350), 
+                          style=wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX)
 
         # Create a splitter window
         self.splitter = wx.SplitterWindow(self, -1)
@@ -79,7 +80,9 @@ class Frame(wx.Frame):
         item =  event.GetItem()
         # Display the selected item text in the text widget
         self.display.SetLabel(self.tree.GetItemText(item))
-        
+    
+    
+    
         
 class MyApp(wx.App):
     '''Our application class
