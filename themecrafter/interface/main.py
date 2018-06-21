@@ -9,6 +9,8 @@ from ..preprocessing import BagOfWords
 from ..models.gensimlda import GensimLDA
 from ..models.utils import hard_assignments, rank2id
 
+from ..evaluate.temp import sent_ranges, aggr_weights
+
 import numpy as np
 from pandas import DataFrame
 
@@ -73,22 +75,10 @@ class MainInterface:
         for i, t in enumerate(tags):
             t.attrib['class'] = str(y[i])
             #show_tree(t)
-            
-        # Get topic of each document
-        docids = []
-        start = 0
-        for d in self.tree.findall('.//doc'):
-            nsents = len( d.findall('.//sent') )
-            b = start + nsents
-            docids.append((start, b))
-            start = b
         
-        # Create new matrix on document basis
-        E = []
-        for i, (a,b) in enumerate(docids):
-            Q = np.sum(V[a:b,:], axis=0)
-            E.append( Q / (b-a) )
-        R = np.array(E)
+        # Create new matrix on document basis        
+        ranges = sent_ranges(self.tree)
+        R = aggr_weights(V, ranges)        
         
         # Obtain entropy
         from scipy.stats import entropy
