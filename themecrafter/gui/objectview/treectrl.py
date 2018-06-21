@@ -13,6 +13,7 @@ class TreeCtrl(wx.TreeCtrl):
         root = self.AddRoot('root')
         
         data = self.AppendItem(root, 'Data')
+        features = self.AppendItem(root, 'Features')
         models = self.AppendItem(root, 'Models')
         
         self.ExpandAll()
@@ -35,6 +36,7 @@ class Frame(wx.Frame):
 
         # Create a splitter window
         self.splitter = wx.SplitterWindow(self, -1)
+        self.splitter.SetSashPosition(200, redraw=True)
 
         # Create the left panel
         leftPanel = wx.Panel(self.splitter, -1)
@@ -66,7 +68,7 @@ class Frame(wx.Frame):
         # display widget
         rightPanel.SetSizer(rightBox)
         # Put the left and right panes into the split window
-        self.splitter.SplitVertically(leftPanel, rightPanel)
+        self.splitter.SplitHorizontally(leftPanel, rightPanel)
         # Create the window in the centre of the screen
         self.Centre()
 
