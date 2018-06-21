@@ -3,7 +3,7 @@ import wx
 from ..dataloading.datamenu import DataMenu
 from ..preprocessing.preprocessingmenu import PreprocessingMenu
 from ..analyzing.analysismenu import AnalysisMenu
-
+from ..objectview.menu import Menu as ObjectViewMenu
 
 class MenuBar(wx.MenuBar):
     '''Class to hold the top menus (file, edit, etc.)'''
@@ -39,4 +39,7 @@ class MenuBar(wx.MenuBar):
         analysismenu = AnalysisMenu(self)
         self.Append(analysismenu, "Analysis")
         
+        # Menu for viewing objects
+        objectsmenu = ObjectViewMenu(self)
+        self.Append(objectsmenu, "Objects")
         
