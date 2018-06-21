@@ -11,7 +11,7 @@ from ..models.utils import hard_assignments, rank2id
 
 import numpy as np
 from pandas import DataFrame
-from .html import HTMLInterface
+
 
 
 class MainInterface:
@@ -24,7 +24,6 @@ class MainInterface:
         self.tree = None
         
         # Sub-interfaces
-        self.html = None
         self.labeltransform = LabelTransform()
         self.model = None
         self.doc_scores = None
@@ -36,17 +35,11 @@ class MainInterface:
         self.docs = docs
         parser = CorpusParser()
         tree = parser.parse(self.docs)
-        show_tree(tree)
-        xmlstring = tree2string(tree)
-        self.html = HTMLInterface(xmlstring)
         
     def loadxml(self):
         '''Load XML into interface'''
         file = "M:/themecrafter/parsed/NLTKPlain2_NEW.xml"
         self.tree = open_tree(file)
-        
-        xmlstring = tree2string(self.tree)
-        self.html = HTMLInterface(xmlstring)
         
     def savexml(self):
         '''Save XML into a file'''
@@ -56,7 +49,10 @@ class MainInterface:
         #dir = "M:/themecrafter/labelled/"
         #save_tree(tree, dir+"NLTKPlain2-STANDARD.xml")
         pass
-        
+    
+    def get_xmlstring(self):
+        return tree2string(self.tree)
+    
     def do_model(self):
         bow = BagOfWords(tokenlabel='label', doc_sel="SENTENCE")
         bow.fit(self.tree)
@@ -78,9 +74,6 @@ class MainInterface:
             t.attrib['class'] = str(y[i])
             #show_tree(t)
             
-        xmlstring = tree2string(self.tree)
-        self.html = HTMLInterface(xmlstring)
-        
         # Get topic of each document
         docids = []
         start = 0
@@ -121,9 +114,6 @@ class MainInterface:
         scores = self.doc_scores[sel]
         rankings = np.argsort(scores)
         k = rank2id(rankings)
-        
-        self.html.renderer.highlight_topic(str(topic_num))
-        
         return ids[k]
         
     def feat_sel(self):
@@ -135,11 +125,7 @@ class MainInterface:
     def get_topics(self):
         if self.topics is not None:
             return self.topics
-        
-    def get_html(self):
-        htmlstring = self.html.render(0)
-        return htmlstring
-        
+            
     def label(self, tree):
 
         # Flags

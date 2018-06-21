@@ -5,7 +5,7 @@ import wx
 from .menubar import MenuBar
 
 from ..topicmodelview.topiclist import TopicListCtrl as TopicList
-from ..commentview.mainpanel import MainPanel as CommentView
+from ..commentview.main import CommentView
 
 
 class MainFrame(wx.Frame):
@@ -40,9 +40,6 @@ class MainFrame(wx.Frame):
     
     def set_topics(self, df):
         self.ctrl_topiclist.set_data(df)
-        
-    def set_html(self, htmlstring):
-        self.ctrl_commentview.commentwindow.load_page(htmlstring)
         
     def quit(self, e):
         '''Closes the frame.'''
