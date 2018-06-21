@@ -30,8 +30,13 @@ class MainFrame(wx.Frame):
         # Split the frame
         splitter.SplitVertically(self.ctrl_topiclist, self.ctrl_commentview)
         
+        # Add Status bar
+        self.statusbar = self.CreateStatusBar(1)
+        self.statusbar.SetStatusText('This goes in your statusbar')
+        
         # Add Frame specific bindings
         self.Bind(wx.EVT_MENU, self.quit, id=wx.ID_EXIT)
+        
     
     def set_topics(self, df):
         self.ctrl_topiclist.set_data(df)
