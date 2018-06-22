@@ -26,6 +26,19 @@ class ApplicationFrame(MainFrame):
         self.Bind(EVT_INIT_MODEL, self.on_init_model)
         
         self.ctrl_topiclist.Bind(wx.EVT_LIST_ITEM_SELECTED, self.topic_sel)
+        self.ctrl_topiclist.Bind(wx.EVT_KEY_DOWN, self.show_pos)
+        
+    def show_pos(self, event):
+        keycode = event.GetUnicodeKey()
+        tree = self.interface.tree
+        for tag in tree.findall('.//tok[@pos="NNS"]'):
+            tag.attrib['class'] = str(0)
+        
+        xmlstring = self.interface.get_xmlstring()
+        
+        self.ctrl_commentview.set_xml(xmlstring)
+        self.ctrl_commentview.highlight_topic(0)
+        
         
     def on_data_load(self, event):
         '''Setup an interface when data is loaded'''
