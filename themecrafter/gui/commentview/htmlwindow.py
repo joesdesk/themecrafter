@@ -1,13 +1,17 @@
 import wx
 import wx.html
 
-from .taghandlers import DocumentTagHandler, TokenTagHandler
+from .container_utils import parse
+from .popupmenu import PopupMenu, \
+    ID_PROBE_CONTAINER, ID_PROBE_XML
 
-wx.html.HtmlWinParser_AddTagHandler(DocumentTagHandler)
-wx.html.HtmlWinParser_AddTagHandler(TokenTagHandler)
+# Depreciated: Format using HTML instead of custom tags
+# from .taghandlers import DocumentTagHandler, TokenTagHandler
+#wx.html.HtmlWinParser_AddTagHandler(DocumentTagHandler)
+#wx.html.HtmlWinParser_AddTagHandler(TokenTagHandler)
 
 
-class CommentWindow(wx.html.HtmlWindow):
+class HtmlWindow(wx.html.HtmlWindow):
     '''A small widget to view html formatted comments.'''
     
     def __init__(self, parent):
@@ -23,20 +27,33 @@ class CommentWindow(wx.html.HtmlWindow):
         self.parser = self.GetParser()
         #print(self.parser)
         
+        self.htmlstring = ''
+        
         # This gives segmentation fault
         #parser_prod = self.parser.GetProduct()
-        
-        
 
+        # Depreciated: No events associated with hovering over cells
         #self.Bind(wx.html.EVT_HTML_CELL_HOVER, self.hightlight_hover)
         #self.Bind(wx.html.EVT_HTML_CELL_CLICKED, self.check_format)
         #self.Bind(DATA_LOAD, self.show_data)
 
+        # Depreciated: Page change event by keypress will be caught by parent
         #self.Bind(wx.EVT_KEY_DOWN, self.CatchHKeyScroll)
-        #self.Bind(wx.EVT_KEY_UP, self.CatchHKeyScroll)
+        self.Bind(wx.EVT_KEY_UP, self.CatchHKeyScroll)
         
+        # Right click to see option to print container structure
+        self.popupmenu = PopupMenu(self)
+        self.popupmenu.Bind(wx.EVT_MENU, self.on_popupmenu_sel)
+        
+        self.Bind(wx.EVT_RIGHT_DOWN, self.show_popup)
+        
+        
+    def AcceptsFocus(self):
+        '''Disables this control from accepting focus.'''
+        return True#False
         
     def hightlight_hover(self, event):
+        '''Test to see if hovering over cells allows highlighting.'''
         cell = event.GetCell()#.GetNext()
         if (cell is not None) and (cell != ''):
             cid = cell.GetId()
@@ -75,66 +92,54 @@ class CommentWindow(wx.html.HtmlWindow):
         #c.Draw()
     
     def show_data(self, event):
-        print("event detected")
-        self.SetPage("""<html> A concordance is more than an index;
-        additional material make producing them a labor-intensive process,
-        even when assisted by computers, such as commentary, definitions,
-        and topical cross-indexing.</html>""")
-        
+        '''Test to see if displaying the page works.'''
+        #print("event detected")
+        #self.SetPage("""<html> A concordance is more than an index;
+        #additional material make producing them a labor-intensive process,
+        #even when assisted by computers, such as commentary, definitions,
+        #and topical cross-indexing.</html>""")
+        pass
     
-    def check_format(self, event):
+    def check_format(self):
+        '''Probes the structure of the comment window for diagnosing problems.'''
         print("format detected")
         
         container = self.GetInternalRepresentation()
-        self.list_children(container, lvl=0)
+        parse(container, lvl=0)
         
-        
-        
-        
-        #
-        
-        self.Refresh()
-        
-
+        #self.Refresh()
         #print("Done")
-
-
-    def list_children(self, container, lvl):
-        '''Returns the next child.'''
+        pass
         
-        #print(lvl)
-        
-        next_container = container.GetFirstChild()
-        while next_container is not None:
-            
-            if type(next_container)==wx.html.HtmlContainerCell:
-                next_container.SetBackgroundColour("#BBBBBB")
-                next_container.SetWidthFloat(20, wx.html.HTML_UNITS_PIXELS)
-                id = next_container.GetId()
-                #print(id)
-                
-                #next_container.SetBorder("#BBBBBB", "#BBBBBB", 2)
-            
-            self.list_children(next_container, lvl+1)
-            next_container = next_container.GetNext()
-    
-    
     def CatchHKeyScroll(self, event):
         '''Disables horizontal key presses from scrolling horizontally.'''
         print('window caught keypress')
+        keycode = event.GetKeyCode()
         # See: https://wxpython.org/Phoenix/docs/html/wx.KeyCategoryFlags.enumeration.html#wx-keycategoryflags
         if event.IsKeyInCategory(wx.WXK_CATEGORY_ARROW):
             # See: https://wxpython.org/Phoenix/docs/html/wx.KeyEvent.html#wx.KeyEvent.GetKeyCode
-            keycode = event.GetKeyCode()
             
             # See: https://wxpython.org/Phoenix/docs/html/wx.KeyCode.enumeration.html#wx-keycode
-            if keycode==wx.WXK_LEFT:
+            if (keycode==wx.WXK_LEFT) or (keycode==wx.WXK_RIGHT):
                 event.Skip()
                 return None
-            
-            if keycode==wx.WXK_RIGHT:
-                event.Skip()
-                return None
-            
+                
         event.Skip()
     
+    def load_page(self, htmlstring):
+        self.SetPage(htmlstring)
+        self.htmlstring = htmlstring
+        
+    def show_popup(self, event):
+        '''Shows the popup menu'''
+        self.PopupMenu(self.popupmenu)
+        
+    def on_popupmenu_sel(self, event):
+        '''Handles events from seleting an item on the popup menu.'''
+        id=event.GetId()
+        if id==ID_PROBE_CONTAINER:
+            self.check_format()
+        elif id==ID_PROBE_XML:
+            print(self.htmlstring)
+            
+            

@@ -47,26 +47,26 @@ class GensimLDA:
         of a word in a given topic.'''
         return self.model.get_topics()
         
-    def print_topics(self):
-        '''Prints the top words in a topic'''
+    def print_topics(self, top_n=10):
+        '''Prints the top_n words in a topic'''
         for row in self.get_topic_term_matrix():
             ranking = np.argsort(row)
             ids = np.arange(len(ranking))[ranking]
             
-            for k in ids[:-10:-1]:
+            for k in ids[:-top_n:-1]:
                 weight = row[k]
                 word = self.dictionary.id2token[k]
                 print(k, word, weight)
-            print('+++++++++++++++')
+            print()
     
     def print_topic_words(self, topic_num, topn=None):
-        '''Gets the top words and probabilities of a given topic in
+        '''Prints the top words and probabilities of a given topic in
         descending probability.'''
         for tok_id, prob in self.model.get_topic_terms(topic_num, topn=topn):
             word = self.dictionary.id2token[tok_id]
             print(word, prob)
             
-    def topic_bows(self, num_words=10):
+    def get_topic_bows(self, num_words=10):
         '''Returns a list (for each topic) containing a list of the top num_words'''
         q = self.model.show_topics(num_topics=self.k_topics, num_words=num_words, formatted=False)
         topics = []

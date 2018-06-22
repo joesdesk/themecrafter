@@ -27,16 +27,16 @@ class NavButton(wx.Button):
 
     def AcceptsFocus(self):
         '''Disables this control from accepting focus.'''
-        return False
+        return True#False
     
 
-class PageNavigator(wx.Panel):
+class PageNavigbationBar(wx.Panel):
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
     
         # Page indicator
-        self.pagenum_txtctrl = GenStaticText(self, label="Page 1 of 1")
+        self.pagenum_txtctrl = GenStaticText(self, label="")
         
         # Page controls
         width = 60
@@ -44,7 +44,6 @@ class PageNavigator(wx.Panel):
         self.prev_btn = NavButton(self, id=ID_PREV, label='Previous')
         self.next_btn = NavButton(self, id=ID_NEXT, label='Next')
         self.last_btn = NavButton(self, id=ID_LAST, label='Last')
-
         
         # Arranging layout
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -65,59 +64,46 @@ class PageNavigator(wx.Panel):
         
         self.SetSizer(sizer)
         
-        # Internal variable
-        self.pagenum = 1
-        self.n_pages = 1
-        
         # Bind buttons to events
-        self.Bind(wx.EVT_BUTTON, self.change_page)
+        self.Bind(wx.EVT_BUTTON, self.change_page_by_button)
+        
+        # Change text to update position
+        self.set_page(0, 0)
     
     def AcceptsFocus(self):
         '''Disables this navigation bar from accepting focus.'''
-        return False
+        return True#False
     
-    def change_page(self, event):        
+    def change_page_by_button(self, event):
+        '''Triggers a page change event through a button.'''
         id = event.GetId()
-        if id==ID_FIRST:
-            page = self.set_page(1)
-        elif id==ID_PREV:
-            page = self.set_page(self.pagenum-1)
-        elif id==ID_NEXT:
-            page = self.set_page(self.pagenum+1)
-        elif id==ID_LAST:
-            page = self.set_page(self.n_pages)
-        else:
-            return None
-            
-        event = PageChangeEvent(id=id, page=page)
+        self.on_change_page(id)
+    
+    def on_change_page(self, id):
+        '''Triggers a page change event.'''
+        event = PageChangeEvent(id=id)
         wx.PostEvent(self.GetParent(), event)
         
-        self.GetParent().SetFocusIgnoringChildren()
+        #self.GetParent().SetFocusIgnoringChildren()
         return None
-    
-    def set_page(self, pagenum):
-        # Coerce to within number of pages
-        if pagenum < 1:
-            return 1
-        if pagenum > self.n_pages:
-            return self.n_pages
         
-        self.pagenum = pagenum
-        
-        label = 'Page {:d} of {:d}'.format(pagenum, self.n_pages)
+    def set_page(self, pagenum, totalpages):
+        '''Changes the page indicator text.'''
+        label = 'Page {:d} of {:d}'.format(pagenum, totalpages)
         self.pagenum_txtctrl.SetLabel(label)
-        return pagenum
+        return None
         
-    def set_total_pages(self, n):
-        self.n_pages = n
-        self.set_page(self.pagenum)
         
-
-if __name__=='__main__':
-    
+def main():
     app = wx.App()
     frame = wx.Frame(None)
     window = PageNavigator(frame)
     window.set_total_pages(10)
     frame.Show()
     app.MainLoop()
+    
+    
+if __name__=='__main__':
+    main()
+    
+    

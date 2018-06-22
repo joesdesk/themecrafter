@@ -8,7 +8,7 @@ import pandas as pd
 from ...datasets import NewsGroupsDataSet, BGSurveyDataSet, \
     GradReportsDataSet, StudentsReviewDataSet
 
-from . import CsvDialog
+from .csvdialog import CsvDialog
 
 import wx.lib.newevent
 

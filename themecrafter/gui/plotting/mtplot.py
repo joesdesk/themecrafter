@@ -15,6 +15,7 @@ matplotlib.rcParams['font.sans-serif'] = ['Arial']
 
 # https://eli.thegreenplace.net/2008/08/01/matplotlib-with-wxpython-guis/
 # http://physicalmodelingwithpython.blogspot.com/
+# https://matplotlib.org/api/backend_wxagg_api.html
 
 import wx
 
