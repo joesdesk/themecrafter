@@ -15,7 +15,8 @@ class Menu(wx.Menu):
         view_objects = self.Append(ID_VIEW_OBJECTS, "View Objects")
         
         # Frame associated with menu
-        self.objviewframe = ObjectViewFrame(None, id=wx.ID_ANY, title='ObjectView')
+        self.objviewframe = ObjectViewFrame(parent, \
+            id=wx.ID_ANY, title='ObjectView')
         
         self.Bind(wx.EVT_MENU, self.test_call, id=ID_VIEW_OBJECTS)
         
