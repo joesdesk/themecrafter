@@ -9,7 +9,7 @@ from ..preprocessing import BagOfWords
 from ..models.gensimlda import GensimLDA
 from ..models.utils import hard_assignments, rank2id
 
-from ..evaluate.temp import sent_ranges, aggr_weights
+from ..evaluate.temp import sent_ranges, aggr_weights, classify
 
 import numpy as np
 from pandas import DataFrame
@@ -72,9 +72,8 @@ class MainInterface:
         print(V.shape)
         y = hard_assignments(V)
         
-        for i, t in enumerate(tags):
-            t.attrib['class'] = str(y[i])
-            #show_tree(t)
+        # Retag tree
+        classify(tags, y)
         
         # Create new matrix on document basis        
         ranges = sent_ranges(self.tree)
@@ -110,7 +109,7 @@ class MainInterface:
         '''Performs feature selection.'''
         if self.tree is not None:
             self.label(self.tree)
-            show_tree(self.tree)
+            #show_tree(self.tree)
             
     def get_topics(self):
         if self.topics is not None:
