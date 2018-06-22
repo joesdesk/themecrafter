@@ -3,6 +3,7 @@ from ..nlp.utils import open_tree, show_tree, save_tree, tree2string
 
 from ..preprocessing.labeltransform import LabelTransform
 from ..nlp.nltklemmatizer import NOUN_POS, VERB_POS, ADJ_POS
+from ..nlp.poslist import pos_descriptions
 
 from ..preprocessing import BagOfWords
 
@@ -30,6 +31,7 @@ class MainInterface:
         self.model = None
         self.doc_scores = None
         self.doc_assigns = None
+        self.dpages = dict()
         self.topics = None
         
     def load_docs(self, docs):
@@ -95,15 +97,20 @@ class MainInterface:
             df = df.append({'topic':topic,'words':words}, ignore_index=True)
         #self.get_topics(df)
         self.topics = df
+        
+        # Make dictionary of pages
+        self.dpages = dict()
+        for topic_num in range(10):
+            sel = self.doc_assigns==topic_num
+            ids = np.arange(len(self.doc_assigns))[sel]
+            scores = self.doc_scores[sel]
+            rankings = np.argsort(scores)
+            k = rank2id(rankings)
+            self.dpages[i] = ids[k]
     
     def show_docs(self, topic_num):
         '''Gets the document indices for documents related to the topics by weight.'''
-        sel = self.doc_assigns==topic_num
-        ids = np.arange(len(self.doc_assigns))[sel]
-        scores = self.doc_scores[sel]
-        rankings = np.argsort(scores)
-        k = rank2id(rankings)
-        return ids[k]
+        return self.dpages[topic_num]
         
     def feat_sel(self):
         '''Performs feature selection.'''
@@ -156,6 +163,55 @@ class MainInterface:
         # Perform labellling
         labeltransform.fit(tree)
         
+        self.do_pos_model()
+        
+    def do_pos_model(self):
+        from collections import Counter
+        
+        idx = dict()
+        poscount = Counter()
+        y = []
+        
+        dids = []
+        tags = []
+        
+        for did, d in enumerate( self.tree.findall('.//doc') ):
+            for t in d.findall('.//tok[@pos]'):
+                pos = t.get('pos')
+                i = idx.get(pos, len(idx))
+                if pos not in idx:
+                    idx[pos] = i
+                poscount.update([pos])
+                y.append(i)
+                
+                tags.append(t)
+                dids.append(did)
+            
+        classify(tags, y)
+        
+        # Create count matrix
+        from collections import defaultdict
+        
+        docs = defaultdict(list)
+        for k, v in zip(y, dids):
+            docs[k].append(v)
+        #print(docs.items())
+        
+        # Need to set scores and assignments
+        self.dpages = dict()
+        for k, v in docs.items():
+            ids = dict(Counter(v).most_common()).keys()
+            self.dpages[k] = list(ids)
+        print(self.dpages)
+        
+        df = DataFrame(columns=['POS', 'Count', 'Description'])
+        for k, v in idx.items():
+            count = poscount[k]
+            descr = pos_descriptions.get(k, "")
+            df.loc[v] = [k, count, descr]
+        
+        self.topics = df
+        
         
 if __name__=='__main__':
     interface = MainInterface()
@@ -163,4 +219,4 @@ if __name__=='__main__':
     interface.loadxml()
     interface.label(interface.tree)
     
-    interface.do_model()
+    #interface.do_model()

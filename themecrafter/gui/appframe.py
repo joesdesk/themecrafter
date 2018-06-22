@@ -34,11 +34,10 @@ class ApplicationFrame(MainFrame):
         for tag in tree.findall('.//tok[@pos="NNS"]'):
             tag.attrib['class'] = str(0)
         
-        xmlstring = self.interface.get_xmlstring()
+        #xmlstring = self.interface.get_xmlstring()
         
-        self.ctrl_commentview.set_xml(xmlstring)
-        self.ctrl_commentview.highlight_topic(0)
-        
+        #self.ctrl_commentview.set_xml(xmlstring)
+        #self.ctrl_commentview.highlight_topic(0)
         
     def on_data_load(self, event):
         '''Setup an interface when data is loaded'''
@@ -61,6 +60,7 @@ class ApplicationFrame(MainFrame):
         xmlstring = self.interface.get_xmlstring()
         
         self.ctrl_commentview.set_xml(xmlstring)
+        self.show_topics()
         
     def show_topics(self):
         '''Show topics in the topic list.'''
