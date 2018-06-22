@@ -2,23 +2,15 @@
 # select text data from a CSV
 
 import wx
+import wx.lib.newevent
 
 import pandas as pd
 
-from ...datasets import NewsGroupsDataSet, BGSurveyDataSet, \
-    GradReportsDataSet, StudentsReviewDataSet
-
 from .csvdialog import CsvDialog
 
-import wx.lib.newevent
 
 # Command events can be propagated up the parent heirarchy through e.Skip()
-ID_DATA_LOADED = 50
-
-ID_DATA_LOAD_NEWSGROUPS = 55
-ID_DATA_LOAD_BGSURVEY = 56
-ID_DATA_LOAD_GRADREPORTS = 57
-ID_DATA_LOAD_STUDENTSREVIEWS = 58
+ID_DATALOAD_CSV = 50
 
 # This class defines global events associated with different
 # interactions with the session, which is the package interface.
@@ -34,20 +26,10 @@ class DataMenu(wx.Menu):
         self.parent = parent
         
         # Add load csv data entry
-        self.Append(id=ID_DATA_LOADED, item="Import CSV")
-        self.AppendSeparator()
-
-        # Add submenu for preset data
-        preset_menu = wx.Menu()
-        preset_menu.Append(id=ID_DATA_LOAD_NEWSGROUPS, item="Twenty News Groups")
-        preset_menu.Append(id=ID_DATA_LOAD_BGSURVEY, item="BG Survey")
-        preset_menu.Append(id=ID_DATA_LOAD_GRADREPORTS, item="Grad Reports")
-        preset_menu.Append(id=ID_DATA_LOAD_STUDENTSREVIEWS, item="Students Review")
-        self.AppendSubMenu(submenu=preset_menu, text='Import Preset')
+        self.Append(id=ID_DATALOAD_CSV, item="Import CSV")
         
         # Attach events to menu's entries
-        self.Bind(wx.EVT_MENU, self.load_csv_data, id=ID_DATA_LOADED)
-        preset_menu.Bind(wx.EVT_MENU, self.load_preset_data)
+        self.Bind(wx.EVT_MENU, self.load_csv_data, id=ID_DATALOAD_CSV)
         
         
     def load_csv_data(self, event):
@@ -66,26 +48,7 @@ class DataMenu(wx.Menu):
             usecols=[csv_dialog.header_label], squeeze=True)
         data = series.tolist()
         
-        evt = OnDataLoad(attr=data, id=ID_DATA_LOADED)
+        evt = OnDataLoad(attr=data, id=ID_DATALOAD_CSV)
         wx.PostEvent(self.parent, evt)
         
-        
-    def load_preset_data(self, event):
-        '''Event handler for "load preset data" events from submenus.'''
-        id = event.GetId()
-        
-        if id==ID_DATA_LOAD_NEWSGROUPS:
-            data = NewsGroupsDataSet()
-        elif id==ID_DATA_LOAD_BGSURVEY:
-            data = BGSurveyDataSet()
-        elif id==ID_DATA_LOAD_GRADREPORTS:
-            data = GradReportsDataSet()
-        elif id==ID_DATA_LOAD_STUDENTSREVIEWS:
-            data = StudentsReviewDataSet()
-        else:
-            data = []
-        
-        evt = OnDataLoad(attr=data.X, id=id)
-        wx.PostEvent(self.parent, evt)
-
         
