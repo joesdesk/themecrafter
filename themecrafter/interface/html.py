@@ -65,7 +65,7 @@ class HTMLInterface:
     def render(self, page_num):
         '''Turns the documents into a list of html strings for pages.'''
         page_num = max(0, page_num)
-        page_num = min(page_num, self.n_pages)
+        page_num = min(page_num, self.n_pages-1)
         self.curr_page = page_num
         
         doc_ids = self.doc_range(page_num)

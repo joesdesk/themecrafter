@@ -43,10 +43,10 @@ class ApplicationFrame(MainFrame):
         '''Setup an interface when data is loaded'''
         docs = event.attr
         self.interface.load_docs(docs)
+        
         xmlstring = self.interface.get_xmlstring()
         
         self.ctrl_commentview.set_xml(xmlstring)
-        self.show_topics()
         
     def on_xml_load(self, event):
         '''Loads the XML into the interface'''

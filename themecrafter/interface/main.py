@@ -38,7 +38,7 @@ class MainInterface:
         '''Loads the documents to be analyzed.'''
         self.docs = docs
         parser = CorpusParser()
-        tree = parser.parse(self.docs)
+        self.tree = parser.parse(self.docs)
         
     def loadxml(self):
         '''Load XML into interface'''
